@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contatti & Assistenza | PERTEFINANZA</title>
+  <meta name="description" content="Contatta il team editoriale di PERTEFINANZA diretto da Luigi Rocco. Segnalazioni di certificati, collaborazioni e canali di assistenza ufficiale Telegram.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Barra Superiore con Avviso Rapido -->
+  <aside class="top-bar" aria-label="Informazioni istituzionali e avvisi normativi">
+    <div class="container top-bar-inner">
+      <div class="top-bar-disclaimer">
+        <span class="badge-risk-mini">Avviso</span>
+        <span>Informazione indipendente • I certificati sono strumenti complessi a capitale condizionatamente protetto</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="disclaimer.html">Disclaimer e Note Legali</a>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer">Canale Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Intestazione Principale -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-logo" aria-label="PERTEFINANZA Home">
+        <div>
+          <div class="brand-name">PERTE<span>FINANZA</span></div>
+          <span class="brand-tag">Certificati & Strategie Indipendenti</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principale">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="certificati.html" class="nav-link">Certificati</a>
+        <a href="emittenti.html" class="nav-link">Emittenti</a>
+        <a href="formazione.html" class="nav-link">Formazione</a>
+        <a href="glossario.html" class="nav-link">Glossario</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contatti.html" class="nav-link active">Contatti</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+          </svg>
+          Telegram
+        </a>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Apri menu di navigazione" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Mobile -->
+  <nav class="mobile-nav" id="mobile-nav-menu" aria-label="Menu navigazione mobile">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="certificati.html" class="mobile-nav-link">Catalogo Certificati</a>
+    <a href="emittenti.html" class="mobile-nav-link">Emittenti Bancari</a>
+    <a href="formazione.html" class="mobile-nav-link">Guida & Formazione</a>
+    <a href="glossario.html" class="mobile-nav-link">Glossario Finanziario</a>
+    <a href="faq.html" class="mobile-nav-link">Domande Frequenti (FAQ)</a>
+    <a href="contatti.html" class="mobile-nav-link active">Contatti & Supporto</a>
+    <a href="disclaimer.html" class="mobile-nav-link">Note Legali & Disclaimer</a>
+  </nav>
+
+  <!-- Header di Pagina -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Contatti & Relazioni Esterne</h1>
+      <p class="page-header-desc">
+        Hai un quesito editoriale, vuoi proporre un certificato all'attenzione del nostro ufficio studi o desideri informazioni istituzionali? Mettiti in contatto con noi.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contenuto con Sticky Sidebar -->
+  <div class="container page-layout">
+    <main class="main-content">
+      
+      <!-- Modulo di Contatto -->
+      <section class="contact-card">
+        <h2 class="card-title">Invia un messaggio alla redazione</h2>
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">
+          Compila il modulo sottostante. Il team di PERTEFINANZA ti risponderà entro 24 ore lavorative.
+        </p>
+
+        <form class="contact-form" id="contact-form">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label for="contact-name" class="form-label">Nome e Cognome *</label>
+              <input type="text" id="contact-name" class="form-control" placeholder="Mario Rossi" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Indirizzo Email *</label>
+              <input type="email" id="contact-email" class="form-control" placeholder="mario.rossi@example.com" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject" class="form-label">Oggetto della richiesta *</label>
+            <select id="contact-subject" class="form-control" required>
+              <option value="">Seleziona un argomento...</option>
+              <option value="richiesta-didattica">Quesito didattico o richiesta chiarimenti</option>
+              <option value="segnalazione-isin">Segnalazione nuovo certificato / ISIN</option>
+              <option value="collaborazione">Proposta di partnership o collaborazione</option>
+              <option value="altro">Altro motivo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message" class="form-label">Messaggio *</label>
+            <textarea id="contact-message" rows="5" class="form-control" placeholder="Descrivi in dettaglio la tua richiesta o il codice ISIN del certificato..." required></textarea>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <input type="checkbox" id="contact-consent" style="margin-top: 0.25rem;" required>
+            <label for="contact-consent" style="font-size: 0.8125rem; color: var(--text-body);">
+              Ho letto e accetto l'<a href="disclaimer.html#privacy">informativa sulla privacy</a> e autorizzo il trattamento dei miei dati al solo fine di rispondere alla richiesta inviata.
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="align-self: flex-start;">
+            Invia Messaggio
+          </button>
+        </form>
+
+        <!-- Messaggio di avvenuta trasmissione -->
+        <div id="contact-response-msg" style="display: none; margin-top: 1.5rem; padding: 1rem; background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius-sm); color: #065f46; font-size: 0.9375rem;">
+          ✓ <strong>Messaggio inviato con successo!</strong> Grazie per averci contattato. Ti risponderemo al più presto.
+        </div>
+      </section>
+
+      <!-- Recapiti Ufficiali e Dati Istituzionali -->
+      <section class="card" style="margin-top: 2rem;">
+        <h2 class="card-title">Canali Diretti & Dati Istituzionali</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1.25rem;">
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Community Telegram Ufficiale</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Canale pubblico per aggiornamenti quotidiani e stacchi cedole.
+            </p>
+            <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" style="font-weight: 700; font-size: 0.875rem; display: inline-block; margin-top: 0.5rem;">
+              @pertefinanza ↗
+            </a>
+          </div>
+
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Posta Elettronica Redazione</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Per comunicazioni ufficiali e corrispondenza editoriale.
+            </p>
+            <span style="font-weight: 700; font-size: 0.875rem; color: var(--primary); display: inline-block; margin-top: 0.5rem;">
+              redazione@pertefinanza.it
+            </span>
+          </div>
+
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Titolare del Portale</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Luigi Rocco • P.IVA 18669501001<br>
+              Attività di divulgazione e analisi finanziaria indipendente.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Sidebar Sticky -->
+    <aside class="sticky-sidebar">
+      
+      <!-- Banner Telegram -->
+      <div class="sidebar-telegram-card">
+        <div class="telegram-header">
+          <div class="telegram-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="telegram-title">Canale Telegram</div>
+            <div class="telegram-handle">@pertefinanza</div>
+          </div>
+        </div>
+        <p class="telegram-desc">
+          Cerchi flussi cedolari e barriere profonde? Analizziamo i migliori certificati di investimento, anche sotto la pari. Resta aggiornato sulle date di stacco e sulle migliori occasioni del mercato secondario
+        </p>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
+          Apri Telegram ↗
+        </a>
+      </div>
+
+      <!-- Warning sui Rischi -->
+      <div class="sidebar-risk-card">
+        <div class="risk-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="risk-title">Avvertenza sui Rischi</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            Attraverso il modulo contatti non viene fornita consulenza finanziaria su misura per espressa prescrizione normativa.
+          </p>
+          <a href="disclaimer.html" class="risk-link">Informativa legale completa →</a>
+        </div>
+      </div>
+
+      <!-- Widget Certificati in Evidenza -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span>In Evidenza</span>
+        </div>
+        <div id="sidebar-featured-certs">
+          <!-- Caricato dinamicamente da app.js -->
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Footer Istituzionale -->
+  <footer class="site-footer"></footer>
+
+  <script src="js/data-certificates.js"></script>
+  <script src="js/data-issuers.js"></script>
+  <script src="js/data-glossary.js"></script>
+  <script src="js/data-faqs.js"></script>
+  <script src="js/data-underlyings.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

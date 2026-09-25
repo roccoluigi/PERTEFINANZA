@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guida Didattica & Formazione sui Certificati | PERTEFINANZA</title>
+  <meta name="description" content="Guida pratica per comprendere il funzionamento dei certificati di investimento: barriere europee, effetto memoria, airbag, cedole periodiche e compensazione minusvalenze.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Barra Superiore con Avviso Rapido -->
+  <aside class="top-bar" aria-label="Informazioni istituzionali e avvisi normativi">
+    <div class="container top-bar-inner">
+      <div class="top-bar-disclaimer">
+        <span class="badge-risk-mini">Avviso</span>
+        <span>Informazione didattica • I certificati sono strumenti complessi a capitale condizionatamente protetto</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="disclaimer.html">Disclaimer e Note Legali</a>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer">Canale Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Intestazione Principale -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-logo" aria-label="PERTEFINANZA Home">
+        <div>
+          <div class="brand-name">PERTE<span>FINANZA</span></div>
+          <span class="brand-tag">Certificati & Strategie Indipendenti</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principale">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="certificati.html" class="nav-link">Certificati</a>
+        <a href="emittenti.html" class="nav-link">Emittenti</a>
+        <a href="formazione.html" class="nav-link active">Formazione</a>
+        <a href="glossario.html" class="nav-link">Glossario</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contatti.html" class="nav-link">Contatti</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+          </svg>
+          Telegram
+        </a>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Apri menu di navigazione" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Mobile -->
+  <nav class="mobile-nav" id="mobile-nav-menu" aria-label="Menu navigazione mobile">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="certificati.html" class="mobile-nav-link">Catalogo Certificati</a>
+    <a href="emittenti.html" class="mobile-nav-link">Emittenti Bancari</a>
+    <a href="formazione.html" class="mobile-nav-link active">Guida & Formazione</a>
+    <a href="glossario.html" class="mobile-nav-link">Glossario Finanziario</a>
+    <a href="faq.html" class="mobile-nav-link">Domande Frequenti (FAQ)</a>
+    <a href="contatti.html" class="mobile-nav-link">Contatti & Supporto</a>
+    <a href="disclaimer.html" class="mobile-nav-link">Note Legali & Disclaimer</a>
+  </nav>
+
+  <!-- Header di Pagina -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Guida Didattica & Formazione</h1>
+      <p class="page-header-desc">
+        Impara a padroneggiare i meccanismi finanziari dei certificati di investimento: dalla scelta della barriera alla protezione del capitale, fino all'ottimizzazione fiscale delle minusvalenze.
+      </p>
+    </div>
+  </section>
+
+  <!-- Layout con Sticky Sidebar -->
+  <div class="container page-layout">
+    <main class="main-content">
+      
+      <!-- Modulo 1: Le Basi -->
+      <article class="card" style="margin-bottom: 2rem;">
+        <span class="badge badge-primary">Modulo 1</span>
+        <h2 class="card-title" style="margin-top: 0.5rem;">Cosa Sono i Certificati e Come Funziona il Payoff</h2>
+        <p style="font-size: 0.9375rem; color: var(--text-body); line-height: 1.6; margin-top: 0.75rem;">
+          I certificati sono strumenti finanziari derivati che replicano sinteticamente l'andamento di una o più attività sottostanti (azioni, indici o materie prime), combinando componenti lineari con contratti opzionari. Questa architettura consente di costruire profili di rendimento non lineari: si può ottenere un rendimento positivo anche in caso di moderato ribasso del mercato.
+        </p>
+        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--primary); margin-top: 1rem;">
+          <strong style="color: var(--secondary); font-size: 0.875rem;">Regola fondamentale:</strong>
+          <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.25rem;">
+            A differenza dell'acquisto diretto di un'azione (dove a un -30% corrisponde una perdita del 30%), un certificato con barriera al 60% rimborsa comunque l'intero capitale iniziale a 100 euro più le cedole pattuite.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 2: Barriera Europea vs Continua -->
+      <article class="card" style="margin-bottom: 2rem;">
+        <span class="badge badge-primary">Modulo 2</span>
+        <h2 class="card-title" style="margin-top: 0.5rem;">Barriere: Differenza tra Discreta (Europea) e Continua (Americana)</h2>
+        <p style="font-size: 0.9375rem; color: var(--text-body); line-height: 1.6; margin-top: 0.75rem;">
+          La tipologia della barriera è uno degli elementi più critici nella valutazione del rischio:
+        </p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div style="background: #f8fafc; border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-sm);">
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Barriera Discreta (Europea)</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.5rem; line-height: 1.5;">
+              Viene rilevata <strong>soltanto alla data di valutazione finale</strong> a scadenza. Se durante la vita del certificato il sottostante crolla del 50% ma recupera entro la scadenza risalendo sopra barriera, la protezione del capitale rimane intatta al 100%. È la tipologia raccomandata per investitori conservativi.
+            </p>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius-sm);">
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">Barriera Continua (Americana)</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.5rem; line-height: 1.5;">
+              Viene monitorata <strong>in ogni secondo di borsa aperta</strong>. Basta un singolo tocco intraday al di sotto della soglia per far decadere la protezione del capitale, trasformando lo strumento in una replica lineare del sottostante fino a scadenza.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 3: Effetto Memoria & Meccanismo Airbag -->
+      <article class="card" style="margin-bottom: 2rem;">
+        <span class="badge badge-primary">Modulo 3</span>
+        <h2 class="card-title" style="margin-top: 0.5rem;">Effetto Memoria e Meccanismo Airbag</h2>
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.75rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--secondary);">L'Effetto Memoria (Phoenix)</h3>
+            <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.55; margin-top: 0.25rem;">
+              Nei certificati Phoenix, se a una data di stacco il sottostante è al di sotto della barriera cedolare, la cedola non viene persa: viene memorizzata e pagata cumulata alla prima data successiva in cui tutti i titoli tornano a quotare sopra la barriera.
+            </p>
+          </div>
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--secondary);">L'Airbag a Scadenza</h3>
+            <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.55; margin-top: 0.25rem;">
+              Nei certificati Airbag, se la barriera (es. al 60%) viene violata a scadenza, l'investitore non perde partendo dal 100% dello strike, bensì dal valore della barriera. Ad esempio, a fronte di un ribasso del titolo del 50%, un certificato tradizionale rimborsa 50€ (perdita del 50%), mentre una struttura Airbag rimborsa circa 83.3€ (perdita contenuta a solo il 16.7%).
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 4: Fiscalità e Recupero Minusvalenze -->
+      <article class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--success);">
+        <span class="badge badge-success">Modulo 4 - Fisco</span>
+        <h2 class="card-title" style="margin-top: 0.5rem;">Efficienza Fiscale: Recuperare le Minusvalenze con i Certificati</h2>
+        <p style="font-size: 0.9375rem; color: var(--text-body); line-height: 1.6; margin-top: 0.75rem;">
+          In base al Testo Unico delle Imposte sui Redditi (TUIR), i proventi generati dai certificati sono qualificati come <strong>redditi diversi</strong> (anziché redditi di capitale come per dividendi di azioni, ETF o fondi comuni).
+        </p>
+        <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.6; margin-top: 0.5rem;">
+          Questo significa che sia il guadagno di capitale (capital gain) che le cedole periodiche incassate possono essere integralmente scomputate dalle minusvalenze pregresse registrate presso il proprio intermediario, evitando l'applicazione della ritenuta del 26% fino a concorrenza del credito d'imposta entro i 4 anni successivi alla generazione.
+        </p>
+      </article>
+
+      <!-- Modulo 5: Come Leggere il KID -->
+      <article class="card">
+        <span class="badge badge-primary">Modulo 5</span>
+        <h2 class="card-title" style="margin-top: 0.5rem;">Come Leggere il KID in 4 Step Veloci</h2>
+        <ol style="margin-left: 1.25rem; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.875rem; color: var(--text-body);">
+          <li><strong>Verifica l'Indicatore di Rischio (SRI da 1 a 7):</strong> La maggior parte dei certificati a capitale condizionato si colloca tra la classe 4 e la classe 6.</li>
+          <li><strong>Controlla gli Scenari di Performance:</strong> Osserva lo scenario sfavorevole e quello di stress per capire cosa accade nei momenti peggiori di mercato.</li>
+          <li><strong>Analizza la Tabella dei Costi:</strong> Individua i costi di ingresso impliciti (spesso tra l'1% e il 3%) inclusi nel prezzo di emissione.</li>
+          <li><strong>Identifica l'Orizzonte Temporale Raccomandato:</strong> Verifica la data di rimborso finale e le date per l'eventuale autocallability.</li>
+        </ol>
+      </article>
+
+    </main>
+
+    <!-- Sidebar Sticky -->
+    <aside class="sticky-sidebar">
+      
+      <!-- Banner Telegram -->
+      <div class="sidebar-telegram-card">
+        <div class="telegram-header">
+          <div class="telegram-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="telegram-title">Canale Telegram</div>
+            <div class="telegram-handle">@pertefinanza</div>
+          </div>
+        </div>
+        <p class="telegram-desc">
+          Cerchi flussi cedolari e barriere profonde? Analizziamo i migliori certificati di investimento, anche sotto la pari. Resta aggiornato sulle date di stacco e sulle migliori occasioni del mercato secondario
+        </p>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
+          Unisciti alla Community ↗
+        </a>
+      </div>
+
+      <!-- Warning sui Rischi -->
+      <div class="sidebar-risk-card">
+        <div class="risk-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="risk-title">Avvertenza sui Rischi</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            I contenuti formativi hanno esclusiva finalità didattica ed illustrativa e non costituiscono sollecitazione all'investimento.
+          </p>
+          <a href="disclaimer.html" class="risk-link">Informativa legale completa →</a>
+        </div>
+      </div>
+
+      <!-- Widget Certificati in Evidenza -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span>In Evidenza</span>
+        </div>
+        <div id="sidebar-featured-certs">
+          <!-- Caricato dinamicamente da app.js -->
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Footer Istituzionale -->
+  <footer class="site-footer"></footer>
+
+  <script src="js/data-certificates.js"></script>
+  <script src="js/data-issuers.js"></script>
+  <script src="js/data-glossary.js"></script>
+  <script src="js/data-faqs.js"></script>
+  <script src="js/data-underlyings.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

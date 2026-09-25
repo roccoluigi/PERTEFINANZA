@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banche Emittenti e Rating di Credito | PERTEFINANZA</title>
+  <meta name="description" content="Guida, analisi approfondita e rating di credito per 17 principali emittenti di certificati sul mercato italiano (BNP Paribas, UniCredit, Intesa Sanpaolo, Vontobel, Leonteq, Barclays e altri).">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Stili integrativi coerenti con la struttura grafica di PERTEFINANZA */
+    .issuer-card {
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-md, 8px);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .issuer-card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+    .issuer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--bg-body, #f8fafc);
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.45rem;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .issuer-title-box {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .issuer-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-body, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--primary, #2563eb);
+      font-size: 1.2rem;
+    }
+    .issuer-name {
+      font-size: 1.3rem;
+      color: var(--secondary, #0f172a);
+      font-weight: 700;
+      margin: 0;
+    }
+    .issuer-country {
+      font-size: 0.8rem;
+      color: var(--text-muted, #64748b);
+    }
+    .ratings-badge-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .rating-pill {
+      background: var(--bg-body, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 4px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .rating-agency {
+      font-weight: 700;
+      color: var(--text-muted, #64748b);
+      text-transform: uppercase;
+      font-size: 0.68rem;
+    }
+    .rating-val {
+      font-weight: 800;
+      color: var(--secondary, #0f172a);
+    }
+    .issuer-body {
+      font-size: 0.9375rem;
+      color: var(--text-body, #334155);
+      line-height: 1.7;
+    }
+    .issuer-footer {
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border, #e2e8f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .issuer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary, #2563eb);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .issuer-link:hover {
+      text-decoration: underline;
+    }
+    .toc-issuers {
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-md, 8px);
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .toc-issuers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .toc-issuer-btn {
+      display: block;
+      padding: 0.4rem 0.6rem;
+      background: var(--bg-body, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--secondary, #0f172a);
+      text-decoration: none;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    .toc-issuer-btn:hover {
+      background: var(--primary, #2563eb);
+      color: #ffffff;
+      border-color: var(--primary, #2563eb);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superiore con Avviso Rapido -->
+  <aside class="top-bar" aria-label="Informazioni istituzionali e avvisi normativi">
+    <div class="container top-bar-inner">
+      <div class="top-bar-disclaimer">
+        <span class="badge-risk-mini">Avviso</span>
+        <span>Informazione indipendente • I certificati sono strumenti complessi a capitale condizionatamente protetto</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="disclaimer.html">Disclaimer e Note Legali</a>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer">Canale Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Intestazione Principale -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-logo" aria-label="PERTEFINANZA Home">
+        <div>
+          <div class="brand-name">PERTE<span>FINANZA</span></div>
+          <span class="brand-tag">Certificati & Strategie Indipendenti</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principale">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="certificati.html" class="nav-link">Certificati</a>
+        <a href="emittenti.html" class="nav-link active">Emittenti</a>
+        <a href="formazione.html" class="nav-link">Formazione</a>
+        <a href="glossario.html" class="nav-link">Glossario</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contatti.html" class="nav-link">Contatti</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+          </svg>
+          Telegram
+        </a>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Apri menu di navigazione" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Mobile -->
+  <nav class="mobile-nav" id="mobile-nav-menu" aria-label="Menu navigazione mobile">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="certificati.html" class="mobile-nav-link">Catalogo Certificati</a>
+    <a href="emittenti.html" class="mobile-nav-link active">Emittenti Bancari</a>
+    <a href="formazione.html" class="mobile-nav-link">Guida & Formazione</a>
+    <a href="glossario.html" class="mobile-nav-link">Glossario Finanziario</a>
+    <a href="faq.html" class="mobile-nav-link">Domande Frequenti (FAQ)</a>
+    <a href="contatti.html" class="mobile-nav-link">Contatti & Supporto</a>
+    <a href="disclaimer.html" class="mobile-nav-link">Note Legali & Disclaimer</a>
+  </nav>
+
+  <!-- Header di Pagina -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Banche Emittenti e Rating di Credito</h1>
+      <p class="page-header-desc">
+        Quando acquisti un certificato diventi creditore dell'istituto emittente. Consulta la nostra guida dettagliata su 17 principali emittenti del mercato italiano, con rating indicativi della capogruppo e profili operativi. Il rating effettivo da verificare è quello dell'entità emittente indicata nel Final Terms del singolo prodotto.
+      </p>
+      <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.75rem;">
+        Verifica online effettuata il 21 settembre 2026. I rating possono essere modificati, sospesi o ritirati dalle agenzie in qualsiasi momento.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contenuto con Sticky Sidebar -->
+  <div class="container page-layout">
+    <main class="main-content">
+      
+      <!-- Approfondimento Didattico Rischio Emittente -->
+      <section class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+        <h2 class="card-title">Perché il Rating dell'Emittente è Fondamentale?</h2>
+        <p style="font-size: 0.9375rem; color: var(--text-body); line-height: 1.6; margin-top: 0.5rem;">
+          I certificati d'investimento sono prodotti derivati cartolarizzati rientranti nella categoria dei <strong>titoli di debito non subordinati</strong>. Ciò significa che l'investitore non assume soltanto il rischio di mercato legato alla performance dei sottostanti, ma anche il <strong>rischio di credito dell'emittente</strong>. In caso di insolvenza o applicazione delle procedure europee di <em>Bail-In</em> (BRRD), il capitale dell'investitore potrebbe subire decurtazioni indipendentemente dal positivo andamento dei sottostanti.
+        </p>
+      </section>
+
+      <!-- Navigazione Rapida Emittenti -->
+      <section class="toc-issuers">
+        <strong style="font-size: 0.9rem; color: var(--secondary);">Indice Rapido Emittenti Monitorati (17 Istituti):</strong>
+        <div class="toc-issuers-grid">
+          <a href="#barclays" class="toc-issuer-btn">Barclays</a>
+          <a href="#bnp-paribas" class="toc-issuer-btn">BNP Paribas</a>
+          <a href="#citigroup" class="toc-issuer-btn">Citigroup</a>
+          <a href="#efg" class="toc-issuer-btn">EFG International</a>
+          <a href="#goldman-sachs" class="toc-issuer-btn">Goldman Sachs</a>
+          <a href="#intesa-sanpaolo" class="toc-issuer-btn">Intesa Sanpaolo</a>
+          <a href="#leonteq" class="toc-issuer-btn">Leonteq</a>
+          <a href="#marex" class="toc-issuer-btn">Marex Financial</a>
+          <a href="#morgan-stanley" class="toc-issuer-btn">Morgan Stanley</a>
+          <a href="#socgen" class="toc-issuer-btn">Société Générale</a>
+          <a href="#ubs" class="toc-issuer-btn">UBS</a>
+          <a href="#unicredit" class="toc-issuer-btn">UniCredit</a>
+          <a href="#vontobel" class="toc-issuer-btn">Vontobel</a>
+          <a href="#natixis" class="toc-issuer-btn">Natixis</a>
+          <a href="#bbva" class="toc-issuer-btn">BBVA</a>
+          <a href="#santander" class="toc-issuer-btn">Banco Santander</a>
+          <a href="#bil" class="toc-issuer-btn">BIL Luxembourg</a>
+        </div>
+      </section>
+
+      <!-- ELENCO DETTAGLIATO EMITTENTI -->
+      <section id="issuers-list">
+
+        <!-- 1. Barclays -->
+        <article class="issuer-card" id="barclays">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Barclays</h3>
+                <span class="issuer-country">Regno Unito • Gruppo Bancario Globale</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Barclays è uno dei giganti bancari britannici e internazionali con oltre 300 anni di storia finanziaria. Sul mercato italiano dei certificati di investimento, la banca opera sia tramite Barclays Bank PLC sia tramite Barclays Bank Ireland PLC, confermandosi uno degli attori più innovativi nell'ingegneria finanziaria. Si distingue per un'offerta diversificata che spazia dai classici Cash Collect con opzione Airbag fino a strutture Phoenix con barriere estremamente profonde (fino al 40%) e opzioni Low Strike. La qualità del Market Making su SeDeX ed EuroTLX è riconosciuta per la costanza degli spread e l'elevata profondità del book di negoziazione.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Grande banca britannica globale</span>
+            <a href="https://certificati.barclays.com/it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Certificati Barclays ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 2. BNP Paribas -->
+        <article class="issuer-card" id="bnp-paribas">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">BNP Paribas</h3>
+                <span class="issuer-country">Francia • Primo Gruppo Bancario dell'Eurozona</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">Aa3</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">AA-</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            BNP Paribas rappresenta la prima banca europea per attivo di bilancio e uno dei leader assoluti nell'emissione di prodotti strutturati in Italia. La sua offerta copre qualsiasi esigenza di portafoglio: dai certificati d'investimento tradizionali (Airbag, Cash Collect, Step-Down) agli strumenti a leva dinamica come i Turbo e Mini Futures. L'istituto transalpino vanta un profilo di solidità patrimoniale d'eccellenza e una presenza capillare tramite BNL nel mercato domestico. La trasparenza documentale, la puntualità nello stacco dei flussi cedolari e la stabilità del Market Making costituiscono benchmark per l'intero settore finanziario.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Grande banca europea internazionale</span>
+            <a href="https://investimenti.bnpparibas.it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Certificati BNP Paribas ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 3. Citigroup -->
+        <article class="issuer-card" id="citigroup">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Citigroup</h3>
+                <span class="issuer-country">Stati Uniti • Primary Global Investment Bank</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">Aa3</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Citigroup (attraverso le entità Citigroup Global Markets Funding Luxembourg S.C.A. e Citigroup Global Markets Limited) è un colosso bancario americano che ha intensificato significativamente la propria presenza sul mercato B2C italiano. Citi è specializzata nell'offrire strutture flessibili legate sia ad azioni singole sia a panieri internazionali e tematici. La sua offerta include prodotti Cash Collect con Maxicoupon ed effetto memoria, oltre a soluzioni con barriere conservative. La banca beneficia della formidabile capacità di pricing di Wall Street, garantendo liquidity management efficiente sui segmenti SeDeX ed EuroTLX.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Colosso bancario americano</span>
+            <a href="https://www.citivelocity.com/citifirst/it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Citicertificates ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 4. EFG International -->
+        <article class="issuer-card" id="efg">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">EFG International</h3>
+                <span class="issuer-country">Svizzera • Gruppo di Wealth Management & Private Banking</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            EFG International, con sede a Zurigo, è un primario gruppo di private banking e wealth management. Nel settore dei certificati di investimento opera prevalentemente mediante il veicolo societario EFG Financial Products o EFG International Finance (Guernsey). La banca si contraddistingue per la creazione di prodotti su misura e strutture Phoenix e Express ad alto rendimento, fortemente apprezzate dai consulenti finanziari e dal pubblico della gestione patrimoniale. La solidità patrimoniale del gruppo svizzero, unita a un rigoroso controllo dei coefficienti di capitale (CET1 ratio), assicura elevate garanzie di affidabilità creditizia.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Private banking svizzero</span>
+            <a href="https://www.efginternational.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale EFG International ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 5. Goldman Sachs -->
+        <article class="issuer-card" id="goldman-sachs">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Goldman Sachs</h3>
+                <span class="issuer-country">Stati Uniti • Investment Banking Leader</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Goldman Sachs è indiscutibilmente uno dei nomi più prestigiosi della finanza globale. Tramite le entità Goldman Sachs International e Goldman Sachs Finance Corp LLC, l'istituto offre in Italia una gamma selezionata ma di altissimo profilo strutturale: dai certificati Express e Phoenix Autocallable fino a soluzioni a capitale protetto o con partecipazione d'indice. La capacità dell'istituto di gestire grandi volumi e di offrire prezzi competitivi nell'attività di hedging rende i certificati firmati Goldman Sachs tra i più scambiati e apprezzati dagli investitori istituzionali e retail avanzati.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Wall Street e investment banking</span>
+            <a href="https://www.goldman-sachs.it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Certificati Goldman Sachs ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 6. Intesa Sanpaolo -->
+        <article class="issuer-card" id="intesa-sanpaolo">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Intesa Sanpaolo</h3>
+                <span class="issuer-country">Italia • Primo Gruppo Bancario Italiano</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">BBB+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A3</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A-</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Intesa Sanpaolo, attraverso la Divisione IMI Corporate & Investment Banking, è il primo emittente italiano di prodotti strutturati per quota di mercato domestica. L'offerta di Intesa Sanpaolo è orientata storicamente verso una forte tutela del risparmiatore, con un'ampia gamma di certificati a Capitale Protetto (Equity Protection) e strutture Cash Collect a barriera discreta europea. La vicinanza geografica e commerciale, unita a coefficienti di capitale superiori ai requisiti regolamentari, rende Intesa un punto di riferimento per le reti di consulenza e i risparmiatori italiani.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">La grande banca italiana</span>
+            <a href="https://www.intesasanpaolo.prodottiequotazioni.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale IMI Certificati ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 7. Leonteq Securities -->
+        <article class="issuer-card" id="leonteq">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Leonteq Securities</h3>
+                <span class="issuer-country">Svizzera • Specialista Fintech in Prodotti Strutturati</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">BBB</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Leonteq è una società fintech svizzera specializzata nell'emissione e nella tecnologia per prodotti strutturati. Ha rivoluzionato il mercato italiano introducendo la flessibilità della propria piattaforma di white-labeling, che consente la cooperazione con partner bancari internazionali. Famosa per le strutture ad alto rendimento (Phoenix Memory, Low Barrier al 40-50% e Airbag), Leonteq offre una gamma vastissima di prodotti su panieri tematici di azioni globali. La qualità del Market Making è elevatissima grazie all'automatizzazione dei processi tecnologici di negoziazione.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Fintech svizzera dei prodotti strutturati</span>
+            <a href="https://it.leonteq.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Leonteq Italia ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 8. Marex Financial -->
+        <article class="issuer-card" id="marex">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Marex Financial</h3>
+                <span class="issuer-country">Regno Unito • Global Financial Services Platform</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">BBB-</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">BBB</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Marex Financial (appartenente al Gruppo Marex Group plc, quotato al Nasdaq) è una piattaforma globale di servizi finanziari con leadership nel brokering e nel market-making su materie prime e derivati. Negli ultimi anni Marex si è affermata con forza sul mercato italiano dei certificati (Marex Solutions), distinguendosi per l'innovazione delle strutture proposte: Phoenix Memory con barriere extra-profonde, certificati di rendimento a scadenza breve e cedole mensili. Il dinamismo delle sue quotazioni rende Marex uno degli attori più proattivi sul mercato secondario EuroTLX.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Broker globale dei mercati</span>
+            <a href="https://certificati.marex.com/it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Marex Certificati ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 9. Morgan Stanley -->
+        <article class="issuer-card" id="morgan-stanley">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Morgan Stanley</h3>
+                <span class="issuer-country">Stati Uniti • Investment Bank Globale</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Morgan Stanley è uno dei pilastri dell'investment banking e dell'asset management mondiale. Tramite Morgan Stanley B.V. e Morgan Stanley Finance LLC (con garanzia della capogruppo), emette sul mercato italiano una ricca offerta di certificati d'investimento, caratterizzata da coperture opzionarie sofisticate e strutture Phoenix Autocallable ad alta frequenza cedolare. L'eccezionale merito creditizio e la solidità dei bilanci rendono i prodotti strutturati Morgan Stanley una scelta privilegiata per gli investitori che mettono al primo posto la sicurezza dell'emittente.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Investment banking globale</span>
+            <a href="https://etp.morganstanley.com/it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Morgan Stanley ETP ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 10. Societe Generale -->
+        <article class="issuer-card" id="socgen">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Société Générale</h3>
+                <span class="issuer-country">Francia • Gruppo Bancario di Rilevanza Sistemica</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Société Générale è uno dei pionieri storici dei certificati e derivati cartolarizzati in Europa. Presente in Italia da oltre vent'anni, SocGen vanta una gamma prodotti completa che spazia dai certificati d'investimento (Cash Collect, Discount, Twin Win) agli strumenti d'effetto leva fino ai Benchmark esposti su indici ESG e mega-trend tecnologici. Rinomata per l'eccellenza nell'attività di ingegneria finanziaria quantitativa, garantisce un'elevata trasparenza operativa e la massima continuità nella quotazione dei prezzi sui mercati regolamentati.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Banca francese dell'innovazione finanziaria</span>
+            <a href="https://prodotti.societegenerale.it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Société Générale ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 11. UBS -->
+        <article class="issuer-card" id="ubs">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">UBS</h3>
+                <span class="issuer-country">Svizzera • Leader Mondiale nel Wealth Management</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">Aa2</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">AA</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            UBS Group AG, a seguito dell'integrazione di Credit Suisse, si consolida come il colosso assoluto del wealth management elvetico e globale. Sul mercato italiano dei certificati (tramite UBS AG), l'istituto propone sia soluzioni tradizionali a capitale condizionatamente protetto, sia certificati tematici e strutturazioni su materie prime e indici complessi. Il profilo di solvibilità eccezionale, unito a parametri patrimoniali (CET1) tra i più alti della categoria, posiziona UBS come un riferimento assoluto in termini di affidabilità del credito emittente.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Private banking svizzero globale</span>
+            <a href="https://keyinvest-it.ubs.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale UBS KeyInvest ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 12. UniCredit -->
+        <article class="issuer-card" id="unicredit">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">UniCredit</h3>
+                <span class="issuer-country">Italia • Gruppo Bancario Pan-Europeo</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">BBB+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">Baa1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">BBB+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            UniCredit Bank GmbH (già HypoVereinsbank) e UniCredit SpA costituiscono un pilastro fondamentale nel panorama italiano ed europeo dei certificati. L'offerta di UniCredit è caratterizzata dalla vastissima gamma di Cash Collect, Top Bonus, certificati con Airbag e soluzioni con Fixed Cash Collect (cedola incondizionata). L'istituto spicca anche per la leadership nell'emissione di Turbo e Benchmark. Grazie a una capillare presenza e al portale dedicato on-line, UniCredit assicura un costante flusso informativo e un'eccellente liquidità sul mercato SeDeX.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Banca italiana paneuropea</span>
+            <a href="https://www.onemarkets.it/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale UniCredit Investimenti ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 13. Vontobel -->
+        <article class="issuer-card" id="vontobel">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Vontobel</h3>
+                <span class="issuer-country">Svizzera • Casa di Investimento Specializzata</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A3</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Vontobel è un'affermata casa di investimento svizzera con sede a Zurigo, leader nell'innovazione tecnologica applicata ai prodotti finanziari. In Italia, Vontobel Financial Products è uno degli emittenti più dinamici e premiati, noto per l'introduzione di certificati Memory Cash Collect a barriere ultra-profonde (fino al 30-40%), strutture Fast Autocall e un'ampia scelta di certificati a leva (Leverage Certificates). La trasparenza, la velocità di esecuzione del Market Maker e la qualità del servizio clienti la rendono uno dei brand più popolari tra i risparmiatori italiani.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Specialista svizzero di certificati e leva</span>
+            <a href="https://markets.vontobel.com/it-it" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Certificati Vontobel ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 14. Natixis -->
+        <article class="issuer-card" id="natixis">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Natixis</h3>
+                <span class="issuer-country">Francia • Gruppo BPCE</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Natixis è la controllata di Corporate e Investment Banking del Gruppo BPCE, secondo gruppo bancario in Francia per quota di mercato. Specializzata nell'ingegneria finanziaria e nell'offrire soluzioni di investimento su misura, Natixis emette certificati (tramite Natixis Structured Issuance SA) diffusi sia tramite reti di distribuzione bancaria sia sul mercato aperto. L'istituto transalpino è apprezzato per le sue strutture di investimento sostenibile (ESG), certificati Equity Protection e Phoenix con meccanismi di autocall progressivi.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Investment banking francese</span>
+            <a href="https://natixis.groupebpce.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Natixis ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 15. BBVA -->
+        <article class="issuer-card" id="bbva">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">BBVA</h3>
+                <span class="issuer-country">Spagna • Gruppo Bancario Multinazionale</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A2</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A-</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Banco Bilbao Vizcaya Argentaria (BBVA) è uno dei principali gruppi bancari spagnoli ed europei, in forte espansione anche nel settore retail italiano. Nell'ambito dei prodotti strutturati e certificati d'investimento, BBVA (attraverso le sue entità dedicate alla strutturazione) propone emissioni Phoenix e Cash Collect legate sia al mercato azionario europeo che a quello americano. La solidità patrimoniale dell'istituto, unita a requisiti di capitale ampiamente superiori alle richieste BCE, garantisce un solido profilo di affidabilità creditizia.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Grande gruppo bancario spagnolo</span>
+            <a href="https://www.bbva.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale BBVA ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 16. Banco Santander -->
+        <article class="issuer-card" id="santander">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Banco Santander</h3>
+                <span class="issuer-country">Spagna • Primo Gruppo Bancario Ispanico</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A+</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A1</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">A+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Banco Santander è una delle più grandi istituzioni finanziarie al mondo per capitalizzazione di mercato, con una presenza dominante in Europa e nelle Americhe. Nel comparto dei certificati di investimento e delle obbligazioni strutturate, opera sia sul canale di collocamento diretto sia sul mercato secondario con veicoli dedicati (Santander Financial Products). Propone tipicamente strutture difensive a capitale protetto, oltre a certificati Express e Phoenix legati ai primari indici azionari mondiali.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Grande banca spagnola globale</span>
+            <a href="https://www.santander.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale Banco Santander ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- 17. BANQUE INTERNATIONALE A LUXEMBOURG (BIL) -->
+        <article class="issuer-card" id="bil">
+          <div class="issuer-header">
+            <div class="issuer-title-box">
+              <div>
+                <h3 class="issuer-name">Banque Internationale à Luxembourg (BIL)</h3>
+                <span class="issuer-country">Lussemburgo • Storico Istituto di Private Banking</span>
+              </div>
+            </div>
+            <div class="ratings-badge-group">
+              <div class="rating-pill"><span class="rating-agency">S&P:</span> <span class="rating-val">A-</span></div>
+              <div class="rating-pill"><span class="rating-agency">Moody's:</span> <span class="rating-val">A2</span></div>
+              <div class="rating-pill"><span class="rating-agency">Fitch:</span> <span class="rating-val">BBB+</span></div>
+            </div>
+          </div>
+          <div class="issuer-body">
+            Fondata nel 1856, la Banque Internationale à Luxembourg (BIL) è la più antica banca d'affari e di gestione patrimoniale del Granducato di Lussemburgo. Riconosciuta come istituzione finanziaria sistemica a livello locale, opera nell'emissione di prodotti strutturati e note d'investimento per la clientela private e istituzionale. La banca si distingue per la rigorosa gestione dei rischi e per la creazione di soluzioni d'investimento personalizzate a capitale protetto o condizionato, caratterizzate da una struttura creditizia trasparente e protetta.
+          </div>
+          <div class="issuer-footer">
+            <span class="badge badge-neutral">Private banking lussemburghese</span>
+            <a href="https://www.bil.com/" target="_blank" rel="noopener noreferrer" class="issuer-link">
+              Sito Ufficiale BIL Luxembourg ↗
+            </a>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- Criteri di Valutazione degli Emittenti -->
+      <section class="card">
+        <h2 class="card-title">I 3 Fattori Chiave per Valutare un Emittente</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">1. Merito Creditizio (Rating)</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+              Valutiamo emittenti con rating investment grade (dalla tripla BBB in su per le agenzie S&P, Moody's e Fitch), privilegiando istituti di rilevanza sistemica.
+            </p>
+          </div>
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">2. Qualità del Market Making</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+              Presenza continuativa sul book di negoziazione, spread bid-ask contenuti anche durante picchi di volatilità e velocità di reintegro delle quantità scambiate.
+            </p>
+          </div>
+          <div>
+            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">3. Trasparenza Documentale</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+              Chiarezza del KID e dei Final Terms, tempestività nella comunicazione del pagamento delle cedole e facilità di consultazione delle date di rilevazione.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Sidebar Sticky -->
+    <aside class="sticky-sidebar">
+      
+      <!-- Banner Telegram -->
+      <div class="sidebar-telegram-card">
+        <div class="telegram-header">
+          <div class="telegram-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="telegram-title">Canale Telegram</div>
+            <div class="telegram-handle">@pertefinanza</div>
+          </div>
+        </div>
+        <p class="telegram-desc">
+          Cerchi flussi cedolari e barriere profonde? Analizziamo i migliori certificati di investimento, anche sotto la pari. Resta aggiornato sulle date di stacco e sulle migliori occasioni del mercato secondario
+        </p>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
+          Unisciti alla Community ↗
+        </a>
+      </div>
+
+      <!-- Warning sui Rischi -->
+      <div class="sidebar-risk-card">
+        <div class="risk-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="risk-title">Avvertenza sui Rischi</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            I rating di credito forniti dalle agenzie sono meri giudizi sintetici e non costituiscono garanzia assoluta contro il default o la ristrutturazione del debito della banca.
+          </p>
+          <a href="disclaimer.html" class="risk-link">Informativa legale completa →</a>
+        </div>
+      </div>
+
+      <!-- Widget Certificati in Evidenza -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span>In Evidenza</span>
+        </div>
+        <div id="sidebar-featured-certs">
+          <!-- Caricato dinamicamente da app.js -->
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Footer Istituzionale -->
+  <footer class="site-footer"></footer>
+
+  <script src="js/data-certificates.js"></script>
+  <script src="js/data-issuers.js"></script>
+  <script src="js/data-glossary.js"></script>
+  <script src="js/data-faqs.js"></script>
+  <script src="js/data-underlyings.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

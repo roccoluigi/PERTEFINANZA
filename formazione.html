@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corso Completo & Guida Formativa sui Certificati | PERTEFINANZA</title>
+  <meta name="description" content="Masterclass formativa in 33 moduli sui certificati di investimento: dai concetti base all'analisi avanzata, all'operatività e all'economia dell'emittente.">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Stili integrativi coerenti con la struttura originale */
+    .module-card {
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-md, 8px);
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .module-card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+    .module-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--bg-body, #f8fafc);
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .module-number {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .module-title {
+      font-size: 1.35rem;
+      color: var(--secondary, #0f172a);
+      margin-top: 0.25rem;
+      font-weight: 700;
+    }
+    .module-content {
+      font-size: 0.95rem;
+      color: var(--text-body, #334155);
+      line-height: 1.75;
+    }
+    .module-content p {
+      margin-bottom: 1.1rem;
+    }
+    .module-content h4 {
+      font-size: 1.05rem;
+      color: var(--secondary, #0f172a);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .callout-box {
+      background: var(--bg-body, #f8fafc);
+      border-left: 4px solid var(--primary, #2563eb);
+      padding: 1.25rem;
+      border-radius: var(--radius-sm, 4px);
+      margin: 1.25rem 0;
+    }
+    .callout-box.success {
+      border-left-color: #16a34a;
+      background: #f0fdf4;
+    }
+    .callout-box.warning {
+      border-left-color: #d97706;
+      background: #fffbeb;
+    }
+    .grid-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.25rem 0;
+    }
+    @media (max-width: 768px) {
+      .grid-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+    .toc-container {
+      background: #ffffff;
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: var(--radius-md, 8px);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .toc-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--secondary, #0f172a);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+    .toc-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-body, #334155);
+      text-decoration: none;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+    .toc-item:hover {
+      background: var(--bg-body, #f8fafc);
+      color: var(--primary, #2563eb);
+    }
+    .toc-badge {
+      background: var(--bg-body, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      min-width: 24px;
+      text-align: center;
+    }
+    .level-header {
+      background: linear-gradient(135deg, var(--secondary, #0f172a) 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-md, 8px);
+      margin: 3rem 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .level-header h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superiore con Avviso Rapido -->
+  <aside class="top-bar" aria-label="Informazioni istituzionali e avvisi normativi">
+    <div class="container top-bar-inner">
+      <div class="top-bar-disclaimer">
+        <span class="badge-risk-mini">Avviso</span>
+        <span>Informazione didattica • I certificati sono strumenti complessi a capitale condizionatamente protetto</span>
+      </div>
+      <div class="top-bar-links">
+        <a href="disclaimer.html">Disclaimer e Note Legali</a>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer">Canale Telegram</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Intestazione Principale -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-logo" aria-label="PERTEFINANZA Home">
+        <div>
+          <div class="brand-name">PERTE<span>FINANZA</span></div>
+          <span class="brand-tag">Certificati & Strategie Indipendenti</span>
+        </div>
+      </a>
+
+      <nav class="main-nav" aria-label="Menu principale">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="certificati.html" class="nav-link">Certificati</a>
+        <a href="emittenti.html" class="nav-link">Emittenti</a>
+        <a href="formazione.html" class="nav-link active">Formazione</a>
+        <a href="glossario.html" class="nav-link">Glossario</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contatti.html" class="nav-link">Contatti</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+          </svg>
+          Telegram
+        </a>
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Apri menu di navigazione" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Mobile -->
+  <nav class="mobile-nav" id="mobile-nav-menu" aria-label="Menu navigazione mobile">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="certificati.html" class="mobile-nav-link">Catalogo Certificati</a>
+    <a href="emittenti.html" class="mobile-nav-link">Emittenti Bancari</a>
+    <a href="formazione.html" class="mobile-nav-link active">Guida & Formazione</a>
+    <a href="glossario.html" class="mobile-nav-link">Glossario Finanziario</a>
+    <a href="faq.html" class="mobile-nav-link">Domande Frequenti (FAQ)</a>
+    <a href="contatti.html" class="mobile-nav-link">Contatti & Supporto</a>
+    <a href="disclaimer.html" class="mobile-nav-link">Note Legali & Disclaimer</a>
+  </nav>
+
+  <!-- Header di Pagina -->
+  <section class="page-header">
+    <div class="container">
+      <h1 class="page-header-title">Masterclass Formativa sui Certificati di Investimento</h1>
+      <p class="page-header-desc">
+        Un percorso didattico completo strutturato in 33 moduli progressivi. Dai fondamenti dell'ingegneria finanziaria all'analisi dei documenti, all'operatività sul mercato e all'economia dell'emittente.
+      </p>
+    </div>
+  </section>
+
+  <!-- Layout con Sticky Sidebar -->
+  <div class="container page-layout">
+    <main class="main-content">
+      
+      <!-- Indice dei Contenuti (Table of Contents) -->
+      <nav class="toc-container" aria-label="Indice dei moduli">
+        <div class="toc-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          Indice del Percorso Formativo (33 Moduli)
+        </div>
+        <div class="toc-grid">
+          <a href="#mod1" class="toc-item"><span class="toc-badge">01</span> Cos'è un Certificato & Payoff</a>
+          <a href="#mod2" class="toc-item"><span class="toc-badge">02</span> Barriera Europea vs Continua</a>
+          <a href="#mod3" class="toc-item"><span class="toc-badge">03</span> Componenti: ZCB + Opzioni</a>
+          <a href="#mod4" class="toc-item"><span class="toc-badge">04</span> Lettura Critica del KID</a>
+          <a href="#mod5" class="toc-item"><span class="toc-badge">05</span> Tassonomia ACEPI</a>
+          <a href="#mod6" class="toc-item"><span class="toc-badge">06</span> Phoenix & Cash Collect</a>
+          <a href="#mod7" class="toc-item"><span class="toc-badge">07</span> Meccanismo Airbag</a>
+          <a href="#mod8" class="toc-item"><span class="toc-badge">08</span> Autocallable & Step-Down</a>
+          <a href="#mod9" class="toc-item"><span class="toc-badge">09</span> Bonus Cap & Benchmark</a>
+          <a href="#mod10" class="toc-item"><span class="toc-badge">10</span> Credit Linked & Protezione</a>
+          <a href="#mod11" class="toc-item"><span class="toc-badge">11</span> Fiscalità & Minusvalenze</a>
+          <a href="#mod12" class="toc-item"><span class="toc-badge">12</span> Volatilità & Greche</a>
+          <a href="#mod13" class="toc-item"><span class="toc-badge">13</span> Dividend Yield & Tassi</a>
+          <a href="#mod14" class="toc-item"><span class="toc-badge">14</span> Rischio Emittente & Bail-In</a>
+          <a href="#mod15" class="toc-item"><span class="toc-badge">15</span> Basket Worst-Of & Correlazione</a>
+          <a href="#mod16" class="toc-item"><span class="toc-badge">16</span> Mercato Secondario & Liquido</a>
+          <a href="#mod17" class="toc-item"><span class="toc-badge">17</span> Strategie Switch & Recovery</a>
+          <a href="#mod18" class="toc-item"><span class="toc-badge">18</span> Costruzione Portafoglio</a>
+          <a href="#mod19" class="toc-item"><span class="toc-badge">19</span> Opzioni Quanto & Rischio Cambio</a>
+          <a href="#mod20" class="toc-item"><span class="toc-badge">20</span> Checklist Ante-Investimento</a>
+          <a href="#mod21" class="toc-item"><span class="toc-badge">21</span> Lettura del Book e Spread</a>
+          <a href="#mod22" class="toc-item"><span class="toc-badge">22</span> Prezzo, Parità e Sotto la Pari</a>
+          <a href="#mod23" class="toc-item"><span class="toc-badge">23</span> Cedole, Rendimento e Scenari</a>
+          <a href="#mod24" class="toc-item"><span class="toc-badge">24</span> KID e Final Terms</a>
+          <a href="#mod25" class="toc-item"><span class="toc-badge">25</span> Eventi Straordinari e Rettifiche</a>
+          <a href="#mod26" class="toc-item"><span class="toc-badge">26</span> Rischio Emittente e Diversificazione</a>
+          <a href="#mod27" class="toc-item"><span class="toc-badge">27</span> Monitoraggio del Worst-Of</a>
+          <a href="#mod28" class="toc-item"><span class="toc-badge">28</span> Scadenze, Autocall e Reinvestimento</a>
+          <a href="#mod29" class="toc-item"><span class="toc-badge">29</span> Regole Operative e Registro</a>
+          <a href="#mod30" class="toc-item"><span class="toc-badge">30</span> Piano di Analisi Completo</a>
+          <a href="#mod31" class="toc-item"><span class="toc-badge">31</span> Economia dell'Emittente</a>
+          <a href="#mod32" class="toc-item"><span class="toc-badge">32</span> Architettura Economica del Capitale</a>
+          <a href="#mod33" class="toc-item"><span class="toc-badge">33</span> Dinamica dell'Autocall</a>
+        </div>
+      </nav>
+
+      <!-- SEZIONE 1: LIVELLO BASE -->
+      <div class="level-header">
+        <h2>Livello 1: Fondamenti e Architettura dei Certificati</h2>
+        <span class="badge badge-primary">Moduli 01 - 05</span>
+      </div>
+
+      <!-- Modulo 1 -->
+      <article class="module-card" id="mod1">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 1 • Fondamenti</span>
+          <span class="badge badge-primary">Livello Base</span>
+        </div>
+        <h3 class="module-title">Natura Giuridica, Payoff Non Lineare e Differenze con le Azioni Direct</h3>
+        <div class="module-content">
+          <p>
+            I certificati di investimento (Investment Certificates) sono strumenti finanziari derivati cartolarizzati rientranti nella categoria dei titoli di debito emessi da istituti bancari. A differenza delle azioni ordinari, che rappresentano quote di capitale di rischio di una società, o delle obbligazioni classiche, che promettono la restituzione del capitale nominale unitamente al pagamento di un interesse fisso o variabile, i certificati sono caratterizzati da un profilo di rendimento (payoff) asimmetrico e non lineare.
+          </p>
+          <p>
+            La caratteristica distintiva risiede nella capacità di disaccoppiare la performance del sottostante dal risultato dell'investimento. In un acquisto azionario diretto, il rendimento è strettamente proporzionale alla variazione di prezzo del titolo: un calo del 30% del valore dell'azione comporta una perdita del 30% del capitale. Al contrario, un certificato a capitale condizionatamente protetto permette di strutturare l'operazione affinché il capitale rimanga tutelato e vengano staccate cedole periodiche anche in presenza di un ribasso contenuto o moderato del mercato di riferimento.
+          </p>
+          <p>
+            Dal punto di vista giuridico, l'investitore che acquista un certificato diventa creditore dell'istituto emittente. Questo implica che il rendimento e il ricavato finale non dipendono esclusivamente dalla performance degli asset sottostanti (azioni, indici, materie prime, tassi o valute), ma anche dal merito creditizio della banca emittente. Nel contesto normativo europeo, regolato dalla direttiva MiFID II, i certificati sono classificati come prodotti finanziari complessi, richiedendo un'adeguata profilazione della clientela prima della loro sottoscrizione o negoziazione sul mercato secondario.
+          </p>
+          <div class="callout-box">
+            <strong>Principio Guida per l'Investitore:</strong> I certificati non offrono la titolarità del sottostante (non attribuiscono diritti di voto né diritto all'incasso diretto dei dividendi societari), ma impiegano i dividendi attesi per finanziare le componenti opzionarie che garantiscono le barriere di protezione e i flussi cedolari.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 2 -->
+      <article class="module-card" id="mod2">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 2 • Barriere</span>
+          <span class="badge badge-primary">Livello Base</span>
+        </div>
+        <h3 class="module-title">Tipologie di Barriera: Discreta (Europea) vs Continua (Americana)</h3>
+        <div class="module-content">
+          <p>
+            La barriera rappresenta il livello soglia espresso in percentuale rispetto al valore iniziale (Strike) del sottostante, al di sopra del quale il capitale dell'investitore rimane protetto da perdite di corso. La modalità di monitoraggio di tale soglia costituisce una delle variabili più critiche per la profilazione del rischio dello strumento.
+          </p>
+          <p>
+            Si distinguono fondamentalmente due tipologie di monitoraggio della barriera:
+          </p>
+          <div class="grid-two-col">
+            <div style="background: #ffffff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius-sm);">
+              <h4 style="margin-top:0; color: var(--secondary);">Barriera Discreta (Europea)</h4>
+              <p style="font-size: 0.875rem; margin-bottom: 0;">
+                Il livello della barriera viene osservato <strong>esclusivamente alla data di valutazione finale</strong> (a scadenza). L'andamento del sottostante durante tutta la vita del certificato è irrilevante ai fini della protezione del capitale. Se durante la durata del contratto il sottostante subisce un crollo del 60%, ma alla data di valutazione finale recupera chiudendo al di sopra della barriera (es. -35% con barriera al 60%), l'investitore riceve il rimborso del 100% del valore nominale oltre alle eventuali cedole dovute.
+              </p>
+            </div>
+            <div style="background: #ffffff; border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius-sm);">
+              <h4 style="margin-top:0; color: var(--secondary);">Barriera Continua (Americana)</h4>
+              <p style="font-size: 0.875rem; margin-bottom: 0;">
+                Il livello della barriera viene monitorato in modo <strong>continuativo durante l'intero orario di negoziazione</strong> dei mercati dal giorno di emissione fino a scadenza. È sufficiente che il prezzo del sottostante tocchi o superi al ribasso la barriera anche soltanto per un istante (intraday) per far decadere definitivamente la garanzia condizionata del capitale. Da quel momento lo strumento si trasforma irrevocabilmente in una replica lineare del sottostante.
+              </p>
+            </div>
+          </div>
+          <p>
+            L'adozione di una barriera continua offre un rendimento cedolare potenziale più elevato a parità di altre condizioni, in quanto l'emittente si assume un rischio inferiore facendosi vendere dall'investitore un'opzione knock-out più esposta alle fluttuazioni di mercato. Per gli investitori con profilo di rischio conservativo o moderato, le strutture dotate di barriera discreta europea risultano nettamente preferibili per via della maggiore resilienza ai picchi di volatilità temporanei.
+          </p>
+          <div class="callout-box warning">
+            <strong>Nota operativa:</strong> Non è sufficiente conoscere la percentuale della barriera: verifica sempre se viene osservata a scadenza o in modo continuo e quale sottostante determina il risultato.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 3 -->
+      <article class="module-card" id="mod3">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 3 • Ingegneria</span>
+          <span class="badge badge-primary">Livello Base</span>
+        </div>
+        <h3 class="module-title">Anatomia Finanziaria: Zero Coupon Bond e Combinazioni Opzionarie</h3>
+        <div class="module-content">
+          <p>
+            Dal punto di vista dell'ingegneria finanziaria, un certificato di investimento non è un blocco monolitico, bensì una combinazione strutturata di due componenti primarie: una componente obbligazionaria pura (Zero Coupon Bond o ZCB) e un pacchetto di contratti opzionari derivati OTC (Over The Counter).
+          </p>
+          <p>
+            La scomposizione teorica della struttura evidenzia la seguente dinamica:
+          </p>
+          <ul>
+            <li><strong>Zero Coupon Bond (ZCB):</strong> L'emittente impiega una quota maggioritaria del capitale raccolto (ad esempio 85-95 euro su un valore nominale di 100 euro) per acquistare un titolo a sconto che garantisca alla scadenza il rimborso del capitale originario, tenuto conto dei tassi di interesse correnti e del proprio spread di credito.</li>
+            <li><strong>Portafoglio Opzionario:</strong> Il capitale residuo (5-15 euro) viene utilizzato dall'ufficio di strutturazione per negoziare combinazioni opzionarie (call, put, digital, barrier options) necessarie a costruire il payoff desiderato. Per offrire rendimenti cedolari più elevati, la struttura prevede tipicamente che l'investitore "venda" contestualmente un'opzione put condizionata (Down-and-In Put) all'emittente.</li>
+          </ul>
+          <div class="callout-box warning">
+            <strong>Nota sul pricing:</strong> Il valore della componente ZCB non viene calcolato utilizzando soltanto il tasso privo di rischio (<em>R<sub>f</sub></em>), ma incorpora anche lo spread di finanziamento dell'emittente, legato al suo merito creditizio. In contesti di stress finanziario, l'ampliamento dello spread può ridurre il valore della componente obbligazionaria e incidere sul prezzo del certificato anche a parità di valore dei sottostanti.
+          </div>
+          <p>
+            I dividendi attesi rilasciati dai titoli azionari sottostanti durante la vita dello strumento non vengono distribuiti all'investitore, ma vengono trattenuti dall'emittente e riutilizzati per finanziare l'acquisto dei premi delle opzioni e per l'inserimento di caratteristiche protettive accessorie (come Airbag, Memory o Step-Down). Compilare correttamente il bilancio tra rendimento da dividendi e costo delle opzioni costituisce l'elemento cardine che determina l'attrattività di una nuova emissione.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 4 -->
+      <article class="module-card" id="mod4">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 4 • Trasparenza</span>
+          <span class="badge badge-primary">Livello Base</span>
+        </div>
+        <h3 class="module-title">Analisi Crritica del KID (Key Information Document) e Scenari di Performance</h3>
+        <div class="module-content">
+          <p>
+            In ottemperanza al Regolamento Europeo PRIIPs (Packaged Retail and Insurance-based Investment Products), ogni certificato offerto agli investitori retail deve essere corredato da un documento informativo sintetico di tre pagine denominato KID (Key Information Document). La lettura approfondita di questo documento è imprescindibile prima di qualsiasi decisione di allocazione.
+          </p>
+          <p>
+            I quattro pilastri chiave da analizzare all'interno del KID sono:
+          </p>
+          <ol>
+            <li><strong>Indicatore Sintetico di Rischio (SRI):</strong> Una scala numerica da 1 a 7 che combina il rischio di mercato e il rischio di credito. La maggior parte dei certificati d'investimento a capitale condizionatamente protetto si posiziona nelle classi di rischio 4 o 5.</li>
+            <li><strong>Scenari di Performance:</strong> Vengono prospettati quattro scenari teorici a scadenza (Stress, Sfavorevole, Moderato, Favorevole). L'attenzione dell'investitore dev'essere focalizzata prioritariamente sullo scenario di stress, che mostra l'impatto sul capitale in caso di crolli repentini di mercato.</li>
+            <li><strong>Trasparenza dei Costi (RIY - Reduction in Yield):</strong> Indica l'impatto totale dei costi sul rendimento. La tabella include i costi d'ingresso (strutturazione e collocamento, solitamente compresi tra l'1% e il 3.5% del nominale), i costi correnti e gli eventuali costi di uscita anticipata.</li>
+            <li><strong>Orizzonte Temporale Raccomandato (RHP):</strong> Definisce la durata contrattuale prevista dello strumento, la quale deve essere coerente con gli obiettivi di pianificazione finanziaria del sottoscrittore.</li>
+          </ol>
+          <div class="callout-box warning">
+            <strong>Regola di lettura:</strong> Il KID è una sintesi regolamentare, non sostituisce i Final Terms e non trasforma uno scenario illustrativo in una previsione di rendimento.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 5 -->
+      <article class="module-card" id="mod5">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 5 • Tassonomia</span>
+          <span class="badge badge-primary">Livello Base</span>
+        </div>
+        <h3 class="module-title">Classificazione Tassonomica ACEPI e Macro-Famiglie di Certificati</h3>
+        <div class="module-content">
+          <p>
+            Per orientarsi tra le migliaia di strumenti quotati sul mercato italiano, l'Associazione Italiana Certificati e Prodotti di Investimento (ACEPI) ha introdotto una classificazione standardizzata che suddivide i certificati in quattro macro-categorie in base al livello di protezione del capitale offerto:
+          </p>
+          <ul>
+            <li><strong>Capitale Protetto / Garantito:</strong> Garanzia di restituzione del 100% del capitale nominale a scadenza (o di una quota prefissata, es. 90%), indipendentemente dall'andamento del sottostante, unitamente alla possibilità di partecipare alla crescita dell'asset.</li>
+            <li><strong>Capitale Condizionatamente Protetto:</strong> Restituzione del capitale nominale condizionata al fatto che il sottostante, alla scadenza o durante la vita del titolo, non violi un livello barriera prestabilito. Rientrano in questo gruppo le tipologie più diffuse (Cash Collect, Phoenix, Express, Bonus Cap, Twin Win).</li>
+            <li><strong>Capitale Non Protetto (Leverage & Benchmark):</strong> Strumenti che replicano in modo lineare o con effetto leva (bull/bear) le variazioni del sottostante, privi di meccanismi di protezione o paracadute (es. Certificate Benchmark, Turbo, Mini Futures).</li>
+          </p>
+          <div class="callout-box warning">
+            <strong>Nota di Trasparenza:</strong> La dicitura "Capitale Protetto" si riferisce sempre al rischio di mercato del sottostante e non annulla il rischio di credito connesso all'emittente (rischio di insolvenza o bail-in).
+          </div>
+        </div>
+      </article>
+
+      <!-- SEZIONE 2: LIVELLO INTERMEDIO -->
+      <div class="level-header">
+        <h2>Livello 2: Strutture di Mercato e Meccanismi Accessori</h2>
+        <span class="badge badge-primary">Moduli 06 - 10</span>
+      </div>
+
+      <!-- Modulo 6 -->
+      <article class="module-card" id="mod6">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 6 • Strutture</span>
+          <span class="badge badge-primary">Livello Intermedio</span>
+        </div>
+        <h3 class="module-title">Certificati Phoenix e Cash Collect: Flussi Cedolari ed Effetto Memoria</h3>
+        <div class="module-content">
+          <p>
+            I certificati appartenenti alle famiglie <strong>Cash Collect</strong> e <strong>Phoenix</strong> rappresentano le strutture più diffuse sul mercato retail italiano grazie alla loro capacità di generare flussi di cassa periodici (mensili, trimestrali, semestrali) in condizioni di mercato sia rialziste, sia stazionarie o moderatamente ribassiste.
+          </p>
+          <p>
+            La struttura operativa si basa sul confronto, alle date di valutazione intermedie, tra il prezzo del sottostante e la <strong>Barriera Cedolare</strong> (soglia di stacco della cedola, che può essere pari o inferiore alla barriera di protezione del capitale). Se il sottostante quota ad un livello pari o superiore alla barriera cedolare, viene distribuito l'importo prefissato.
+          </p>
+          <h4>L'Effetto Memoria (Memory Effect)</h4>
+          <p>
+            L'integrazione della clausola <strong>Memory</strong> trasforma la cedola temporaneamente non distribuita in un diritto cumulabile. Qualora a una determinata data di valutazione il sottostante si trovi al di sotto della barriera cedolare, la cedola non viene definitivamente persa, ma viene accantonata in memoria. Nel momento in cui, ad una successiva data di rilevazione, il sottostante recupera il livello barriera, l'investitore incassa la cedola del periodo corrente unitamente a tutte quelle precedentemente memorizzate e non distribuite.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 7 -->
+      <article class="module-card" id="mod7">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 7 • Protezione Avanzata</span>
+          <span class="badge badge-primary">Livello Intermedio</span>
+        </div>
+        <h3 class="module-title">Il Meccanismo Airbag (Low Strike): Riduzione del Rischio di Coda</h3>
+        <div class="module-content">
+          <p>
+            La funzione <strong>Airbag</strong> (o struttura Low Strike) è una variante protettiva progettata per mitigare le perdite in caso di eventi estremi di mercato e rottura della barriera finale a scadenza.
+          </p>
+          <p>
+            In un certificato tradizionale senza Airbag, in caso di rottura della barriera a scadenza (es. barriera al 60% e sottostante che chiude a -50% dallo Strike), l'investitore subisce una perdita calcolata a partire dal valore iniziale dello Strike, ottenendo un rimborso pari al 50% del valore nominale (ossia 50 euro su 100 euro investiti).
+          </p>
+          <p>
+            In una struttura <strong>Airbag</strong>, il calcolo della prestazione a scadenza in caso di violazione della barriera non parte dal valore di Strike iniziale, ma dal livello della Barriera stessa. Matematicamente, la perdita viene ricalcolata applicando il <strong>Fattore Airbag</strong>:
+          </p>
+          <div class="callout-box success">
+            <strong>Formula del Rimborso con Airbag:</strong><br>
+            <code>Rimborso = Valore Nominale × (Prezzo Finale / Barriera)</code>
+            <br><br>
+            <em>Esempio pratico:</em> Con Strike 100€, Barriera Airbag al 60% e prezzo finale del sottostante a 50€ (-50% dal valore iniziale):<br>
+            Rimborso = 100€ × (50 / 60) = <strong>83,33 euro</strong>. A fronte di un calo del sottostante del 50%, la perdita sul capitale si riduce a soli 16,67 euro anziché 50 euro.
+          </div>
+          <p>
+            <strong>Architettura opzionaria dell'Airbag:</strong> In termini semplificati, la struttura Low Strike utilizza una protezione il cui livello di riferimento coincide con la barriera, anziché con lo strike iniziale del 100%. L'investitore rinuncia in genere a una parte del rendimento potenziale per finanziare questa caratteristica, che sposta la base di calcolo della perdita a scadenza senza eliminare il rischio di capitale o quello dell'emittente.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 8 -->
+      <article class="module-card" id="mod8">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 8 • Autocallability</span>
+          <span class="badge badge-primary">Livello Intermedio</span>
+        </div>
+        <h3 class="module-title">Rimborso Anticipato Automatico (Autocall) e Meccanismo Step-Down</h3>
+        <div class="module-content">
+          <p>
+            La quasi totalità dei certificati Phoenix e Cash Collect prevede la facoltà di rimborso anticipato automatico (<strong>Autocallability</strong>). Alle date di rilevazione predeterminate (solitamente a partire dal 3° o 6° mese dalla quotazione), se il sottostante si trova a un livello pari o superiore alla soglia di Autocall, lo strumento scade anticipatamente rimborsando il 100% del valore nominale più la cedola del periodo e le eventuali cedole arretrate in memoria.
+          </p>
+          <p>
+            Per incrementare la probabilità di rimborso anticipato anche in contesti di mercato moderatamente ribassisti, la finanza strutturata applica il meccanismo <strong>Step-Down</strong>.
+          </p>
+          <p>
+            Con la clausola Step-Down, la soglia richiesta per il rimborso anticipato non rimane fissa al 100% dello Strike iniziale per tutta la durata del titolo, ma decresce progressivamente nel tempo (ad esempio riducendosi dell'1% o del 5% ad ogni finestra di valutazione, passando dal 100% al 95%, 90%, 85%, fino ad allinearsi alla barriera finale). Ciò facilita lo smobilizzo della posizione in guadagno e riduce l'esposizione temporale al rischio di mercato.
+          </p>
+          <div class="callout-box success">
+            <strong>Schema essenziale:</strong><br>
+            <code>Autocall = tutti i requisiti rispettati alla data di osservazione</code><br>
+            Se il trigger non viene raggiunto, il certificato prosegue fino alla data successiva prevista dal contratto.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 9 -->
+      <article class="module-card" id="mod9">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 9 • Strutture Alternative</span>
+          <span class="badge badge-primary">Livello Intermedio</span>
+        </div>
+        <h3 class="module-title">Certificati Bonus Cap, Twin Win e Benchmark Lineari</h3>
+        <div class="module-content">
+          <p>
+            Oltre ai prodotti a cedola periodica, esistono categorie di certificati concepite per strategie di investimento differenti:
+          </p>
+          <ul>
+            <li><strong>Bonus Cap:</strong> Prodotti che non distribuiscono cedole periodiche ma riconoscono un premio finale concentrato a scadenza (Bonus) a condizione che il sottostante non abbia mai toccato la barriera durante la vita del titolo (in caso di barriera continua) o non la violi a scadenza (in caso di barriera discreta). Il rendimento massimo è limitato da un tetto prefissato (Cap).</li>
+            <li><strong>Twin Win:</strong> Strumenti che permettono all'investitore di guadagnare sia in caso di rialzo sia in caso di ribasso del sottostante, a condizione che durante la vita del certificato la barriera non venga mai violata. Se il sottostante perde il 20% ma resta sopra barriera, il certificato trasforma il ribasso in un guadagno positivo del 20%.</li>
+            <li><strong>Benchmark (Trackers):</strong> Certificati senza protezione del capitale che replicano in modo puro e lineare la performance dell'asset sottostante. Risultano particolarmente utili per assumere esposizioni su indici tematici, materie prime o mercati difficilmente accessibili direttamente, con costi di gestione estremamente contenuti e senza scadenze operative (Open-End).</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Modulo 10 -->
+      <article class="module-card" id="mod10">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 10 • Reddito Fisso e Credito</span>
+          <span class="badge badge-primary">Livello Intermedio</span>
+        </div>
+        <h3 class="module-title">Credit Linked Notes (CLN) e Certificati a Capitale Protetto</h3>
+        <div class="module-content">
+          <p>
+            I <strong>Credit Linked Notes (CLN)</strong> sono certificati il cui rendimento e il cui rimborso del capitale non sono legati ad asset azionari o indici di borsa, bensì al merito creditizio di un'entità di riferimento (Reference Entity), quale uno Stato sovrano o una primaria società corporate. Il certificato stacca cedole periodiche elevate ma espone l'investitore al rischio di evento di credito (Credit Event: default, ristrutturazione del debito, mancato pagamento) dell'entità sottostante.
+          </p>
+          <p>
+            I <strong>Certificati a Capitale Garantito o Protetto</strong> (es. Equity Protection) offrono invece una garanzia formale di restituzione del capitale (es. 100% o 90% del valore nominale) alla data di scadenza. Essi combinano un'obbligazione zero-coupon con opzioni Call d'acquisto. Sono progettati per investitori con profilo di rischio prudente che desiderano partecipare ai rialzi dei mercati azionari limitando o azzerando il rischio di perdita sul capitale investito.
+          </p>
+        </div>
+      </article>
+
+      <!-- SEZIONE 3: LIVELLO AVANZATO -->
+      <div class="level-header">
+        <h2>Livello 3: Fiscalità, Modellistica e Analisi del Rischio</h2>
+        <span class="badge badge-primary">Moduli 11 - 15</span>
+      </div>
+
+      <!-- Modulo 11 -->
+      <article class="module-card" id="mod11">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 11 • Fisco & Plusvalenze</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Efficienza Fiscale: Compensazione Immediata e Differita delle Minusvalenze</h3>
+        <div class="module-content">
+          <p>
+            Nel sistema fiscale italiano (regolato dal TUIR), i redditi derivanti da strumenti finanziari sono suddivisi in due categorie rigide: <strong>Redditi di Capitale</strong> e <strong>Redditi Diversi</strong>.
+          </p>
+          <p>
+            Le plusvalenze (capital gain) e le cedole prodotte dai certificati di investimento sono normativamente classificate come <strong>Redditi Diversi</strong>. Questa caratteristica attribuisce ai certificati una straordinaria efficienza fiscale: a differenza dei dividendi azionari, degli interessi obbligazionari o dei proventi da ETF/Fondi (che sono Redditi di Capitale e non possono essere usati per compensare le perdite), <strong>i flussi generati dai certificati possono essere integralmente compensati con le minusvalenze pregresse accumulate nello zainetto fiscale</strong>.
+          </p>
+          <div class="callout-box success">
+            <strong>Regola dei 4 Anni e Strategie di Roll-Over:</strong><br>
+            Le minusvalenze possono essere recuperate nell'anno in cui si sono verificate e nei <strong>quattro anni solari successivi</strong>. Utilizzando certificati a stacco cedolare consistente o certificati maxicoupon (Maxi Cash Collect), l'investitore può generare plusvalenze ad hoc per assorbire le minusvalenze in scadenza, evitando che il credito fiscale vada definitivamente perduto.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 12 -->
+      <article class="module-card" id="mod12">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 12 • Sensibilità & Greche</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Il Ruolo della Volatilità Implicita e le Greche dei Certificati</h3>
+        <div class="module-content">
+          <p>
+            Trattandosi di opzioni impacchettate, la valutazione del prezzo di un certificato sul mercato secondario risponde alle variazioni dei parametri quantitativi di pricing (Greche):
+          </p>
+          <ul>
+            <li><strong>Delta:</strong> Misura la sensibilità del prezzo del certificato rispetto alle variazioni di prezzo del sottostante. Un certificato ben distante dalla barriera ha un Delta basso (poco sensibile alle oscillazioni di breve), mentre un certificato vicino alla barriera acquisisce un Delta prossimo a 1 (comportandosi quasi come il sottostante).</li>
+            <li><strong>Gamma e rischio di coda:</strong> Il Gamma misura quanto rapidamente cambia il Delta. In prossimità della barriera e vicino alla scadenza può diventare molto elevato: anche movimenti contenuti del sottostante possono produrre variazioni improvvise del Delta e del prezzo del certificato, rendendo instabili le stime di breve periodo.</li>
+            <li><strong>Vanna:</strong> Misura la sensibilità del Delta alle variazioni della volatilità, oppure la sensibilità del Vega al prezzo del sottostante. È particolarmente utile per comprendere perché prezzo, volatilità e distanza dalla barriera possono influenzarsi contemporaneamente durante una fase di stress.</li>
+            <li><strong>Vega e Volatilità Implicita:</strong> Esprime la variazione di prezzo al variare della volatilità del mercato. Poiché l'investitore in certificati con barriera si trova implicitamente "venditore di volatilità" (short volatility), un aumento improvviso della volatilità tende a far diminuire il valore del certificato sul mercato secondario, mentre una compressione della volatilità ne incrementa il prezzo.</li>
+            <li><strong>Theta (Decadimento Temporale):</strong> Misura l'effetto del trascorrere del tempo. A parità di prezzo del sottostante, il passare del tempo gioca a favore dell'investitore (Theta positivo), incrementando la probabilità che il titolo arrivi a scadenza sopra la barriera o che mantenga i requisiti per l'autocall.</li>
+          </ul>
+          <div class="callout-box warning">
+            <strong>Attenzione:</strong> Le greche sono sensibilità di modello e non sono garanzie di comportamento futuro. Vanno interpretate insieme a barriera, durata, correlazione e rischio emittente.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 13 -->
+      <article class="module-card" id="mod13">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 13 • Tassi & Dividendi</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Impatto del Dividend Yield e della Struttura dei Tassi di Interesse</h3>
+        <div class="module-content">
+          <p>
+            I dividendi stimati e i tassi di interesse privi di rischio (Risk-Free Rates) costituiscono la materia prima finanziaria necessaria alla costruzione dei certificati:
+          </p>
+          <p>
+            <strong>L'impatto dei Dividendi (Dividend Yield):</strong> Titoli azionari con un alto rendimento da dividendo consentono agli emittenti di raccogliere maggiori proventi dall'incasso delle cedole societarie staccate. Tali flussi vengono impiegati per offrire barriere di protezione più profonde o rendimenti cedolari più ricchi. Di contro, se una società riduce o taglia improvvisamente il dividendo distribuito rispetto alle attese di mercato, il prezzo del certificato sul mercato secondario subisce una svalutazione.
+          </p>
+          <p>
+            <strong>L'effetto dei Tassi di Interesse (Rho):</strong> Un contesto di tassi di interesse elevati riduce il costo di acquisto della componente obbligazionaria Zero Coupon Bond (ZCB). Ciò consente agli strutturatori di disporre di maggiore capitale residuo per la componente opzionaria, traducendosi in rendimenti cedolari offerti complessivamente superiori a parità di rischio.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 14 -->
+      <article class="module-card" id="mod14">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 14 • Rischio Emittente</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Rischio Emittente, Merito Creditizio, CDS e Normativa Bail-In</h3>
+        <div class="module-content">
+          <p>
+            A differenza di quanto avviene per i fondi comuni di investimento o gli ETF (i cui patrimoni sono separati da quelli della società di gestione), i certificati sono titoli di debito emessi direttamente da un istituto bancario. Ciò comporta l'assunzione diretta del <strong>Rischio Emittente (Credit Risk)</strong>.
+          </p>
+          <p>
+            In caso di insolvenza o dissesto finanziario della banca emittente, il certificato è soggetto alla direttiva europea BRRD (Bank Recovery and Resolution Directive) e alle procedure di <strong>Bail-In</strong>. L'investitore corre il rischio di ristrutturazione del debito, svalutazione del valore nominale o conversione del titolo in azioni della banca insolvente, indipendentemente dall'andamento positivo dei titoli sottostanti.
+          </p>
+          <p>
+            Per valutare il rischio di credito è fondamentale monitorare il rating assegnato dalle agenzie internazionali (Fitch, Moody's, S&P) e lo spread dei <strong>Credit Default Swap (CDS)</strong> dell'emittente. È buona prassi di portafoglio diversificare l'esposizione tra molteplici emittenti bancari primari.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 15 -->
+      <article class="module-card" id="mod15">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 15 • Basket Multiplo</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Paniere di Sottostanti: Meccanismo Worst-Of e Matrice di Correlazione</h3>
+        <div class="module-content">
+          <p>
+            La maggior parte dei certificati d'investimento ad alto rendimento non è legata a un singolo titolo, ma a un paniere composto da tre o quattro azioni. La quasi totalità di queste strutture adotta la clausola <strong>Worst-Of (WO)</strong>: il rendimento, l'erogazione delle cedole e la protezione del capitale alla scadenza sono determinati esclusivamente dal titolo che registra la <strong>peggiore performance percentuale</strong> all'interno del paniere.
+          </p>
+          <p>
+            Il fattore chiave da valutare nei panieri Worst-Of è la <strong>Correlazione (Correlation)</strong> tra i titoli componenti:
+          </p>
+          <ul>
+            <li><strong>Correlazione Elevata (+1):</strong> Titoli appartenenti allo stesso settore o area geografica che tendono a muoversi nella medesima direzione. Il rischio complessivo del paniere è moderato.</li>
+            <li><strong>Correlazione Bassa o Negativa (0 / -1):</strong> Titoli slegati tra loro. In questo caso la probabilità che *almeno uno* dei titoli del paniere subisca un crollo e violi la barriera aumenta considerevolmente. Per compensare questo rischio maggiore, l'emittente offre cedole decisamente più elevate.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- SEZIONE 4: LIVELLO OPERATIVO E STRATEGICO -->
+      <div class="level-header">
+        <h2>Livello 4: Operatività di Mercato e Gestione di Portafoglio</h2>
+        <span class="badge badge-primary">Moduli 16 - 20</span>
+      </div>
+
+      <!-- Modulo 16 -->
+      <article class="module-card" id="mod16">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 16 • Operatività</span>
+          <span class="badge badge-primary">Livello Operativo</span>
+        </div>
+        <h3 class="module-title">Funzionamento del Mercato Secondario (SeDeX e EuroTLX) e Ruolo del Market Maker</h3>
+        <div class="module-content">
+          <p>
+            I certificati sono negoziati in Italia su mercati regolamentati o sistemi multilaterali di negoziazione (MTF), principalmente il <strong>SeDeX</strong> (gestito da Borsa Italiana) e <strong>EuroTLX</strong>. Ciò garantisce trasparenza nei prezzi e liquidità degli scambi.
+          </p>
+          <p>
+            La liquidità del mercato è supportata dalla figura istituzionale del <strong>Market Maker</strong> o Liquidity Provider (solitamente la stessa banca emittente o un intermediario specializzato). Gli obblighi di quotazione prevedono in genere prezzi Bid e Ask, quantità minime e spread massimi, ma si applicano secondo il regolamento del mercato, il segmento e le condizioni previste per lo specifico strumento.
+          </p>
+
+          <p>
+            Parametri operativi da monitorare sul book di negoziazione:
+          </p>
+          <ul>
+            <li><strong>Spread Denaro-Lettera (Bid-Ask Spread):</strong> La differenza tra il prezzo di acquisto e di vendita esposto dal Market Maker. Uno spread stretto (es. 0,5% - 1%) indica ottima liquidità ed efficienza.</li>
+            <li><strong>Condizione di Bid-Only:</strong> Si verifica quando il Market Maker ha esaurito la quantità di certificati emessi o decide di quotare esclusivamente in acquisto. In questa situazione l'investitore può vendere il titolo al Market Maker ma non può acquistarlo da quest'ultimo (gli unici incroci in acquisto avvengono tramite lettera di altri investitori retail).</li>
+          </ul>
+          <div class="callout-box warning">
+            <strong>Eccezioni agli obblighi di quotazione:</strong> In momenti di estrema volatilità sistemica, durante annunci macroeconomici o in caso di disfunzioni del mercato, il regolamento applicabile può prevedere sospensioni temporanee, condizioni speciali o limiti diversi per il Liquidity Provider. In alcune fasi può essere utilizzato lo stato di <em>Fast Market</em>, con spread più ampi rispetto alle condizioni ordinarie. La liquidità eseguibile può quindi contrarsi o interrompersi temporaneamente proprio nelle fasi di maggiore pressione.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 17 -->
+      <article class="module-card" id="mod17">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 17 • Gestione Crisi</span>
+          <span class="badge badge-primary">Livello Operativo</span>
+        </div>
+        <h3 class="module-title">Strategie di Switch e Recovery per Gestire Posizioni in Incastro</h3>
+        <div class="module-content">
+          <p>
+            Quando un sottostante subisce un forte ribasso e si avvicina pericolosamente alla barriera (o l'ha infranta), il valore di mercato del certificato cade a picco. In tali contesti è inefficace rimanere passivi; è necessario valutare una <strong>Strategia di Switch (Recovery)</strong>.
+          </p>
+          <p>
+            Lo Switch consiste nel vendere il certificato compromesso o in sofferenza prima della scadenza per riposizionare la liquidità residua su un nuovo certificato dotatosi di caratteristiche strutturali più efficienti (ad esempio una struttura con <strong>Airbag</strong>, una barriera più profonda o una componente cedolare più ricca).
+          </p>
+
+          <p>
+            L'obiettivo dello Switch non è negare la perdita maturata, ma ottimizzare le probabilità matematiche di recupero del capitale investito nell'arco del tempo residuo, sfruttando l'effetto memoria o barriere più conservative rispetto allo strumento originario.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 18 -->
+      <article class="module-card" id="mod18">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 18 • Portafoglio</span>
+          <span class="badge badge-primary">Livello Operativo</span>
+        </div>
+        <h3 class="module-title">Integrazione dei Certificati in Portafoglio e Asset Allocation</h3>
+        <div class="module-content">
+          <p>
+            I certificati di investimento non devono essere intesi come sostituti integrali dell'asset allocation azionaria od obbligazionaria di un risparmiatore, ma come componenti tattiche in grado di migliorare il profilo rischio/rendimento complessivo del portafoglio.
+          </p>
+          <p>
+            Linee guida operative per una corretta costruzione del portafoglio in certificati:
+          </p>
+          <ul>
+            <li><strong>Core-Satellite Approach:</strong> Destinare la quota Core (prevalente) a strumenti tradizionali diversificati (ETF, Titoli di Stato) e la quota Satellite (10% - 30% del patrimonio) a un paniere diversificato di certificati di investimento.</li>
+            <li><strong>Diversificazione per Emittente:</strong> Non concentrare il capitale su un unico istituto bancario per evitare l'accumulo di rischio creditizio.</li>
+            <li><strong>Diversificazione per Sottostante e Settore:</strong> Bilanciare l'esposizione tra settori difensivi (utilities, healthcare, bancari tradizionali) ed evitare di sovrapporre i medesimi titoli Worst-Of su differenti certificati in portafoglio.</li>
+            <li><strong>Scaglionamento delle Scadenze (Laddering):</strong> Distribuire le scadenze dei certificati su diversi orizzonti temporali per garantire un flusso di cassa costante e facilitare il re-investimento nei vari cicli di mercato.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Modulo 19 -->
+      <article class="module-card" id="mod19">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 19 • Valute</span>
+          <span class="badge badge-primary">Livello Operativo</span>
+        </div>
+        <h3 class="module-title">Certificati con Sottostanti in Valuta Estera e la Copertura Opzione Quanto</h3>
+        <div class="module-content">
+          <p>
+            Molti certificati negoziati sui mercati italiani hanno come titoli sottostanti azioni quotate in valuta estera (es. dollari statunitensi, franchi svizzeri, yen giapponesi). Quando si investe in questi prodotti è fondamentale comprendere l'impatto del rischio di cambio.
+          </p>
+          <p>
+            La quasi totalità dei certificati strutturati per il pubblico retail include la clausola <strong>Quanto</strong>:
+          </p>
+
+          <p>
+            L'opzione <strong>Quanto (Quantity Adjusted Option)</strong> sterilizza completamente il rischio di cambio EUR/USD o verso altre valute. Tutte le rilevazioni di prezzo, i livelli di Strike, le barriere e soprattutto il pagamento delle cedole ed il rimborso del capitale finale avvengono espresso direttamente in <strong>Euro</strong> in rapporto 1:1, indipendentemente dalle oscillazioni del mercato valutario. Se la clausola Quanto *non* è presente, l'investitore assume l'ulteriore rischio di svalutazione della valuta estera del sottostante.
+          </p>
+        </div>
+      </article>
+
+      <!-- Modulo 20 -->
+      <article class="module-card" id="mod20">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 20 • Check-List Finale</span>
+          <span class="badge badge-primary">Livello Operativo</span>
+        </div>
+        <h3 class="module-title">Check-List Operativa in 10 Punti Prima della Sottoscrizione</h3>
+        <div class="module-content">
+          <p>
+            Prima di inserire un ordine di acquisto su un certificato di investimento, la seguente check-list sintetica consente di verificare l'adeguatezza dell'operazione:
+          </p>
+          <ol>
+            <li><strong>Rating dell'Emittente:</strong> L'istituto bancario emittente possiede un profilo di credito solido (Investment Grade)?</li>
+            <li><strong>Tipologia di Barriera:</strong> La barriera di protezione è di tipo Discreto (Europea) o Continuo (Americana)?</li>
+            <li><strong>Distanza dalla Barriera:</strong> Qual è il margine di sicurezza percentuale del titolo Worst-Of rispetto alla barriera?</li>
+            <li><strong>Frequenza e Condizioni Cedola:</strong> Qual è il rendimento annuo potenziale e la cedola prevede l'Effetto Memoria?</li>
+            <li><strong>Presenza di Meccanismi Protettivi:</strong> Lo strumento integra Airbag, Step-Down o soglie Autocall basse?</li>
+            <li><strong>Correlazione e Qualità del Paniere:</strong> I titoli sottostanti sono società solide con fondamentali sostenibili?</li>
+            <li><strong>Presenza dell'Opzione Quanto:</strong> I sottostanti in valuta estera sono coperti contro il rischio di cambio?</li>
+            <li><strong>Verifica dello Spread Bid-Ask:</strong> Il Market Maker sta quotando con uno spread contenuto e regolare sul book?</li>
+            <li><strong>Efficienza Fiscale dello Zainetto:</strong> Il certificato risponde ad un'esigenza di recupero minusvalenze in scadenza?</li>
+            <li><strong>Lettura Finale del KID:</strong> Avete letto e compreso gli scenari di performance e la struttura dei costi integrata?</li>
+          </ol>
+          <div class="callout-box success">
+            <strong>Percorso Formativo Completato:</strong> Hai completato l'intero percorso didattico in 33 moduli. Per consultare le schede tecniche dei certificati attualmente in evidenza o approfondire i singoli termini finanziari, utilizza la barra di navigazione principale.
+          </div>
+        </div>
+      </article>
+
+      <!-- SEZIONE 5: LIVELLO OPERATIVO AVANZATO -->
+      <div class="level-header">
+        <h2>Livello 4: Operatività Avanzata e Gestione del Portafoglio</h2>
+        <span class="badge badge-primary">Moduli 21 - 30</span>
+      </div>
+
+      <!-- Moduli 21-30 -->
+      <article class="module-card" id="mod21">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 21 • Operatività</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Leggere il Book: Denaro, Lettera, Quantità e Spread</h3>
+        <div class="module-content">
+          <p>Il book mostra le proposte di acquisto (Bid/Denaro) e di vendita (Ask/Lettera) disponibili sul mercato. Il prezzo teorico non coincide necessariamente con il prezzo eseguibile: prima di un ordine bisogna controllare lato del book, quantità, spread e presenza effettiva del Market Maker.</p>
+          <p>Uno spread ampio aumenta il costo immediato dell'operazione e può rendere più difficile uscire dalla posizione senza penalizzazioni. Per ordini retail è prudente usare ordini limite e verificare sempre le regole dell'intermediario, evitando di inseguire quotazioni che cambiano rapidamente.</p>
+          <div class="callout-box warning"><strong>Prima dell'ordine:</strong> controlla Bid, Ask, quantità disponibili e orario della quotazione. Il prezzo teorico non è il prezzo garantito di esecuzione.</div>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod22">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 22 • Prezzo</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Prezzo, Parità e Certificati Sotto la Pari</h3>
+        <div class="module-content">
+          <p>Un prezzo inferiore al nominale non equivale automaticamente a un affare. Il mercato sconta rischio emittente, volatilità, distanza dalle barriere, durata residua, probabilità di autocall, dividendi attesi e liquidità.</p>
+          <p>Per confrontare prodotti diversi bisogna partire dal rendimento potenziale residuo e dagli scenari di rimborso, non soltanto dalla differenza tra prezzo e nominale. Il recupero verso la pari è possibile, ma non è garantito e può essere compromesso dalla violazione di una barriera o dal rischio emittente.</p>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod23">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 23 • Rendimento</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Cedola, Rendimento Potenziale e Analisi degli Scenari</h3>
+        <div class="module-content">
+          <p>La cedola periodica non coincide sempre con il rendimento effettivo dell'investimento. Per una valutazione corretta occorre considerare prezzo di acquisto, cedole ancora disponibili, eventuale rimborso anticipato, durata residua, fiscalità applicabile e rischio di perdita del capitale.</p>
+          <p>Costruisci almeno tre scenari: sottostanti sopra le soglie, mercato laterale o moderatamente ribassista, e violazione della barriera. L'obiettivo non è prevedere il futuro, ma capire quali condizioni devono verificarsi e quale perdita può derivare dallo scenario sfavorevole.</p>
+          <div class="callout-box success"><strong>Rendimento potenziale:</strong><br><code>Risultato complessivo = cedole incassate + rimborso finale - prezzo di acquisto - costi</code></div>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod24">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 24 • Documenti</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">KID, Prospetto e Final Terms: Gerarchia delle Informazioni</h3>
+        <div class="module-content">
+          <p>Il KID sintetizza caratteristiche, rischio, scenari e costi del prodotto. I Final Terms contengono invece le condizioni specifiche dell'emissione: strike, barriere, date, trigger, modalità di rimborso, eventi straordinari e soggetti coinvolti.</p>
+          <p>Una pagina web o una scheda commerciale è un riepilogo divulgativo e può non riflettere aggiornamenti successivi. Prima di investire confronta sempre le informazioni con i documenti ufficiali dell'emittente, del mercato e con quelle disponibili presso il tuo intermediario.</p>
+          <div class="callout-box warning"><strong>Ordine delle fonti:</strong> KID per rischio e costi, Final Terms per le condizioni specifiche, avvisi ufficiali per eventuali rettifiche o aggiornamenti.</div>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod25">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 25 • Rettifiche</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Corporate Actions, Fattori di Rettifica e Continuità del Contratto</h3>
+        <div class="module-content">
+          <p>Operazioni come split, raggruppamenti, aumenti di capitale, fusioni, OPA e spin-off possono modificare il sottostante. I regolamenti e i Final Terms prevedono procedure di rettifica per adeguare strike, barriera, multiplo o paniere.</p>
+          <p>La rettifica non elimina il rischio economico dell'evento e non garantisce che il prezzo resti invariato. Dopo una corporate action verifica sempre l'avviso ufficiale, il nuovo valore dei livelli contrattuali e le eventuali modifiche alle date di osservazione.</p>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod26">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 26 • Emittente</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Rischio Emittente e Diversificazione Reale</h3>
+        <div class="module-content">
+          <p>Un portafoglio può sembrare diversificato perché contiene molti ISIN, ma restare concentrato sulla stessa banca emittente, sullo stesso Worst-Of o sullo stesso settore. La diversificazione va misurata per emittente, sottostante, settore, valuta, scadenza e meccanismo.</p>
+          <p>Il rating è un indicatore utile ma non una garanzia. Stabilisci prima un limite di esposizione per emittente e considera che, in caso di crisi dell'emittente, più posizioni possono essere colpite contemporaneamente.</p>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod27">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 27 • Monitoraggio</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Monitorare il Worst-Of e la Distanza dalla Barriera</h3>
+        <div class="module-content">
+          <p>Il monitoraggio deve concentrarsi sul sottostante determinante per il payoff, non sulla media del paniere. Registra periodicamente prezzo, performance dallo strike, distanza dalla barriera, prossima data di osservazione e stato delle cedole in memoria.</p>
+          <p>La distanza dalla barriera è una fotografia, non una probabilità di rimborso. Volatilità, correlazione, durata residua e modalità di osservazione possono cambiare rapidamente il profilo di rischio.</p>
+          <div class="callout-box warning"><strong>Metodo pratico:</strong> aggiorna il Worst-Of e la distanza dalla barriera alle date di osservazione, senza sostituire il controllo dei documenti ufficiali.</div>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod28">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 28 • Scadenze</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Autocall, Scadenza e Reinvestimento dei Flussi</h3>
+        <div class="module-content">
+          <p>Un autocall può chiudere la posizione prima della scadenza naturale, restituendo il nominale secondo le condizioni del prodotto. Questo riduce l'esposizione, ma crea un nuovo problema decisionale: come reinvestire il capitale e quale rendimento sia realmente disponibile in quel momento.</p>
+          <p>Organizza le scadenze con un calendario e non considerare il rimborso anticipato come un rendimento extra automatico. Valuta costi, fiscalità, liquidità e rischio del nuovo strumento prima di reinvestire.</p>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod29">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 29 • Metodo</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Regole Operative, Registro delle Posizioni e Disciplina</h3>
+        <div class="module-content">
+          <p>Un registro ordinato dovrebbe contenere ISIN, emittente, nominale, prezzo medio, quantità, sottostanti, barriere, prossime date, cedole attese, scadenza e link ai documenti ufficiali. Questo riduce errori e rende confrontabili le posizioni.</p>
+          <p>Definisci prima dell'acquisto il capitale massimo, l'esposizione per emittente, la perdita sostenibile e le condizioni che richiedono una rivalutazione. Evita di modificare le regole sotto pressione dopo un movimento di mercato.</p>
+          <div class="callout-box success"><strong>Regola di disciplina:</strong><br><code>Una posizione va rivalutata per condizioni contrattuali e rischio, non solo perché il prezzo è salito o sceso.</code></div>
+        </div>
+      </article>
+
+      <article class="module-card" id="mod30">
+        <div class="module-header"><span class="module-number" style="color: var(--primary);">Modulo 30 • Sintesi Finale</span><span class="badge badge-primary">Livello Avanzato</span></div>
+        <h3 class="module-title">Il Piano Completo di Analisi: Dalla Selezione al Monitoraggio</h3>
+        <div class="module-content">
+          <p>Un'analisi completa segue una sequenza: definisci l'obiettivo, leggi KID e Final Terms, valuta emittente e sottostanti, ricostruisci payoff e scenari, controlla prezzo e liquidità, misura la concentrazione e registra le date operative.</p>
+          <p>Solo dopo questa verifica puoi confrontare rendimento potenziale, barriere e meccanismi accessori. La procedura non elimina il rischio, ma rende la decisione più consapevole, documentata e coerente con il tuo profilo e con la capacità di sostenere perdite.</p>
+          <div class="callout-box success"><strong>Obiettivo raggiunto:</strong> sai leggere una struttura, riconoscere le condizioni decisive, valutare vantaggi e criticità e impostare un monitoraggio ordinato senza confondere rendimento potenziale e protezione garantita.</div>
+        </div>
+      </article>
+
+      <!-- SEZIONE 6: PERCORSO AVANZATO -->
+      <div class="level-header">
+        <h2>Livello 5: Economia, Strutturazione e Gestione del Certificato</h2>
+        <span class="badge badge-primary">Moduli 31 - 33</span>
+      </div>
+
+      <div class="callout-box warning neutral-border">
+        <strong>Nota metodologica:</strong> Le spiegazioni di questa sezione descrivono la logica economica e finanziaria dei certificati in forma didattica. Le modalità effettive di emissione, contabilizzazione, copertura e gestione dipendono dall'emittente, dal prodotto e dalle condizioni di mercato.
+      </div>
+
+      <!-- Modulo 31 -->
+      <article class="module-card" id="mod31">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 31 • Economia dell'Emittente</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Il Certificato come Forma di Raccolta e Gestione Finanziaria</h3>
+        <div class="module-content">
+          <p>
+            Per una banca, il certificato è innanzitutto uno strumento di debito. Al momento dell'emissione, l'istituto riceve liquidità dall'investitore e registra un'obbligazione verso il possessore del certificato, secondo le condizioni previste dal prospetto.
+          </p>
+          <p>
+            La liquidità raccolta entra nella gestione finanziaria complessiva della banca. Non è necessariamente destinata a uno specifico mutuo o finanziamento, ma può contribuire alle esigenze generali di tesoreria e di finanziamento dell'istituto.
+          </p>
+          <p>I possibili vantaggi per l'emittente sono:</p>
+          <ul>
+            <li><strong>Diversificazione delle fonti di raccolta:</strong> accesso al risparmio privato attraverso la rete distributiva.</li>
+            <li><strong>Flessibilità finanziaria:</strong> possibilità di combinare raccolta, copertura dei rischi e margine commerciale.</li>
+            <li><strong>Gestione delle scadenze:</strong> definizione del profilo temporale degli impegni finanziari, in funzione dei termini del prodotto.</li>
+          </ul>
+          <p>
+            Il costo complessivo della raccolta dipende da durata, condizioni di mercato, rischio di credito, costi di copertura, distribuzione e struttura del prodotto. Non è quindi necessariamente inferiore a quello di altre fonti di finanziamento.
+          </p>
+          <div class="callout-box warning neutral-border">
+            <strong>Principio guida per l'investitore:</strong> acquistare un certificato significa assumere un'esposizione creditizia verso l'emittente. Anche se il sottostante registra un andamento favorevole, il rimborso resta subordinato alla solvibilità della banca e alle condizioni contrattuali dello strumento.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 32 -->
+      <article class="module-card" id="mod32">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 32 • Architettura Economica</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Una Scomposizione Teorica del Prezzo: Bond, Derivati e Costi</h3>
+        <div class="module-content">
+          <p>
+            Per comprendere il prezzo di un certificato, è utile immaginare il capitale investito come il risultato di più componenti economiche. Questa scomposizione serve a comprendere la logica economica del certificato, ma non significa che il capitale raccolto venga effettivamente suddiviso dalla banca in conti o strumenti separati.
+          </p>
+          <ol>
+            <li><strong>Componente obbligazionaria:</strong> riflette il valore attuale dei possibili rimborsi futuri. Il suo peso dipende da durata, tassi di interesse, rischio dell'emittente e caratteristiche del prodotto.</li>
+            <li><strong>Componente derivata:</strong> riflette il valore economico delle opzioni incorporate, come cedole condizionate, barriere, protezioni, effetto memoria e rimborso anticipato.</li>
+            <li><strong>Costi e margine commerciale:</strong> comprendono, tra gli altri, strutturazione, copertura, distribuzione, quotazione, capitale impiegato e remunerazione dell'emittente.</li>
+          </ol>
+          <div class="callout-box success neutral-border">
+            <strong>Schema economico semplificato:</strong><br>
+            <code>Prezzo del certificato = valore delle componenti obbligazionarie + valore delle opzioni + costi e margine</code>
+          </div>
+          <p>
+            Le percentuali attribuite alle componenti non sono fisse. Un certificato con durata lunga, volatilità elevata o cedole particolarmente generose può avere una componente derivata molto diversa da quella di un prodotto più semplice.
+          </p>
+          <p>
+            La banca può coprire i rischi attraverso acquisti di opzioni, strumenti OTC, coperture dinamiche o altre operazioni di mercato. La copertura tende a ridurre l'esposizione, ma non elimina ogni rischio: restano possibili rischi di modello, liquidità, controparte, mercato e disallineamento.
+          </p>
+          <div class="callout-box warning neutral-border">
+            <strong>Nota didattica:</strong> questa scomposizione descrive la logica economica del prodotto e non rappresenta necessariamente una separazione contabile o una destinazione materiale del capitale raccolto.
+          </div>
+        </div>
+      </article>
+
+      <!-- Modulo 33 -->
+      <article class="module-card" id="mod33">
+        <div class="module-header">
+          <span class="module-number" style="color: var(--primary);">Modulo 33 • Dinamica dell'Autocall</span>
+          <span class="badge badge-primary">Livello Avanzato</span>
+        </div>
+        <h3 class="module-title">Rimborso Anticipato, Valore delle Opzioni e Gestione della Copertura</h3>
+        <div class="module-content">
+          <p>
+            L'Autocall consente all'emittente di rimborsare anticipatamente il certificato quando, a una determinata data di osservazione, sono soddisfatte le condizioni previste dal regolamento.
+          </p>
+          <p>Dal punto di vista economico:</p>
+          <ul>
+            <li>l'investitore riceve il rimborso previsto e, se applicabile, la cedola;</li>
+            <li>il certificato termina prima della scadenza originaria;</li>
+            <li>l'emittente deve chiudere, ricalibrare o sostituire le operazioni di copertura;</li>
+            <li>la liquidità necessaria al rimborso proviene dalla gestione finanziaria dell'emittente, non necessariamente da un singolo derivato identificabile.</li>
+          </ul>
+          <p>
+            Nel modello di valutazione, l'evento di Autocall modifica il valore delle componenti obbligazionarie e derivate del certificato. Il rimborso, tuttavia, non deriva automaticamente dal pagamento di un singolo derivato: è l'emittente a regolare l'importo previsto dal contratto e a gestire le relative coperture.
+          </p>
+          <div class="callout-box success neutral-border">
+            <strong>Rappresentazione concettuale:</strong><br>
+            <code>Autocall = trigger rispettato + rimborso contrattuale + chiusura o ribilanciamento della copertura</code>
+          </div>
+          <p>
+            L'emittente può avere un risultato positivo o negativo sulle coperture, a seconda delle condizioni di mercato al momento dell'Autocall. La chiusura anticipata può comportare operazioni di unwinding, costi di transazione e la necessità di riorganizzare la propria posizione finanziaria.
+          </p>
+          <div class="callout-box warning neutral-border">
+            <strong>Principio guida:</strong> l'Autocall riduce la durata dell'investimento e interrompe i flussi futuri, ma espone l'investitore al rischio di dover reinvestire il capitale in un momento potenzialmente meno favorevole.
+          </div>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- Sidebar Sticky -->
+    <aside class="sticky-sidebar formazione-sidebar">
+      
+      <!-- Banner Telegram -->
+      <div class="sidebar-telegram-card">
+        <div class="telegram-header">
+          <div class="telegram-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.17 3.35-1.38 3.73-1.38.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="telegram-title">Canale Telegram</div>
+            <div class="telegram-handle">@pertefinanza</div>
+          </div>
+        </div>
+        <p class="telegram-desc">
+          Cerchi flussi cedolari e barriere profonde? Analizziamo i migliori certificati di investimento, anche sotto la pari. Resta aggiornato sulle date di stacco e sulle migliori occasioni del mercato secondario
+        </p>
+        <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
+          Unisciti alla Community ↗
+        </a>
+      </div>
+
+      <!-- Warning sui Rischi -->
+      <div class="sidebar-risk-card">
+        <div class="risk-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span class="risk-title">Avvertenza sui Rischi</span>
+        </div>
+        <div class="risk-body">
+          <p>
+            I contenuti formativi hanno esclusiva finalità didattica ed illustrativa e non costituiscono sollecitazione all'investimento.
+          </p>
+          <a href="disclaimer.html" class="risk-link">Informativa legale completa →</a>
+        </div>
+      </div>
+
+      <!-- Widget Certificati in Evidenza -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span>In Evidenza</span>
+        </div>
+        <div id="sidebar-featured-certs">
+          <!-- Caricato dinamicamente da app.js -->
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Footer Istituzionale -->
+  <footer class="site-footer"></footer>
+
+  <script src="js/data-certificates.js"></script>
+  <script src="js/data-issuers.js"></script>
+  <script src="js/data-glossary.js"></script>
+  <script src="js/data-faqs.js"></script>
+  <script src="js/data-underlyings.js"></script>
+  <script src="js/reviews.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
