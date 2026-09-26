@@ -292,9 +292,19 @@ function initHomeFeaturedCertificates() {
 
 
 function reviewPreviewMarkup(cert) {
-  const paragraphs = buildGeneratedReviewContent(cert).paragraphs;
-  const previewEnd = 'nel rispetto delle condizioni contrattuali.';
-  const previewText = paragraphs[0].split(previewEnd)[0] + previewEnd;
+  const issuer = typeof ISSUERS_DATA !== 'undefined'
+    ? ISSUERS_DATA.find(item => item.name === cert.issuer)
+    : null;
+  const issuerDescription = issuer
+    ? issuer.description.toLowerCase()
+    : `emittente attivo nel mercato dei prodotti strutturati`;
+  const ratings = issuer && issuer.ratings
+    ? Object.entries(issuer.ratings)
+      .map(([agency, rating]) => `un rating ${rating} da parte di ${agency}`)
+      .join(' e ')
+    : '';
+  const ratingSentence = ratings ? ` ${cert.issuer} vanta ${ratings}.` : '';
+  const previewText = `Il certificato in oggetto è emesso da <strong>${cert.issuer}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}.`;
   return `<p>${previewText}</p><a href="recensione.html?isin=${encodeURIComponent(cert.isin)}" class="btn btn-sm btn-primary">Leggi la scheda tecnica →</a>`;
 }
 
