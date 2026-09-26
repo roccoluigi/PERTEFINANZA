@@ -75,7 +75,7 @@ function initTelegramCards() {
         </div>
       </div>
       <p class="telegram-desc">
-        Cerchi flussi cedolari e barriere profonde? Analizziamo i migliori certificati di investimento, anche sotto la pari. Resta aggiornato sulle date di stacco e sulle migliori occasioni del mercato secondario
+        Cedole, barriere profonde, occasioni sotto la pari. Nel canale trovi alert e analisi sui certificati da tenere d'occhio.
       </p>
       <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
         Segui il canale ↗
