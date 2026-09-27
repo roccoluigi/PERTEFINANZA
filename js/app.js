@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initIssuersList();
   initReviewPage();
   initContactForm();
+  window.addEventListener('resize', () => alignCertificateMetrics());
 });
 
 /* ===========================================================================
@@ -286,12 +287,30 @@ function certificateCardMarkup(c) {
   `;
 }
 
+function alignCertificateMetrics(container = document) {
+  container.querySelectorAll('.home-certificate-head').forEach(head => {
+    const button = head.querySelector('.home-certificate-tech-button');
+    const metrics = head.querySelector('.home-certificate-metrics');
+    if (!button || !metrics) return;
+
+    if (getComputedStyle(head).flexDirection === 'column') {
+      metrics.style.marginTop = '0';
+      return;
+    }
+
+    const headTop = head.getBoundingClientRect().top;
+    const buttonTop = button.getBoundingClientRect().top;
+    metrics.style.marginTop = `${Math.max(0, buttonTop - headTop)}px`;
+  });
+}
+
 function initHomeFeaturedCertificates() {
   const container = document.getElementById('home-featured-certificates');
   if (!container || typeof CERTIFICATES_DATA === 'undefined') return;
 
   container.innerHTML = CERTIFICATES_DATA.filter(c => c.showHome).map(certificateCardMarkup).join('');
   initCopyableIsins(container);
+  alignCertificateMetrics(container);
 }
 
 
@@ -474,6 +493,7 @@ function initCertificatesCatalog() {
 
     initCopyableIsins(cardsContainer);
     initShareButtons();
+    alignCertificateMetrics(cardsContainer);
   }
 
   function filterData() {

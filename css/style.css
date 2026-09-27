@@ -700,7 +700,7 @@ button, input, select, textarea {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.25rem;
   width: 17rem;
-  margin-top: 4.4rem;
+  margin-top: 4.53rem;
 }
 
 .home-certificate-type-placeholder {
