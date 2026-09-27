@@ -317,20 +317,23 @@ function initHomeFeaturedCertificates() {
 
 
 function reviewPreviewMarkup(cert) {
+  const monthlyYield = cert.annualYield / 12;
   const issuer = typeof ISSUERS_DATA !== 'undefined'
     ? ISSUERS_DATA.find(item => item.name === cert.issuer)
     : null;
   const issuerDescription = issuer
     ? issuer.description.toLowerCase().replace(/[.!?]+$/, '')
     : 'emittente attivo nel mercato dei prodotti strutturati';
-  const ratings = issuer && issuer.ratings
+  const ratingParts = issuer && issuer.ratings
     ? Object.entries(issuer.ratings)
-      .map(([agency, rating]) => `un rating ${rating} da parte di ${agency}`)
-      .join(' e ')
+      .map(([agency, rating]) => `${rating} da parte di ${agency}`)
     : '';
-  const ratingSentence = ratings ? ` ${cert.issuer} vanta ${ratings}.` : '';
+  const ratings = ratingParts.length > 1
+    ? `${ratingParts.slice(0, -1).join(', ')} e ${ratingParts[ratingParts.length - 1]}`
+    : ratingParts[0] || '';
+  const ratingSentence = ratings ? ` ${cert.issuer} vanta un rating ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${formatUnderlyingNames(cert.underlyings)} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
+  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${formatUnderlyingNames(cert.underlyings)} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
 }
 
 function issuerAnchorId(name) {
