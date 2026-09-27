@@ -619,6 +619,11 @@ button, input, select, textarea {
   gap: 1.25rem;
 }
 
+.home-benefits-grid > .card > div:first-child {
+  background: #dceaff !important;
+  color: var(--primary-dark) !important;
+}
+
 .home-certificate-card {
   padding: 1.25rem;
 }
@@ -1096,12 +1101,12 @@ button, input, select, textarea {
 
 /* 1. Telegram Card */
 .sidebar-telegram-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f4f9ff 100%);
-  color: var(--text-main);
+  background: linear-gradient(135deg, #0a192f 0%, #102a43 100%);
+  color: #ffffff;
   border-radius: var(--radius-md);
   padding: 0.75rem;
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  box-shadow: 0 5px 16px rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(96, 165, 250, 0.45);
+  box-shadow: 0 8px 20px rgba(10, 25, 47, 0.2);
   position: relative;
   overflow: hidden;
 }
@@ -1117,7 +1122,7 @@ button, input, select, textarea {
   right: -40px;
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, rgba(37, 99, 235, 0) 70%);
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, rgba(96, 165, 250, 0) 70%);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -1145,19 +1150,19 @@ button, input, select, textarea {
 .telegram-title {
   font-size: 0.95rem;
   font-weight: 800;
-  color: var(--secondary);
+  color: #ffffff;
   line-height: 1.25;
 }
 
 .telegram-handle {
   font-size: 0.8125rem;
-  color: var(--primary);
+  color: #bfdbfe;
   font-weight: 600;
 }
 
 .telegram-desc {
   font-size: 0.78rem;
-  color: var(--text-body);
+  color: #e2e8f0;
   line-height: 1.5;
   margin-bottom: 0.75rem;
 }
@@ -1172,7 +1177,7 @@ button, input, select, textarea {
 
 .telegram-perks li {
   font-size: 0.8125rem;
-  color: var(--text-body);
+  color: #e2e8f0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1254,7 +1259,9 @@ button, input, select, textarea {
 
 .sidebar-featured-widget .widget-title {
   margin-bottom: 0.7rem;
+  padding-bottom: 0.55rem;
   color: var(--secondary);
+  border-bottom: 3px solid #f59e0b;
 }
 
 .widget-title {

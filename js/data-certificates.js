@@ -118,6 +118,6 @@ const CERTIFICATES_DATA = [
     expiryDate: "22/03/2028",
     price: 1000,
     showHome: false,
-    showTopPick: false
+    showTopPick: true
   }
 ];
