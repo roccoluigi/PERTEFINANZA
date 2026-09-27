@@ -2924,8 +2924,10 @@ button, input, select, textarea {
     font-size: 0.72rem;
   }
 
-  .review-date-value {
+  .review-overview-item .review-date-value {
+    min-width: 0;
     font-size: 0.85rem;
+    overflow-wrap: anywhere;
   }
 
   .review-section-links {
