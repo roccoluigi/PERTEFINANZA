@@ -2926,7 +2926,7 @@ button, input, select, textarea {
 
   .review-overview-item .review-date-value {
     min-width: 0;
-    font-size: 0.85rem;
+    font-size: 0.7875rem;
     overflow-wrap: anywhere;
   }
 
