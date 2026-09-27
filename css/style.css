@@ -2418,6 +2418,7 @@ button, input, select, textarea {
   line-height: 1.2;
   color: var(--secondary);
   margin-top: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .meta-box {

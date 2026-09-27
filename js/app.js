@@ -323,7 +323,7 @@ function reviewPreviewMarkup(cert) {
     : null;
   const issuerDescription = issuer
     ? issuer.description.toLowerCase().replace(/[.!?]+$/, '')
-    : `emittente attivo nel mercato dei prodotti strutturati`;
+    : 'emittente attivo nel mercato dei prodotti strutturati';
   const ratings = issuer && issuer.ratings
     ? Object.entries(issuer.ratings)
       .map(([agency, rating]) => `un rating ${rating} da parte di ${agency}`)
@@ -331,8 +331,7 @@ function reviewPreviewMarkup(cert) {
     : '';
   const ratingSentence = ratings ? ` ${cert.issuer} vanta ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  const previewText = `Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su <strong>${cert.underlyings.join(', ')}</strong> e prevede un rendimento potenziale annuo del ${cert.annualYield.toFixed(2)}%, con scadenza il ${cert.expiryDate}.`;
-  return `<p>${previewText}</p>`;
+  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
 }
 
 function issuerAnchorId(name) {
