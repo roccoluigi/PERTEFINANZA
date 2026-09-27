@@ -216,7 +216,7 @@ function initSidebarFeatured() {
           <div><span>Barriera capitale</span><strong>${c.barrierCapital}</strong></div>
           <div><span>Barriera coupon</span><strong>${c.barrierCoupon}</strong></div>
           <div><span>Step-down</span><strong>${c.stepDown}</strong></div>
-          <div><span>Sottostanti</span><strong>${c.underlyings.join(', ')}</strong></div>
+          <div><span>Sottostanti</span><strong>${formatUnderlyingNames(c.underlyings)}</strong></div>
         </div>
         </a>
         ${shareButtonsMarkup(c)}
@@ -331,7 +331,7 @@ function reviewPreviewMarkup(cert) {
     : '';
   const ratingSentence = ratings ? ` ${cert.issuer} vanta ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
+  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${formatUnderlyingNames(cert.underlyings)} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
 }
 
 function issuerAnchorId(name) {
@@ -341,6 +341,10 @@ function issuerAnchorId(name) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+function formatUnderlyingNames(underlyings) {
+  return underlyings.map(name => `<strong>${name}</strong>`).join(', ');
 }
 
 function shareButtonsMarkup(c) {
