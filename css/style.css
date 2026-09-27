@@ -584,11 +584,11 @@ button, input, select, textarea {
 }
 
 .page-header-hero .page-header-desc {
-  color: #cbd5e1;
+  color: #ffffff;
 }
 
 .page-header-hero > .container > p:last-child {
-  color: #94a3b8 !important;
+  color: #ffffff !important;
 }
 .page-header-row {
   display: flex;
@@ -1618,6 +1618,11 @@ button, input, select, textarea {
 
 .widget-cert-coupon-value {
   color: var(--success) !important;
+  font-size: calc(0.8rem + 1px) !important;
+}
+
+.widget-cert-details div:last-child strong {
+  font-size: calc(0.8rem + 1px);
 }
 
 /* ==========================================================================
