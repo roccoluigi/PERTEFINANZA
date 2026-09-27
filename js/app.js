@@ -324,7 +324,7 @@ function issuerAnchorId(name) {
 }
 
 function shareButtonsMarkup(c) {
-  const shareUrl = `recensione.html?isin=${encodeURIComponent(c.isin)}`;
+  const shareUrl = new URL(`recensione.html?isin=${encodeURIComponent(c.isin)}`, window.location.href).href;
   const shareTitle = encodeURIComponent(`${c.name} | PERTEFINANZA`);
   const encodedUrl = encodeURIComponent(shareUrl);
 
