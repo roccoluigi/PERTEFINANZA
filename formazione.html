@@ -138,11 +138,22 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
     }
     .level-header h2 {
       margin: 0;
       font-size: 1.3rem;
       color: #ffffff;
+    }
+    .level-header > .badge {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    @media (max-width: 640px) {
+      .level-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
