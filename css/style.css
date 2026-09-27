@@ -403,9 +403,9 @@ button, input, select, textarea {
 }
 
 .btn-telegram {
-  background: linear-gradient(135deg, #229ed9 0%, #1e87b9 100%);
+  background: var(--telegram);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(34, 158, 217, 0.3);
+  box-shadow: none;
   font-weight: 700;
   border: none;
 }
@@ -419,10 +419,10 @@ button, input, select, textarea {
 }
 
 .btn-telegram:hover {
-  background: linear-gradient(135deg, #1fa0dd 0%, #1876a3 100%);
+  background: var(--telegram-hover);
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(34, 158, 217, 0.4);
+  box-shadow: none;
 }
 
 .badge {
