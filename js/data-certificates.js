@@ -3,7 +3,7 @@
 const CERTIFICATES_DATA = [
   {
     isin: "DE000BD54H77",
-    name: "Colossi Tech USA",
+    name: "Cash collect fast step down sui Colossi Tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["AMD", "Intel", "Dell", "Micron"],
@@ -20,7 +20,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486044",
-    name: "Europa in Movimento",
+    name: "Cash collect low barrier su big Europee",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Deutsche Bank", "Société Générale", "Commerzbank"],
@@ -37,7 +37,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486804",
-    name: "Orgoglio Italiano",
+    name: "Cash collect low barrier su Big Italiane",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["Leonardo", "Prysmian", "MPS", "STM"],
@@ -54,7 +54,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "DE000BD6FHT4",
-    name: "Next Gen Tech",
+    name: "Cash collect fast step downsu Big Tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["Nvidia", "AMD", "Micron", "Intel"],
@@ -71,7 +71,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127847187",
-    name: "Frontiera Digitale",
+    name: "Cash collect fast step down sull'AI",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["Palantir", "Marvell", "Western Digital", "Intel"],
@@ -88,7 +88,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127846700",
-    name: "Banche al Centro",
+    name: "Cash Collect High Yield su big finanziari",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Banca MPS", "BPER Banca", "Commerzbank"],
@@ -105,7 +105,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127851296",
-    name: "Energia d'Europa",
+    name: "Cash collect High Yeld su Big Energy Europee",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["British Petroleum", "Siemens Energy", "Engie", "ENI"],
