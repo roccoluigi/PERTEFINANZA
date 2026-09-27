@@ -1136,6 +1136,7 @@ button, input, select, textarea {
 .widget-cert-item .share-actions {
   margin-top: 0.65rem;
   margin-left: 0;
+  gap: 0.5rem;
 }
 
 .data-table .share-actions {
@@ -1540,7 +1541,7 @@ button, input, select, textarea {
   background: #ffffff;
   font-family: monospace;
   font-weight: 700;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--secondary);
   cursor: copy;
   transition: var(--transition);
@@ -1554,7 +1555,7 @@ button, input, select, textarea {
 .widget-cert-isin-label {
   color: var(--primary);
   font-family: inherit;
-  font-size: 0.625rem;
+  font-size: 0.725rem;
   letter-spacing: 0.04em;
 }
 
@@ -1564,21 +1565,15 @@ button, input, select, textarea {
   border-radius: 2px;
 }
 
-.widget-cert-yield {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--success);
-}
-
 .widget-cert-name {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--text-body);
   font-weight: 600;
   line-height: 1.35;
 }
 
 .widget-cert-issuer {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   font-weight: 600;
   margin-top: 0.2rem;
@@ -1608,17 +1603,21 @@ button, input, select, textarea {
 }
 
 .widget-cert-details span {
-  font-size: 0.625rem;
+  font-size: 0.725rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .widget-cert-details strong {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-body);
   line-height: 1.35;
   overflow-wrap: anywhere;
+}
+
+.widget-cert-coupon-value {
+  color: var(--success) !important;
 }
 
 /* ==========================================================================

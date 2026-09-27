@@ -207,12 +207,11 @@ function initSidebarFeatured() {
           <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
             <span class="widget-cert-isin-label">ISIN</span>${c.isin}
           </button>
-          <span class="widget-cert-yield">${c.annualYield.toFixed(1)}% p.a.</span>
         </div>
         <div class="widget-cert-name">${c.name}</div>
         <div class="widget-cert-issuer">${c.issuer}</div>
         <div class="widget-cert-details">
-          <div><span>Cedola potenziale</span><strong>${c.annualYield.toFixed(2)}% annua</strong></div>
+          <div><span>Cedola potenziale</span><strong class="widget-cert-coupon-value">${c.annualYield.toFixed(2)}% annua</strong></div>
           <div><span>Barriera capitale</span><strong>${c.barrierCapital}</strong></div>
           <div><span>Barriera coupon</span><strong>${c.barrierCoupon}</strong></div>
           <div><span>Step-down</span><strong>${c.stepDown}</strong></div>
