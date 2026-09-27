@@ -573,6 +573,24 @@ button, input, select, textarea {
   max-width: 780px;
 }
 
+.page-header-hero {
+  background: linear-gradient(135deg, #0a192f 0%, #102a43 100%);
+  padding: 3rem 0 2.5rem;
+  border-bottom: 3px solid #f59e0b;
+}
+
+.page-header-hero .page-header-title {
+  color: #f8fafc;
+}
+
+.page-header-hero .page-header-desc {
+  color: #cbd5e1;
+}
+
+.page-header-hero > .container > p:last-child {
+  color: #94a3b8 !important;
+}
+
 /* ==========================================================================
    Componenti Card & Superfici
    ========================================================================== */
