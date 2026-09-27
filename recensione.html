@@ -77,8 +77,8 @@
   <div class="container page-layout review-page-layout">
     <main class="main-content" id="review-content-area">
       
-      <!-- Area Recensione popolata dinamicamente da js/app.js tramite query string ?isin=... -->
-      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+      <!-- App.js seleziona il certificato tramite ?isin= e genera la scheda completa. -->
+      <div class="review-loading-state">
         Caricamento scheda di analisi in corso...
       </div>
 
@@ -117,7 +117,7 @@
           <span>Altri Certificati</span>
         </div>
         <div id="sidebar-featured-certs">
-          <!-- Caricato dinamicamente da app.js -->
+          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
         </div>
       </div>
 
@@ -129,9 +129,6 @@
 
   <script src="js/data-certificates.js"></script>
   <script src="js/data-issuers.js"></script>
-  <script src="js/data-glossary.js"></script>
-  <script src="js/data-faqs.js"></script>
-  <script src="js/data-underlyings.js"></script>
   <script src="js/reviews.js"></script>
   <script src="js/app.js"></script>
 </body>

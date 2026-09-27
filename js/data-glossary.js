@@ -1,4 +1,4 @@
-// Dati statici PERTEFINANZA
+// Dataset locale del glossario, filtrato e renderizzato da app.js.
 
 const GLOSSARY_DATA = [
   {

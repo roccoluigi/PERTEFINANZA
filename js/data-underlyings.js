@@ -1,4 +1,4 @@
-// Dati statici PERTEFINANZA
+// Profili sintetici dei sottostanti, usati nella generazione delle recensioni.
 
 const UNDERLYING_PROFILES = {
   AMD: "Azienda strategica nei semiconduttori e nei processori per data center e AI: beneficia della domanda strutturale di calcolo, ma resta esposta alla concorrenza, ai cicli del settore e a una volatilità elevata.",

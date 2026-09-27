@@ -1,4 +1,4 @@
-// Dati statici PERTEFINANZA
+// Dataset locale delle FAQ, consumato dal renderer dell'accordion in app.js.
 
 const FAQS_DATA = [
   {

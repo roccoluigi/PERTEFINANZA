@@ -218,7 +218,7 @@
       <p class="page-header-desc">
         Quando acquisti un certificato diventi creditore dell'istituto emittente. Consulta la nostra guida dettagliata sui 17 principali emittenti del mercato italiano.
       </p>
-      <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.75rem;">
+      <p class="issuer-update-note">
         Verifica online effettuata il 21 settembre 2026. I rating possono essere modificati, sospesi o ritirati dalle agenzie in qualsiasi momento.
       </p>
     </div>
@@ -229,16 +229,16 @@
     <main class="main-content">
       
       <!-- Approfondimento Didattico Rischio Emittente -->
-      <section class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+      <section class="card issuer-risk-intro">
         <h2 class="card-title">Perché il Rating dell'Emittente è Fondamentale?</h2>
-        <p style="font-size: 0.9375rem; color: var(--text-body); line-height: 1.6; margin-top: 0.5rem;">
+        <p class="issuer-risk-intro-text">
           I certificati d'investimento sono prodotti derivati cartolarizzati rientranti nella categoria dei <strong>titoli di debito non subordinati</strong>. Ciò significa che l'investitore non assume soltanto il rischio di mercato legato alla performance dei sottostanti, ma anche il <strong>rischio di credito dell'emittente</strong>. In caso di insolvenza o applicazione delle procedure europee di <em>Bail-In</em> (BRRD), il capitale dell'investitore potrebbe subire decurtazioni indipendentemente dal positivo andamento dei sottostanti.
         </p>
       </section>
 
       <!-- Navigazione Rapida Emittenti -->
       <section class="toc-issuers">
-        <strong style="font-size: 0.9rem; color: var(--secondary);">Indice Rapido Emittenti Monitorati (17 Istituti):</strong>
+        <strong class="issuer-toc-title">Indice Rapido Emittenti Monitorati (17 Istituti):</strong>
         <div class="toc-issuers-grid">
           <a href="#barclays" class="toc-issuer-btn">Barclays</a>
           <a href="#bnp-paribas" class="toc-issuer-btn">BNP Paribas</a>
@@ -705,22 +705,22 @@
       <!-- Criteri di Valutazione degli Emittenti -->
       <section class="card">
         <h2 class="card-title">I 3 Fattori Chiave per Valutare un Emittente</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 1rem;">
+        <div class="issuer-evaluation-grid">
           <div>
-            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">1. Merito Creditizio (Rating)</h3>
-            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+            <h3 class="issuer-evaluation-title">1. Merito Creditizio (Rating)</h3>
+            <p class="issuer-evaluation-text">
               Valutiamo emittenti con rating investment grade (dalla tripla BBB in su per le agenzie S&P, Moody's e Fitch), privilegiando istituti di rilevanza sistemica.
             </p>
           </div>
           <div>
-            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">2. Qualità del Market Making</h3>
-            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+            <h3 class="issuer-evaluation-title">2. Qualità del Market Making</h3>
+            <p class="issuer-evaluation-text">
               Presenza continuativa sul book di negoziazione, spread bid-ask contenuti anche durante picchi di volatilità e velocità di reintegro delle quantità scambiate.
             </p>
           </div>
           <div>
-            <h3 style="font-size: 0.9375rem; font-weight: 700; color: var(--secondary);">3. Trasparenza Documentale</h3>
-            <p style="font-size: 0.8125rem; color: var(--text-body); margin-top: 0.35rem; line-height: 1.5;">
+            <h3 class="issuer-evaluation-title">3. Trasparenza Documentale</h3>
+            <p class="issuer-evaluation-text">
               Chiarezza del KID e dei Final Terms, tempestività nella comunicazione del pagamento delle cedole e facilità di consultazione delle date di rilevazione.
             </p>
           </div>
@@ -759,7 +759,7 @@
           <span>In Evidenza</span>
         </div>
         <div id="sidebar-featured-certs">
-          <!-- Caricato dinamicamente da app.js -->
+          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
         </div>
       </div>
 
@@ -771,10 +771,6 @@
 
   <script src="js/data-certificates.js"></script>
   <script src="js/data-issuers.js"></script>
-  <script src="js/data-glossary.js"></script>
-  <script src="js/data-faqs.js"></script>
-  <script src="js/data-underlyings.js"></script>
-  <script src="js/reviews.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

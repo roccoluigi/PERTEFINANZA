@@ -1,4 +1,4 @@
-// Dati statici PERTEFINANZA
+// Dataset locale dei certificati, caricato prima di app.js nelle pagine che lo usano.
 
 const CERTIFICATES_DATA = [
   {

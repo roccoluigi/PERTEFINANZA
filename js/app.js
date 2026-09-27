@@ -78,7 +78,7 @@ function initTelegramCards() {
       <p class="telegram-desc">
         Cedole, barriere profonde, occasioni sotto la pari. Nel canale trovi alert e analisi sui certificati da tenere d'occhio.
       </p>
-      <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram" style="width: 100%;">
+      <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram telegram-full-button">
         Segui il canale ↗
       </a>
     `;
@@ -136,10 +136,10 @@ function initFooter() {
 
       <div>
         <h4 class="footer-heading">Trasparenza & Rischi</h4>
-        <p style="font-size: 0.8125rem; line-height: 1.6; color: #94a3b8; margin-bottom: 0.75rem;">
+        <p class="footer-disclaimer-text">
           I contenuti hanno finalità informativa e didattica e non costituiscono consulenza finanziaria, raccomandazione personalizzata o sollecitazione all'investimento. I certificati sono strumenti complessi: il capitale può subire perdite significative o totali e resta esposto al rischio di credito dell'emittente. Prima di investire, verifica le informazioni ufficiali, leggi il KID e le Condizioni Definitive e valuta la coerenza del prodotto con i tuoi obiettivi e il tuo profilo di rischio.
         </p>
-        <a href="disclaimer.html" class="btn btn-sm btn-secondary" style="font-size: 0.75rem;">
+        <a href="disclaimer.html" class="btn btn-sm btn-secondary footer-disclaimer-link">
           Disclaimer e Note Legali
         </a>
       </div>
@@ -204,9 +204,9 @@ function initSidebarFeatured() {
       <div class="widget-cert-item">
         <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="widget-cert-link">
         <div class="widget-cert-top">
-          <span class="widget-cert-isin" data-copy-isin="${c.isin}" role="button" tabindex="0" title="Copia ISIN">
+          <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
             <span class="widget-cert-isin-label">ISIN</span>${c.isin}
-          </span>
+          </button>
           <span class="widget-cert-yield">${c.annualYield.toFixed(1)}% p.a.</span>
         </div>
         <div class="widget-cert-name">${c.name}</div>
@@ -250,7 +250,7 @@ function certificateCardMarkup(c) {
           <span class="badge badge-primary${c.type === 'Phoenix Memory Step Down' ? ' home-certificate-type-placeholder' : ''}">${c.type}</span>
           <h3>${c.name}</h3>
           <div class="home-certificate-isin">
-            <span class="cert-isin-copy" data-copy-isin="${c.isin}" role="button" tabindex="0" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></span>
+            <button type="button" class="cert-isin-copy" data-copy-isin="${c.isin}" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></button>
             <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
           </div>
           <div class="home-certificate-summary">${reviewPreviewMarkup(c)}</div>
@@ -288,6 +288,8 @@ function certificateCardMarkup(c) {
 }
 
 function alignCertificateMetrics(container = document) {
+  // Le card della home hanno intestazioni di altezza variabile: allinea i metric box
+  // al pulsante tecnico solo quando il layout e' orizzontale.
   container.querySelectorAll('.home-certificate-head').forEach(head => {
     const button = head.querySelector('.home-certificate-tech-button');
     const metrics = head.querySelector('.home-certificate-metrics');
@@ -368,8 +370,8 @@ function shareIconMarkup(platform) {
   return icons[platform];
 }
 
-function initShareButtons() {
-  document.querySelectorAll('[data-copy-share-url]').forEach(button => {
+function initShareButtons(container = document) {
+  container.querySelectorAll('[data-copy-share-url]').forEach(button => {
     button.addEventListener('click', async event => {
       event.preventDefault();
       event.stopPropagation();
@@ -387,6 +389,7 @@ function initShareButtons() {
 }
 
 function initCopyableIsins(container) {
+  // Mantiene stabile la larghezza del controllo mentre il testo cambia in "ISIN COPIATO!".
   container.querySelectorAll('[data-copy-isin]').forEach(isinElement => {
     const isin = isinElement.dataset.copyIsin;
     const originalMarkup = isinElement.innerHTML;
@@ -414,9 +417,6 @@ function initCopyableIsins(container) {
     };
 
     isinElement.addEventListener('click', copyIsin);
-    isinElement.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') copyIsin(event);
-    });
   });
 }
 
@@ -426,6 +426,7 @@ async function copyTextToClipboard(text) {
     return;
   }
 
+  // Il fallback consente la copia anche aprendo le pagine da file:// o in browser meno recenti.
   const textArea = document.createElement('textarea');
   textArea.value = text;
   textArea.setAttribute('readonly', '');
@@ -452,7 +453,7 @@ function initCertificatesCatalog() {
 
   if (!cardsContainer || typeof CERTIFICATES_DATA === 'undefined') return;
 
-  // Popola emittenti nella select
+  // Genera le opzioni emittente a partire dai dati, evitando duplicati.
   if (issuerSelect && issuerSelect.options.length <= 1) {
     const issuers = [...new Set(CERTIFICATES_DATA.map(c => c.issuer))].sort();
     issuers.forEach(iss => {
@@ -463,7 +464,7 @@ function initCertificatesCatalog() {
     });
   }
 
-  // Popola tipologie nella select
+  // Genera le opzioni per tipologia a partire dai certificati disponibili.
   if (typeSelect && typeSelect.options.length <= 1) {
     const types = [...new Set(CERTIFICATES_DATA.map(c => c.type))].sort();
     types.forEach(tp => {
@@ -474,10 +475,10 @@ function initCertificatesCatalog() {
     });
   }
 
-  function renderTable(data) {
+  function renderCertificateCards(data) {
     if (data.length === 0) {
       cardsContainer.innerHTML = `
-        <div class="card" style="text-align:center; padding: 2.5rem; color: var(--text-muted);">
+        <div class="card empty-state empty-state-catalog">
           Nessun certificato trovato con i filtri selezionati. Prova a reimpostare i parametri di ricerca.
         </div>
       `;
@@ -492,11 +493,12 @@ function initCertificatesCatalog() {
     cardsContainer.innerHTML = data.map(certificateCardMarkup).join('');
 
     initCopyableIsins(cardsContainer);
-    initShareButtons();
+    initShareButtons(cardsContainer);
     alignCertificateMetrics(cardsContainer);
   }
 
   function filterData() {
+    // Applica tutti i filtri insieme e ridisegna anche il conteggio dei risultati.
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const selectedIssuer = issuerSelect ? issuerSelect.value : '';
     const selectedType = typeSelect ? typeSelect.value : '';
@@ -513,14 +515,14 @@ function initCertificatesCatalog() {
       return matchQuery && matchIssuer && matchType;
     });
 
-    renderTable(filtered);
+    renderCertificateCards(filtered);
   }
 
   if (searchInput) searchInput.addEventListener('input', filterData);
   if (issuerSelect) issuerSelect.addEventListener('change', filterData);
   if (typeSelect) typeSelect.addEventListener('change', filterData);
 
-  renderTable(CERTIFICATES_DATA);
+  renderCertificateCards(CERTIFICATES_DATA);
 }
 
 /* ==========================================================================
@@ -540,7 +542,7 @@ function initGlossary() {
   let currentLetter = 'ALL';
   let currentCategory = 'ALL';
 
-  // Costruisci bottoni A-Z
+  // Genera il filtro alfabetico usando solo le iniziali realmente presenti nei dati.
   if (lettersContainer) {
     const availableLetters = ['ALL', ...[...new Set(sortedGlossary.map(item => item.term.charAt(0).toUpperCase()))].sort()];
     let lettersHtml = '';
@@ -561,14 +563,14 @@ function initGlossary() {
     });
   }
 
-  // Costruisci selettore di Categorie
+  // Genera le categorie e mantiene una sola categoria visivamente attiva.
   if (categoryContainer) {
     const categories = ['ALL', ...new Set(sortedGlossary.map(item => item.category))].sort();
     let catHtml = '';
     categories.forEach(cat => {
       const label = cat === 'ALL' ? 'Tutte le categorie' : cat;
       const activeClass = cat === 'ALL' ? 'active' : '';
-      catHtml += `<button type="button" class="badge ${activeClass ? 'badge-primary' : 'badge-neutral'}" data-category="${cat}" style="cursor: pointer; padding: 0.4rem 0.85rem; font-size: 0.8125rem;">${label}</button>`;
+      catHtml += `<button type="button" class="badge filter-pill glossary-category-pill ${activeClass ? 'badge-primary' : 'badge-neutral'}" data-category="${cat}">${label}</button>`;
     });
     categoryContainer.innerHTML = catHtml;
 
@@ -593,9 +595,9 @@ function initGlossary() {
 
     if (items.length === 0) {
       container.innerHTML = `
-        <div class="card" style="text-align: center; color: var(--text-muted); padding: 3rem;">
-          <p style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">Nessun termine trovato</p>
-          <p style="font-size: 0.875rem; margin-top: 0.5rem;">Prova a modificare la ricerca testuale o reimposta i filtri alfabetici.</p>
+        <div class="card empty-state">
+          <p class="empty-state-title">Nessun termine trovato</p>
+          <p class="empty-state-text">Prova a modificare la ricerca testuale o reimposta i filtri alfabetici.</p>
         </div>
       `;
       return;
@@ -604,8 +606,8 @@ function initGlossary() {
     let html = '';
     items.forEach(item => {
       const exampleBox = item.example ? `
-        <div style="margin-top: 0.85rem; padding: 0.75rem 1rem; background: var(--bg-body); border-left: 3px solid var(--primary); border-radius: var(--radius-sm); font-size: 0.84rem; line-height: 1.55; color: var(--text-body);">
-          <strong style="color: var(--secondary); display: block; margin-bottom: 0.2rem;">💡 Esempio pratico / Focus operativo:</strong>
+        <div class="glossary-example">
+          <strong class="glossary-example-label">💡 Esempio pratico / Focus operativo:</strong>
           ${item.example}
         </div>
       ` : '';
@@ -659,7 +661,7 @@ function initFaqAccordion() {
   const countEl = document.getElementById('faq-count');
 
   if (!container || typeof FAQS_DATA === 'undefined') {
-    // Fallback su elementi statici se non esiste il container dinamico
+    // Supporta eventuali FAQ statiche anche senza il dataset dinamico.
     const staticItems = document.querySelectorAll('.faq-item');
     if (staticItems.length > 0) {
       staticItems.forEach(item => {
@@ -681,33 +683,32 @@ function initFaqAccordion() {
   let currentCategory = 'ALL';
 
   function formatFaqAnswer(answer) {
-    const highlightTerms = text => text;
     const numberedParts = answer.split(/(?=\b\d+\)\s)/);
 
     if (numberedParts.length >= 3 && numberedParts.slice(1).every(part => /^\d+\)\s/.test(part))) {
       const introduction = numberedParts.shift().trim();
       const listItems = numberedParts.map(part => part.replace(/^\d+\)\s/, '').trim());
-      return `${introduction ? `<p>${highlightTerms(introduction)}</p>` : ''}<ol>${listItems.map(item => `<li>${highlightTerms(item)}</li>`).join('')}</ol>`;
+      return `${introduction ? `<p>${introduction}</p>` : ''}<ol>${listItems.map(item => `<li>${item}</li>`).join('')}</ol>`;
     }
 
     const bulletParts = answer.split(/(?=•\s)/);
     if (bulletParts.length >= 2 && bulletParts.slice(1).every(part => /^•\s/.test(part))) {
       const introduction = bulletParts.shift().trim();
       const listItems = bulletParts.map(part => part.replace(/^•\s/, '').trim());
-      return `${introduction ? `<p>${highlightTerms(introduction)}</p>` : ''}<ul>${listItems.map(item => `<li>${highlightTerms(item)}</li>`).join('')}</ul>`;
+      return `${introduction ? `<p>${introduction}</p>` : ''}<ul>${listItems.map(item => `<li>${item}</li>`).join('')}</ul>`;
     }
 
-    return `<p>${highlightTerms(answer)}</p>`;
+    return `<p>${answer}</p>`;
   }
 
-  // Costruisci bottoni categoria FAQ
+  // Genera i filtri categoria e collega ciascun pulsante alla nuova ricerca.
   if (categoryPillsContainer) {
     const categories = ['ALL', ...new Set(FAQS_DATA.map(f => f.category))];
     let catHtml = '';
     categories.forEach(cat => {
       const label = cat === 'ALL' ? 'Tutte le domande' : cat;
       const activeClass = cat === 'ALL' ? 'badge-primary' : 'badge-neutral';
-      catHtml += `<button type="button" class="badge ${activeClass}" data-cat="${cat}" style="cursor: pointer; padding: 0.45rem 0.95rem; font-size: 0.8125rem;">${label}</button>`;
+      catHtml += `<button type="button" class="badge filter-pill faq-category-pill ${activeClass}" data-cat="${cat}">${label}</button>`;
     });
     categoryPillsContainer.innerHTML = catHtml;
 
@@ -732,9 +733,9 @@ function initFaqAccordion() {
 
     if (items.length === 0) {
       container.innerHTML = `
-        <div class="card" style="text-align: center; color: var(--text-muted); padding: 3rem;">
-          <p style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">Nessuna risposta trovata</p>
-          <p style="font-size: 0.875rem; margin-top: 0.5rem;">Prova ad utilizzare parole chiave differenti (es. minusvalenze, barriera, airbag, market maker).</p>
+        <div class="card empty-state">
+          <p class="empty-state-title">Nessuna risposta trovata</p>
+          <p class="empty-state-text">Prova ad utilizzare parole chiave differenti (es. minusvalenze, barriera, airbag, market maker).</p>
         </div>
       `;
       return;
@@ -742,23 +743,25 @@ function initFaqAccordion() {
 
     let html = '';
     items.forEach((item, index) => {
-      // Apri il primo elemento di default, oppure tutti se c'è una ricerca attiva
+      // Mostra il primo risultato; durante una ricerca apre tutte le risposte trovate.
       const isActive = autoOpenAll || index === 0;
+      const questionId = `faq-question-${index}`;
+      const answerId = `faq-answer-${index}`;
 
       html += `
         <div class="faq-item ${isActive ? 'active' : ''}">
-          <button type="button" class="faq-question">
+          <button type="button" class="faq-question" id="${questionId}" aria-expanded="${isActive}" aria-controls="${answerId}">
             <div>
-              <span class="badge badge-primary" style="font-size: 0.7rem; margin-bottom: 0.35rem; display: inline-block;">
+              <span class="badge badge-primary faq-item-category">
                 ${item.category}
               </span>
-              <div style="font-size: 1.05rem; font-weight: 700; color: var(--secondary);">${item.question}</div>
+              <div class="faq-item-question-text">${item.question}</div>
             </div>
             <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <div class="faq-answer">
+          <div class="faq-answer" id="${answerId}" role="region" aria-labelledby="${questionId}">
             ${formatFaqAnswer(item.answer)}
           </div>
         </div>
@@ -767,7 +770,7 @@ function initFaqAccordion() {
 
     container.innerHTML = html;
 
-    // Aggiungi click listener a ciascuna domanda
+    // Collega l'accordion e sincronizza lo stato ARIA con la classe visuale.
     container.querySelectorAll('.faq-item').forEach(item => {
       const questionBtn = item.querySelector('.faq-question');
       if (questionBtn) {
@@ -775,10 +778,16 @@ function initFaqAccordion() {
           const isCurrentlyActive = item.classList.contains('active');
           if (!autoOpenAll) {
             container.querySelectorAll('.faq-item').forEach(other => {
-              if (other !== item) other.classList.remove('active');
+              if (other !== item) {
+                other.classList.remove('active');
+                const otherButton = other.querySelector('.faq-question');
+                if (otherButton) otherButton.setAttribute('aria-expanded', 'false');
+              }
             });
           }
-          item.classList.toggle('active', !isCurrentlyActive);
+          const nextIsActive = !isCurrentlyActive;
+          item.classList.toggle('active', nextIsActive);
+          questionBtn.setAttribute('aria-expanded', String(nextIsActive));
         });
       }
     });
@@ -797,7 +806,7 @@ function initFaqAccordion() {
       return matchCat && matchQuery;
     });
 
-    // Se l'utente sta cercando testo, apri automaticamente le risposte per favorire la lettura
+    // Durante la ricerca mostra tutte le risposte per rendere visibili i match testuali.
     renderFaqs(filtered, query.length > 0);
   }
 
@@ -831,15 +840,15 @@ function initIssuersList() {
             <span class="badge badge-neutral">${iss.country}</span>
             ${ratingBadges}
           </div>
-          <h3 class="issuer-name" style="margin-top: 0.5rem;">${iss.name}</h3>
-          <p style="font-size: 0.8125rem; font-weight: 600; color: var(--primary); margin: 0.25rem 0 0.75rem;">
+          <h3 class="issuer-name issuer-card-name">${iss.name}</h3>
+          <p class="issuer-market-share">
             ${iss.marketShare}
           </p>
-          <p style="font-size: 0.875rem; color: var(--text-body); line-height: 1.5;">
+          <p class="issuer-description">
             ${iss.description}
           </p>
         </div>
-        <div style="padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+        <div class="issuer-card-footer">
           <a href="${iss.website}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-secondary">
             Sito Ufficiale ↗
           </a>
@@ -908,7 +917,7 @@ function initReviewPage() {
         <td data-label="Sottostanti">${sc.sottostante}</td>
         <td data-label="Cedole">${sc.cedole}</td>
         <td data-label="Rimborso capitale">${sc.capitale}</td>
-        <td data-label="Esito finanziario"><strong style="color:var(--primary);">${sc.rendimentoNetto}</strong></td>
+        <td data-label="Esito finanziario"><strong class="scenario-result">${sc.rendimentoNetto}</strong></td>
       </tr>
     `;
   });
@@ -922,9 +931,9 @@ function initReviewPage() {
   }).join('');
 
   reviewContainer.innerHTML = `
-    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <label for="review-isin-picker" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);">
+    <div class="review-toolbar">
+      <div class="review-toolbar-group">
+        <label for="review-isin-picker" class="review-picker-label">
           Cambia Certificato:
         </label>
         <select id="review-isin-picker" class="form-control review-isin-picker">
@@ -938,10 +947,10 @@ function initReviewPage() {
 
     <div class="review-sticky-header">
       <div class="review-isin-row">
-        <span class="review-isin-copy" data-copy-isin="${cert.isin}" role="button" tabindex="0" title="Copia ISIN">
+        <button type="button" class="review-isin-copy" data-copy-isin="${cert.isin}" title="Copia ISIN">
           <span class="cert-isin-copy-label">ISIN</span>
           <span>${cert.isin}</span>
-        </span>
+        </button>
         <nav class="review-section-links" aria-label="Sezioni della scheda tecnica">
           <a href="#review-overview">Riepilogo<br>certificato</a>
           <a href="#review-scenarios">Matrice<br>scenari</a>
@@ -955,7 +964,7 @@ function initReviewPage() {
         Analisi ${cert.type} su paniere: ${cert.underlyings.join(', ')}
       </h1>
 
-      <div class="review-summary-text" style="font-size: 1.05rem; color: var(--text-body); line-height: 1.6; margin-top: 1.25rem;">
+      <div class="review-summary-text">
         ${review.summary}
       </div>
 
@@ -1013,14 +1022,14 @@ function initReviewPage() {
       </div>
 
     <!-- Scenari a Scadenza -->
-    <div class="card scenario-card" id="review-scenarios" style="margin-bottom: 2rem;">
+    <div class="card scenario-card review-scenarios-card" id="review-scenarios">
       <div class="scenario-card-heading">
         <h2>Matrice Scenari di Rimborso a Scadenza</h2>
       </div>
-      <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem; margin-bottom: 0.75rem;">
+      <p class="scenario-description">
         Simulazione teorica del pay-off a scadenza, con i livelli espressi in rapporto agli strike iniziali dei sottostanti, fissati al momento del fixing del prodotto.
       </p>
-      <div class="table-responsive" style="margin-top: 0;">
+      <div class="table-responsive scenario-table-wrap">
         <table class="scenario-table">
           <thead>
             <tr>
@@ -1041,13 +1050,13 @@ function initReviewPage() {
     <!-- Pro & Contro -->
     <div class="pros-cons-grid" id="review-pros-cons">
       <div class="pros-box">
-        <h3 style="font-size: 1.1rem; font-weight: 800; color: #065f46;">Punti di Forza</h3>
+        <h3 class="pros-title">Punti di Forza</h3>
         <ul>
           ${prosHtml}
         </ul>
       </div>
       <div class="cons-box">
-        <h3 style="font-size: 1.1rem; font-weight: 800; color: #991b1b;">Criticità e Rischi</h3>
+        <h3 class="cons-title">Criticità e Rischi</h3>
         <ul>
           ${consHtml}
         </ul>
@@ -1077,21 +1086,25 @@ function initContactForm() {
   if (form && responseMsg) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
+      const formData = new FormData(form);
+      const subject = formData.get('subject');
+      const body = [
+        `Nome e Cognome: ${formData.get('name')}`,
+        `Email: ${formData.get('email')}`,
+        `Oggetto: ${subject}`,
+        '',
+        String(formData.get('message'))
+      ].join('\n');
+      const mailtoUrl = `mailto:info@pertefinanza.it?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Invio in corso...';
       }
 
-      setTimeout(() => {
-        form.reset();
-        responseMsg.style.display = 'block';
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Invia Messaggio';
-        }
-      }, 800);
+      window.location.href = mailtoUrl;
+      responseMsg.style.display = 'block';
+      if (submitBtn) submitBtn.disabled = false;
     });
   }
 }

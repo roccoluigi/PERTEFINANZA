@@ -109,8 +109,8 @@
             </select>
           </div>
 
-          <div class="form-group" style="display: flex; justify-content: flex-end; align-items: center;">
-            <span id="certificates-count" style="font-size: 0.8125rem; font-weight: 700; color: var(--text-muted);">
+          <div class="form-group certificates-count-group">
+            <span id="certificates-count" class="certificates-count">
               Caricamento...
             </span>
           </div>
@@ -119,7 +119,7 @@
 
       <!-- Catalogo completo nello stesso formato delle card della home -->
       <div id="certificates-cards" class="certificates-cards" aria-label="Catalogo completo certificati di investimento">
-        <!-- Popolato dinamicamente da js/app.js -->
+        <!-- App.js inserisce qui le card filtrate dal dataset locale. -->
       </div>
 
     </main>
@@ -157,7 +157,7 @@
           <span>In Evidenza</span>
         </div>
         <div id="sidebar-featured-certs">
-          <!-- Caricato dinamicamente da app.js -->
+          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
         </div>
       </div>
 
@@ -168,11 +168,6 @@
   <footer class="site-footer"></footer>
 
   <script src="js/data-certificates.js"></script>
-  <script src="js/data-issuers.js"></script>
-  <script src="js/data-glossary.js"></script>
-  <script src="js/data-faqs.js"></script>
-  <script src="js/data-underlyings.js"></script>
-  <script src="js/reviews.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

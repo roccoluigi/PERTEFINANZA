@@ -1,4 +1,4 @@
-// Generazione delle recensioni tecniche
+// Genera testi, scenari e pro/contro coerenti con i dati del certificato selezionato.
 
 function formatStepDownStartMonth(month) {
   const monthNumber = Number(month);
@@ -8,6 +8,8 @@ function formatStepDownStartMonth(month) {
 }
 
 function buildGeneratedReviewContent(cert) {
+  // I contenuti sono calcolati dai parametri del prodotto, così la scheda resta aggiornata
+  // quando cambia il certificato senza duplicare testi nelle pagine HTML.
   const capitalBarrier = parseFloat(cert.barrierCapital) || 0;
   const couponBarrier = Number.parseFloat(cert.barrierCoupon) || capitalBarrier;
   const annualYield = Number(cert.annualYield) || 0;

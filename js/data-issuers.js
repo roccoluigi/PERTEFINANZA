@@ -1,4 +1,4 @@
-// Dati statici PERTEFINANZA
+// Dataset locale degli emittenti, usato da elenco, recensioni e collegamenti informativi.
 
 const ISSUERS_DATA = [
   {

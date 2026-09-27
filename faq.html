@@ -76,14 +76,14 @@
   <!-- Header di Pagina -->
   <section class="page-header page-header-hero">
     <div class="container">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div class="page-header-row">
         <div>
           <h1 class="page-header-title">Domande Frequenti (FAQ)</h1>
           <p class="page-header-desc">
             Risposte approfondite, affidabili e conformi alla normativa tributaria e di mercato (TUIR, ACEPI e regolamenti di Borsa Italiana) per sciogliere ogni dubbio operativo.
           </p>
         </div>
-        <div id="faq-count" style="font-weight: 700; color: var(--primary); font-size: 0.9375rem; background: var(--primary-light); padding: 0.4rem 0.85rem; border-radius: var(--radius-pill); border: 1px solid var(--primary-border);">
+        <div id="faq-count" class="page-header-count">
           25 domande analizzate
         </div>
       </div>
@@ -95,26 +95,26 @@
     <main class="main-content">
       
       <!-- Barra di Ricerca e Filtri Categorie FAQ -->
-      <section class="card" style="margin-bottom: 2rem; background: #ffffff;">
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label for="faq-search" class="form-label" style="display: flex; justify-content: space-between;">
+      <section class="card faq-filter-card">
+        <div class="form-group faq-search-group">
+          <label for="faq-search" class="form-label faq-search-label">
             <span>Cerca una risposta o parola chiave:</span>
-            <span style="font-weight: normal; color: var(--text-muted); font-size: 0.75rem;">Filtro istantaneo</span>
+            <span class="filter-hint">Filtro istantaneo</span>
           </label>
           <input type="text" id="faq-search" class="form-control" placeholder="Es. Minusvalenze, Fineco, Airbag, Softcallable, Bid-Only, Dividendi, Bail-in...">
         </div>
 
         <div>
-          <label class="form-label" style="margin-bottom: 0.5rem; display: block;">Seleziona Categoria:</label>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.45rem;" id="faq-categories">
-            <!-- Popolato dinamicamente da app.js -->
+          <label class="form-label filter-label">Seleziona Categoria:</label>
+          <div class="faq-category-list" id="faq-categories">
+            <!-- App.js genera i filtri categoria dal dataset FAQ locale. -->
           </div>
         </div>
       </section>
 
       <!-- Contenitore Accordion Dinamico delle FAQ -->
       <div class="faq-list" id="faq-container">
-        <!-- Generato dinamicamente con le 20 risposte tecniche complete da app.js -->
+        <!-- App.js genera qui domande, risposte, stati ARIA e accordion. -->
       </div>
 
     </main>
@@ -149,7 +149,7 @@
           <span>In Evidenza</span>
         </div>
         <div id="sidebar-featured-certs">
-          <!-- Caricato dinamicamente da app.js -->
+          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
         </div>
       </div>
 
@@ -160,11 +160,7 @@
   <footer class="site-footer"></footer>
 
   <script src="js/data-certificates.js"></script>
-  <script src="js/data-issuers.js"></script>
-  <script src="js/data-glossary.js"></script>
   <script src="js/data-faqs.js"></script>
-  <script src="js/data-underlyings.js"></script>
-  <script src="js/reviews.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

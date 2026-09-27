@@ -76,14 +76,14 @@
   <!-- Header di Pagina -->
   <section class="page-header page-header-hero">
     <div class="container">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div class="page-header-row">
         <div>
           <h1 class="page-header-title">Glossario Finanziario dei Certificati</h1>
           <p class="page-header-desc">
             Terminologia verificata, formule di payoff, opzioni di protezione e dinamiche di mercato spiegate con rigore tecnico ed esempi numerici reali.
           </p>
         </div>
-        <div id="glossary-count" style="font-weight: 700; color: var(--primary); font-size: 0.9375rem; background: var(--primary-light); padding: 0.4rem 0.85rem; border-radius: var(--radius-pill); border: 1px solid var(--primary-border);">
+        <div id="glossary-count" class="page-header-count">
           Oltre 50 termini disponibili
         </div>
       </div>
@@ -95,35 +95,35 @@
     <main class="main-content">
       
       <!-- Sezione Filtri e Ricerca Avanzata -->
-      <section class="card" style="margin-bottom: 1.5rem; background: #ffffff;">
-        <div class="form-group" style="margin-bottom: 1.25rem;">
-          <label for="glossary-search" class="form-label" style="display: flex; justify-content: space-between;">
+      <section class="card glossary-filter-card">
+        <div class="form-group glossary-search-group">
+          <label for="glossary-search" class="form-label glossary-search-label">
             <span>Cerca termine, clausola o parola chiave:</span>
-            <span style="font-weight: normal; color: var(--text-muted); font-size: 0.75rem;">Ricerca in tempo reale</span>
+            <span class="filter-hint">Ricerca in tempo reale</span>
           </label>
           <input type="text" id="glossary-search" class="form-control" placeholder="Es. Airbag, Barriera, Minusvalenze, Softcallable, Strike, Worst-Of, Vega, Bid-Only...">
         </div>
 
         <!-- Filtro Categorie Tematiche -->
-        <div style="margin-bottom: 1.25rem;">
-          <label class="form-label" style="margin-bottom: 0.5rem; display: block;">Filtra per Area Tematica:</label>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;" id="glossary-categories">
-            <!-- Popolato dinamicamente da app.js -->
+        <div class="glossary-category-group">
+          <label class="form-label filter-label">Filtra per Area Tematica:</label>
+          <div class="glossary-category-list" id="glossary-categories">
+            <!-- App.js genera qui le categorie dal dataset del glossario. -->
           </div>
         </div>
 
         <!-- Filtro Alfabetico A-Z -->
         <div>
-          <label class="form-label" style="margin-bottom: 0.5rem; display: block;">Indice Alfabetico A-Z:</label>
+          <label class="form-label filter-label">Indice Alfabetico A-Z:</label>
           <div class="glossary-filter-bar" id="glossary-letters">
-            <!-- Bottoni lettere A-Z generati da app.js -->
+            <!-- App.js genera qui le lettere effettivamente presenti nei termini. -->
           </div>
         </div>
       </section>
 
       <!-- Contenitore Griglia Termini Dinamica -->
       <div class="glossary-grid" id="glossary-container">
-        <!-- Generato dinamicamente con schede, definizioni ed esempi operativi da app.js -->
+        <!-- App.js genera qui schede, definizioni ed eventuali esempi operativi. -->
       </div>
 
     </main>
@@ -158,7 +158,7 @@
           <span>In Evidenza</span>
         </div>
         <div id="sidebar-featured-certs">
-          <!-- Caricato dinamicamente da app.js -->
+          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
         </div>
       </div>
 
@@ -169,11 +169,7 @@
   <footer class="site-footer"></footer>
 
   <script src="js/data-certificates.js"></script>
-  <script src="js/data-issuers.js"></script>
   <script src="js/data-glossary.js"></script>
-  <script src="js/data-faqs.js"></script>
-  <script src="js/data-underlyings.js"></script>
-  <script src="js/reviews.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
