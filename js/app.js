@@ -250,8 +250,7 @@ function certificateCardMarkup(c) {
           <h3>${c.name}</h3>
           <div class="home-certificate-isin">
             <span class="cert-isin-copy" data-copy-isin="${c.isin}" role="button" tabindex="0" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></span>
-            <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA</a>
-            ${shareButtonsMarkup(c)}
+            <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
           </div>
           <div class="home-certificate-summary">${reviewPreviewMarkup(c)}</div>
         </div>
@@ -280,6 +279,7 @@ function certificateCardMarkup(c) {
             <span>Scadenza</span>
             <strong>${c.expiryDate}</strong>
           </div>
+          ${shareButtonsMarkup(c)}
         </div>
       </div>
     </article>
@@ -371,6 +371,8 @@ function initCopyableIsins(container) {
   container.querySelectorAll('[data-copy-isin]').forEach(isinElement => {
     const isin = isinElement.dataset.copyIsin;
     const originalMarkup = isinElement.innerHTML;
+    const originalWidth = isinElement.getBoundingClientRect().width;
+    isinElement.style.width = `${originalWidth}px`;
 
     const copyIsin = async (event) => {
       event.preventDefault();
