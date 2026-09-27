@@ -3,7 +3,7 @@
 const CERTIFICATES_DATA = [
   {
     isin: "DE000BD54H77",
-    name: "Phoenix Memory Step Down su Tecnologia USA",
+    name: "Colossi Tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["AMD", "Intel", "Dell", "Micron"],
@@ -20,7 +20,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486044",
-    name: "Phoenix Memory Step Down su Banche e Utility Europee",
+    name: "Europa in Movimento",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Deutsche Bank", "Société Générale", "Commerzbank"],
@@ -37,7 +37,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486804",
-    name: "Phoenix Memory Step Down su Blue Chip Italiane",
+    name: "Orgoglio Italiano",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["Leonardo", "Prysmian", "MPS", "STM"],
@@ -54,7 +54,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "DE000BD6FHT4",
-    name: "Phoenix Memory Step Down su Tecnologia USA",
+    name: "Next Gen Tech",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["Nvidia", "AMD", "Micron", "Intel"],
@@ -71,7 +71,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127847187",
-    name: "Phoenix Memory Step Down su Tecnologia USA",
+    name: "Frontiera Digitale",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["Palantir", "Marvell", "Western Digital", "Intel"],
@@ -88,7 +88,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127846700",
-    name: "Phoenix Memory Step Down su Banche Italiane",
+    name: "Banche al Centro",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Banca MPS", "BPER Banca", "Commerzbank"],
@@ -105,7 +105,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127851296",
-    name: "Phoenix Memory Step Down su Energy Europe",
+    name: "Energia d'Europa",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["British Petroleum", "Siemens Energy", "Engie", "ENI"],

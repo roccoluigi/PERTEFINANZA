@@ -249,7 +249,9 @@ function certificateCardMarkup(c) {
           <span class="badge badge-primary${c.type === 'Phoenix Memory Step Down' ? ' home-certificate-type-placeholder' : ''}">${c.type}</span>
           <h3>${c.name}</h3>
           <div class="home-certificate-isin">
-            <span class="cert-isin-copy" data-copy-isin="${c.isin}" role="button" tabindex="0" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></span> • Emittente: ${c.issuer}
+            <span class="cert-isin-copy" data-copy-isin="${c.isin}" role="button" tabindex="0" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></span>
+            <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA</a>
+            ${shareButtonsMarkup(c)}
           </div>
           <div class="home-certificate-summary">${reviewPreviewMarkup(c)}</div>
         </div>
@@ -257,6 +259,10 @@ function certificateCardMarkup(c) {
           <div class="home-certificate-metric">
             <span>REND. POT. ANNUO</span>
             <strong>${c.annualYield.toFixed(2)}%</strong>
+          </div>
+          <div class="home-certificate-metric home-certificate-stepdown">
+            <span>Step-down</span>
+            <strong>${c.stepDown}</strong>
           </div>
           <div class="home-certificate-metric home-certificate-barrier">
             <span>Barriera capitale</span>
@@ -266,16 +272,15 @@ function certificateCardMarkup(c) {
             <span>Barriera coupon</span>
             <strong>${c.barrierCoupon}</strong>
           </div>
-          <div class="home-certificate-metric home-certificate-stepdown">
-            <span>Step-down</span>
-            <strong>${c.stepDown}</strong>
+          <div class="home-certificate-metric home-certificate-date">
+            <span>Emissione</span>
+            <strong>${c.strikeDate}</strong>
+          </div>
+          <div class="home-certificate-metric home-certificate-date">
+            <span>Scadenza</span>
+            <strong>${c.expiryDate}</strong>
           </div>
         </div>
-      </div>
-      <div class="home-certificate-foot">
-        <span class="badge badge-neutral">Emissione: ${c.strikeDate}</span>
-        <span class="badge badge-neutral">Scadenza: ${c.expiryDate}</span>
-        ${shareButtonsMarkup(c)}
       </div>
     </article>
   `;
@@ -296,7 +301,7 @@ function reviewPreviewMarkup(cert) {
     ? ISSUERS_DATA.find(item => item.name === cert.issuer)
     : null;
   const issuerDescription = issuer
-    ? issuer.description.toLowerCase()
+    ? issuer.description.toLowerCase().replace(/[.!?]+$/, '')
     : `emittente attivo nel mercato dei prodotti strutturati`;
   const ratings = issuer && issuer.ratings
     ? Object.entries(issuer.ratings)
@@ -304,8 +309,18 @@ function reviewPreviewMarkup(cert) {
       .join(' e ')
     : '';
   const ratingSentence = ratings ? ` ${cert.issuer} vanta ${ratings}.` : '';
-  const previewText = `Il certificato in oggetto è emesso da <strong>${cert.issuer}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${cert.annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}.`;
-  return `<p>${previewText}</p><a href="recensione.html?isin=${encodeURIComponent(cert.isin)}" class="btn btn-sm btn-primary">Leggi la scheda tecnica →</a>`;
+  const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
+  const previewText = `Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su <strong>${cert.underlyings.join(', ')}</strong> e prevede un rendimento potenziale annuo del ${cert.annualYield.toFixed(2)}%, con scadenza il ${cert.expiryDate}.`;
+  return `<p>${previewText}</p>`;
+}
+
+function issuerAnchorId(name) {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 function shareButtonsMarkup(c) {
@@ -788,7 +803,7 @@ function initIssuersList() {
       .join('');
 
     html += `
-      <div class="issuer-card">
+      <div class="issuer-card" id="${issuerAnchorId(iss.name)}">
         <div>
           <div class="issuer-rating">
             <span class="badge badge-neutral">${iss.country}</span>
