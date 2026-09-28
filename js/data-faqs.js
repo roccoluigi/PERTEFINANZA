@@ -13,8 +13,8 @@ const FAQS_DATA = [
   },
   {
     category: "Basi & Funzionamento",
-    question: "Come si legge una scheda di certificato prima di acquistare?",
-    answer: "Parti da emittente, valuta e valore nominale; verifica poi sottostanti, strike, barriera capitale, barriera cedolare, modalità di osservazione, date di valutazione, trigger autocall, step-down, memoria, scadenza e costi. Infine confronta prezzo Bid e Ask sul mercato e leggi KID e Final Terms. Una cedola elevata non è sufficiente per giudicare un prodotto: va considerata insieme alla probabilità e alle conseguenze degli scenari sfavorevoli."
+    question: "Come posso valutare un certificato prima di acquistarlo?",
+    answer: "Leggi la scheda seguendo questi passaggi: 1) Identifica il prodotto: controlla emittente, valuta, valore nominale e scadenza. 2) Verifica su cosa investi: analizza i sottostanti, lo strike iniziale e quale titolo determina il risultato nei panieri Worst-Of. 3) Capisci le condizioni: controlla barriera capitale, barriera cedolare, modalità e date di osservazione, trigger autocall, eventuale step-down e meccanismo di memoria. 4) Valuta il rischio e il prezzo: considera cosa succede se la barriera viene violata, confronta il prezzo Bid e Ask sul mercato e verifica costi e liquidità. 5) Leggi i documenti ufficiali: consulta sempre KID e Final Terms prima di acquistare. Una cedola elevata, da sola, non indica che il prodotto sia conveniente: deve essere valutata insieme alla probabilità e all'impatto degli scenari sfavorevoli."
   },
   {
     category: "Rischi & Dinamiche di Prezzo",

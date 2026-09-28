@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title">
-  <title id="title">PERTEFINANZA</title>
-  <rect width="32" height="32" rx="7" fill="#2563eb"/>
-  <path d="M6 24V18h4v6H6Zm7 0V13h4v11h-4Zm7 0V8h4v16h-4Z" fill="#ffffff" opacity="0.9"/>
-  <path d="M6 11l6-4 5 3 8-5" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

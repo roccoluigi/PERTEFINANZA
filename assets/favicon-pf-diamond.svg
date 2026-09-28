@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title">
-  <title id="title">PERTEFINANZA</title>
-  <path d="M16 1L30 8v16l-14 7L2 24V8L16 1Z" fill="#0f172a"/>
-  <path d="M16 5l10 5v12l-10 5-10-5V10l10-5Z" fill="#2563eb"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="800" letter-spacing="-0.8" fill="#ffffff">PF</text>
-</svg>
