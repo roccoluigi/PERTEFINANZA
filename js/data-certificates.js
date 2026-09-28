@@ -54,7 +54,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "DE000BD6FHT4",
-    name: "Cash collect fast step downsu Big Tech USA",
+    name: "Cash collect fast step down su Big Tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["Nvidia", "AMD", "Micron", "Intel"],
@@ -88,7 +88,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127846700",
-    name: "Cash Collect High Yield su big finanziari",
+    name: "Cash Collect High Yield su Big Finanziari",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Banca MPS", "BPER Banca", "Commerzbank"],
@@ -105,7 +105,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127851296",
-    name: "Cash collect High Yeld su Big Energy Europee",
+    name: "Cash collect High Yield su Big Energy Europee",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["British Petroleum", "Siemens Energy", "Engie", "ENI"],
