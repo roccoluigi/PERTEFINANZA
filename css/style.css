@@ -1584,11 +1584,6 @@ button, input, select, textarea {
   grid-column: 1 / -1;
 }
 
-.widget-cert-details div:nth-child(4) {
-  border-left: 1px solid var(--border);
-  padding-left: 0.35rem;
-}
-
 .widget-cert-details span {
   font-size: 0.725rem;
   color: var(--text-muted);
