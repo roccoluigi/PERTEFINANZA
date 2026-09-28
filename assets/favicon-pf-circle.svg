@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-labelledby="title">
+  <title id="title">PERTEFINANZA</title>
+  <circle cx="16" cy="16" r="15" fill="#0f172a"/>
+  <circle cx="16" cy="16" r="12" fill="#2563eb"/>
+  <text x="16" y="22" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="800" letter-spacing="-0.8" fill="#ffffff">PF</text>
+</svg>
