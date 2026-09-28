@@ -2884,6 +2884,10 @@ button, input, select, textarea {
     grid-template-columns: 1fr;
   }
 
+  .home-benefit-text {
+    font-size: 0.78125rem;
+  }
+
   .home-method-avatar {
     width: 64px;
     height: 64px;
