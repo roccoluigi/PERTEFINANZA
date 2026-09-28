@@ -76,7 +76,7 @@ function initTelegramCards() {
         </div>
       </div>
       <p class="telegram-desc">
-        Cedole, barriere profonde, occasioni sotto la pari. Nel canale trovi alert e analisi sui certificati da tenere d'occhio.
+        Cedole, barriere profonde, quotazioni sotto la pari. Nel canale trovi alert e analisi sui certificati da tenere d'occhio.
       </p>
       <a href="https://t.me/pertefinanza" target="_blank" rel="noopener noreferrer" class="btn btn-telegram telegram-full-button">
         Segui il canale ↗
@@ -211,7 +211,7 @@ function initSidebarFeatured() {
         <div class="widget-cert-name">${c.name}</div>
         <div class="widget-cert-issuer">${c.issuer}</div>
         <div class="widget-cert-details">
-          <div><span>Cedola potenziale</span><strong class="widget-cert-coupon-value">${c.annualYield.toFixed(2)}% annua</strong></div>
+          <div><span>REND. POT. ANNUO</span><strong class="widget-cert-coupon-value">${c.annualYield.toFixed(2)}% annua</strong></div>
           <div><span>Barriera capitale</span><strong>${c.barrierCapital}</strong></div>
           <div><span>Barriera coupon</span><strong>${c.barrierCoupon}</strong></div>
           <div><span>Step-down</span><strong>${c.stepDown}</strong></div>
@@ -229,7 +229,7 @@ function initSidebarFeatured() {
       widget.classList.add('sidebar-featured-widget');
       widget.innerHTML = `
         <div class="widget-title">
-          <span>In Evidenza</span>
+          <span>Ultimi Inserimenti</span>
         </div>
         <div id="sidebar-featured-certs">${html}</div>
       `;
