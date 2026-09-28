@@ -2863,16 +2863,16 @@ button, input, select, textarea {
     height: 2rem;
     width: 7.8rem;
     padding: 0.25rem 0.35rem;
-    font-size: 0.62rem;
+    font-size: 0.74rem;
     white-space: nowrap;
   }
 
   .review-isin-copy .cert-isin-copy-label {
-    font-size: 0.5rem;
+    font-size: 0.62rem;
   }
 
   .review-isin-copy.is-copied {
-    font-size: calc(0.62rem - 2px);
+    font-size: calc(0.74rem - 2px);
   }
 
   .review-isin-picker {
@@ -2896,7 +2896,7 @@ button, input, select, textarea {
     width: 5rem;
     padding-right: 0.25rem;
     padding-left: 0.25rem;
-    font-size: 0.6rem;
+    font-size: 0.55rem;
     white-space: normal;
   }
 
@@ -2994,6 +2994,6 @@ button, input, select, textarea {
 
   .review-section-links a {
     width: 3.75rem;
-    font-size: 0.56rem;
+    font-size: 0.5rem;
   }
 }
