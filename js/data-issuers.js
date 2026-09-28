@@ -188,15 +188,4 @@ const ISSUERS_DATA = [
     website: "https://www.bil.com/",
     description: "Storico istituto lussemburghese attivo in prodotti strutturati e note d'investimento."
   },
-  {
-    name: "Otala Market",
-    country: "Internazionale",
-    ratingSP: "Non rated",
-    ratingMoodys: "Non rated",
-    ratingFitch: "Non rated",
-    ratings: { Profilo: "Specialized Vehicle", Mercato: "EuroTLX / MTF" },
-    marketShare: "Piattaforma specializzata in strutturati",
-    website: "https://www.otalamarket.com/",
-    description: "Piattaforma e veicolo di emissione per prodotti cartolarizzati e note d'investimento speciali."
-  }
 ];
