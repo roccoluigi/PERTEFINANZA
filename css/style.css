@@ -1413,60 +1413,7 @@ button, input, select, textarea {
   flex-shrink: 0;
 }
 
-/* 2. Risk Warning Card */
-.sidebar-risk-card {
-  background-color: #fffbeb;
-  border: 1px solid #fef3c7;
-  border-left: 4px solid var(--warning);
-  border-radius: var(--radius-md);
-  padding: 1.25rem;
-  box-shadow: var(--shadow-sm);
-}
-
-.risk-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.65rem;
-}
-
-.risk-header svg {
-  color: var(--warning);
-  flex-shrink: 0;
-}
-
-.risk-title {
-  font-size: 0.875rem;
-  font-weight: 800;
-  color: #92400e;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.risk-body {
-  font-size: 0.8125rem;
-  color: #78350f;
-  line-height: 1.55;
-}
-
-.risk-body p + p {
-  margin-top: 0.5rem;
-}
-
-.risk-link {
-  display: inline-block;
-  margin-top: 0.65rem;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: #92400e;
-  text-decoration: underline;
-}
-
-.risk-link:hover {
-  color: #b45309;
-}
-
-/* 3. Sidebar Widget: Certificati in Evidenza */
+/* 2. Sidebar Widget: Certificati in Evidenza */
 .sidebar-widget {
   background: #ffffff;
   border: 1px solid var(--border);

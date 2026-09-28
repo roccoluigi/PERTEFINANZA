@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSiteNavigation();
   initFooter();
   initTelegramCards();
-  initRiskWarnings();
   initMobileMenu();
   initSidebarFeatured();
   initHomeFeaturedCertificates();
@@ -83,13 +82,6 @@ function initTelegramCards() {
       </a>
     `;
   });
-}
-
-/* ===========================================================================
-  Avvertenze rischio rimosse dalla sidebar
-  =========================================================================== */
-function initRiskWarnings() {
-  document.querySelectorAll('.sidebar-risk-card').forEach(card => card.remove());
 }
 
 /* ===========================================================================
