@@ -798,11 +798,42 @@ button, input, select, textarea {
   background: linear-gradient(180deg, #ffffff 0%, var(--bg-body) 100%);
 }
 
+.home-method-layout {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+.home-method-avatar {
+  width: 80px;
+  height: 80px;
+  padding: 3px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.home-method-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  object-fit: cover;
+  object-position: center 28%;
+  user-select: none;
+}
+
+.home-method-content .home-benefit-title {
+  margin-bottom: 0.5rem;
+}
+
 .home-method-text {
-  margin-top: 0.75rem;
+  margin-top: 0;
   color: var(--text-body);
-  font-size: 0.9375rem;
-  line-height: 1.6;
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .home-method-actions {
@@ -2847,6 +2878,16 @@ button, input, select, textarea {
 
   .review-meta-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .home-method-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .home-method-avatar {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
   }
 
   .review-sticky-header {
