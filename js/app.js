@@ -825,7 +825,10 @@ function initIssuersList() {
       ['S&P', iss.ratingSP],
       ["Moody's", iss.ratingMoodys],
       ['Fitch', iss.ratingFitch]
-    ].filter(([, rating]) => rating && rating.toLowerCase() !== 'non rated');
+    ].map(([agency, rating]) => [
+      agency,
+      rating && rating.toLowerCase() !== 'non rated' ? rating : 'N.D.'
+    ]);
     const ratingBadges = issuerRatings
       .map(([agency, rating]) => `<span class="issuer-rating-badge">${agency}: ${rating}</span>`)
       .join('');
