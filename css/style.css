@@ -2886,7 +2886,10 @@ button, input, select, textarea {
     font-size: 0.875rem;
   }
 
-  .contact-details-text,
+  .contact-details-text {
+    font-size: 0.875rem;
+  }
+
   .contact-details-link,
   .contact-details-email {
     font-size: 0.8125rem;
