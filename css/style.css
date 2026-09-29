@@ -2882,6 +2882,16 @@ button, input, select, textarea {
     display: none;
   }
 
+  .contact-details-title {
+    font-size: 0.875rem;
+  }
+
+  .contact-details-text,
+  .contact-details-link,
+  .contact-details-email {
+    font-size: 0.8125rem;
+  }
+
   .mobile-menu-btn {
     display: block;
   }
