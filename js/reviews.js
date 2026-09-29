@@ -33,27 +33,26 @@ function buildGeneratedReviewContent(cert) {
   const ratingText = ratingEntries.length > 0
     ? ratingEntries.map(([agency, rating]) => `${agency}: ${rating}`).join(' · ')
     : 'Rating non disponibile nel database';
+  const ratingDescriptions = issuerData && issuerData.ratings
+    ? Object.entries(issuerData.ratings).map(([agency, rating], index) => `${index === 0 ? 'un rating ' : ''}${rating} da parte di ${agency}`)
+    : [];
+  const ratingSummary = ratingDescriptions.length > 1
+    ? `${ratingDescriptions.slice(0, -1).join(', ')} e ${ratingDescriptions[ratingDescriptions.length - 1]}`
+    : ratingDescriptions[0] || 'un rating non disponibile';
   const ratingSentence = issuerData && issuerData.ratings
-    ? `${cert.issuer} vanta ${Object.entries(issuerData.ratings).map(([agency, rating]) => `un rating ${rating} da parte di ${agency}`).join(' e ')}.`
+    ? `${cert.issuer} vanta ${ratingSummary}.`
     : "Il rating dell'emittente va verificato nella documentazione aggiornata del prodotto.";
-  const barrierComment = capitalBarrier <= 50
-    ? `La barriera capitale al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza) è relativamente profonda e lascia un margine teorico fino a un ribasso del ${100 - capitalBarrier}% del sottostante peggiore, ma la protezione vale solo alle condizioni e alla data previste dal prodotto.`
-    : `La barriera capitale al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza) offre un margine più contenuto: se il sottostante peggiore chiude sotto questa soglia alla scadenza, il rimborso può ridursi in modo proporzionale alla sua performance.`;
-  const couponComment = couponBarrier <= 50
-    ? `La barriera per il pagamento del coupon mensile è fissata al ${cert.barrierCoupon}, una soglia che può consentire l'erogazione anche in presenza di ribassi, sempre nel rispetto delle condizioni contrattuali.`
-    : `La barriera coupon al ${cert.barrierCoupon} richiede una tenuta più solida del paniere: sotto tale livello il flusso può non essere riconosciuto, nel rispetto delle condizioni contrattuali.`;
-  const yieldComment = annualYield >= 20
-    ? `Il rendimento potenziale annuo del ${annualYield.toFixed(2)}% è molto elevato e remunera una struttura esposta a oscillazioni importanti.`
-    : `Il rendimento potenziale annuo del ${annualYield.toFixed(2)}% è interessante, ma non deve essere letto come rendimento garantito: il pagamento dipende dall'evoluzione del paniere e dalle condizioni del certificato.`;
+  const barrierComment = `La barriera capitale al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza) è relativamente profonda e lascia un margine di protezione del capitale fino a un ribasso del ${100 - capitalBarrier}% del sottostante peggiore.`;
+  const couponComment = `La barriera per il pagamento del coupon mensile è fissata al ${cert.barrierCoupon}, una soglia che può consentire l'erogazione di cedole anche in presenza di ribassi importanti; questa sarà valutata mese per mese, consentendo anche il recupero di eventuali cedole non erogate, grazie all'effetto memoria, se il Worst-Of dovesse recuperare il livello barriera coupon.`;
   const underlyingProfiles = typeof UNDERLYING_PROFILES !== 'undefined' ? UNDERLYING_PROFILES : {};
   const underlyingText = cert.underlyings.map(name => `<strong>${name}</strong>: ${underlyingProfiles[name] || `${name} è esposto al ciclo economico, ai risultati societari e alla volatilità del proprio comparto.`}`).join('<br>');
   const stepDownArticle = cert.stepDown === '1%' ? "dell'" : 'del ';
   const stepDownText = `Lo <strong>Step-down</strong> ${stepDownArticle}${cert.stepDown}${stepDownStartText ? ` (${stepDownStartText})` : ''} può facilitare il rimborso anticipato se il paniere recupera e raggiunge la soglia prevista, ma può anche interrompere prima del previsto il flusso cedolare: non elimina il rischio di mercato e non protegge da una discesa del Worst-Of sotto barriera.`;
 
   const paragraphs = [
-    `Il certificato in oggetto è emesso da <strong>${cert.issuer}</strong>, ${issuerDescription.toLowerCase()} ${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. ${barrierComment} ${couponComment}<br><br>${yieldComment}`,
-    `Il paniere riunisce quattro società con caratteristiche diverse, ma l'esito dipende sempre dal sottostante peggiore. Per i sottostanti denominati in valuta diversa dall'euro, la struttura <strong>Quanto</strong> protegge i flussi dall'impatto diretto delle oscillazioni del cambio grazie all'opzione valutaria incorporata.<br><br>${underlyingText}`,
-    `${stepDownText}<br><br>Tra i vantaggi ci sono il flusso potenziale, il margine offerto dalla barriera capitale al ${cert.barrierCapital} e la possibilità di un rimborso anticipato.<br><br>Gli svantaggi sono la struttura Worst-Of, la sospensione delle cedole sotto barriera, la perdita potenziale del capitale a scadenza, il rischio di credito di ${cert.issuer} e una liquidità che può ridursi in fasi di mercato tese.`,
+    `Il certificato in oggetto è emesso da <strong>${cert.issuer}</strong>, ${issuerDescription.toLowerCase()} ${ratingSentence}<br>La struttura investe su ${cert.underlyings.join(', ')} e prevede un rendimento potenziale annuo del <strong>${annualYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. ${barrierComment}<br><br>${couponComment}`,
+    `Il paniere è composto dalle società indicate di seguito. Quando i sottostanti sono denominati in valuta diversa dall'euro, la struttura <strong>Quanto</strong> neutralizza l'impatto diretto delle oscillazioni valutarie sui flussi del certificato, grazie all'opzione valutaria incorporata.<br><br>${underlyingText}`,
+    `${stepDownText}<br><br>Tra i vantaggi ci sono la possibilità di ottenere un flusso cedolare mensile importante, la protezione del capitale a scadenza, grazie al margine offerto dalla barriera capitale al ${cert.barrierCapital}, e la possibilità di un rimborso anticipato.<br><br>Gli svantaggi sono la struttura Worst-Of, la sospensione delle cedole sotto barriera, la perdita potenziale del capitale a scadenza, il rischio di credito di ${cert.issuer} e una liquidità che può ridursi in fasi di mercato tese.`,
     `Per farti un'idea completa prima di valutare il prodotto, verifica la <strong>Matrice Scenari di Rimborso a Scadenza</strong>, poi confronta i <strong>Punti di Forza</strong> e le <strong>Criticità e Rischi</strong>. È il modo più chiaro per capire come potrebbero cambiare cedole, rimborso e capitale in caso di rialzo, stabilità o ribasso dei singoli sottostanti.`
   ];
 
