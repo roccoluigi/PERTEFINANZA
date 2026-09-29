@@ -979,12 +979,19 @@ button, input, select, textarea {
 }
 
 .certificate-preview-underlyings {
-  margin: 0;
-  padding-left: 1.25rem;
+  display: block;
+  margin: 0.45rem 0;
+  font-size: 0.9375rem;
 }
 
-.certificate-preview-underlyings li {
-  padding-left: 0.15rem;
+.certificate-preview-underlying {
+  display: inline;
+  color: var(--primary-dark);
+}
+
+.certificate-preview-separator {
+  margin: 0 0.25rem;
+  color: var(--text-muted);
 }
 
 .home-certificate-summary p a,

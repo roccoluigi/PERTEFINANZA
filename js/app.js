@@ -325,8 +325,8 @@ function reviewPreviewMarkup(cert) {
     : ratingParts[0] || '';
   const ratingSentence = ratings ? ` ${cert.issuer} vanta un rating ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  const underlyingList = `<ul class="certificate-preview-underlyings">${cert.underlyings.map(name => `<li><strong>${name}</strong></li>`).join('')}</ul>`;
-  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList}e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
+  const underlyingList = `<span class="certificate-preview-underlyings" aria-label="Sottostanti">${cert.underlyings.map(name => `<span class="certificate-preview-underlying"><strong>${name}</strong></span>`).join(' <span class="certificate-preview-separator" aria-hidden="true">·</span> ')}</span>`;
+  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
 }
 
 function issuerAnchorId(name) {
