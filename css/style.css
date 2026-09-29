@@ -1056,34 +1056,43 @@ button, input, select, textarea {
 }
 
 .home-certificate-metrics > .share-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
   grid-column: 1 / -1;
   width: 100%;
+  align-items: center;
   justify-content: center;
-  gap: 0.45rem;
+  column-gap: 1.20467932rem;
   margin-left: 0;
   margin-top: 0;
-  padding: 0.2rem 0.45rem;
+  padding: 0.25rem 0.45rem;
   border: 1px solid #8b98a8;
   border-radius: var(--radius-sm);
   background: #eef1f5;
 }
 
 .home-certificate-metrics > .share-actions .share-label {
-  margin-right: 0.2rem;
+  position: absolute;
+  top: 50%;
+  left: 0.45rem;
+  margin-right: 0;
+  transform: translateY(-50%);
 }
 
 .home-certificate-metrics > .share-actions .share-button {
-  width: 1.55rem;
-  height: 1.55rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  justify-self: center;
 }
 
 .home-certificate-metrics > .share-actions .share-button + .share-button {
-  margin-left: 0.35rem;
+  margin-left: 0;
 }
 
 .home-certificate-metrics > .share-actions .share-button svg {
-  width: 1rem;
-  height: 1rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .home-certificate-summary p + p,
@@ -1179,21 +1188,14 @@ button, input, select, textarea {
   fill: currentColor;
 }
 
-.share-button.share-instagram svg {
+.share-button.share-copy svg {
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
 }
 
-.share-button.share-instagram svg .share-icon-cutout {
-  fill: currentColor;
-  stroke: none;
-}
-
 .share-whatsapp:hover { color: #168c4a; border-color: #9bd7b5; }
 .share-telegram:hover { color: #367da8; border-color: #a9c9dc; }
-.share-facebook:hover { color: #3159a4; border-color: #aebfe3; }
-.share-instagram:hover { color: #a34b78; border-color: #d8b2c6; }
 
 .widget-cert-item .share-actions {
   margin-top: 0.65rem;

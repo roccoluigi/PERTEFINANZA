@@ -352,8 +352,7 @@ function shareButtonsMarkup(c) {
       <span class="share-label">Condividi</span>
       <a class="share-button share-whatsapp" href="https://wa.me/?text=${shareTitle}%20${encodedUrl}" target="_blank" rel="noopener noreferrer" title="Condividi su WhatsApp" aria-label="Condividi su WhatsApp">${shareIconMarkup('whatsapp')}</a>
       <a class="share-button share-telegram" href="https://t.me/share/url?url=${encodedUrl}&text=${shareTitle}" target="_blank" rel="noopener noreferrer" title="Condividi su Telegram" aria-label="Condividi su Telegram">${shareIconMarkup('telegram')}</a>
-      <a class="share-button share-facebook" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" title="Condividi su Facebook" aria-label="Condividi su Facebook">${shareIconMarkup('facebook')}</a>
-      <button type="button" class="share-button share-instagram" data-copy-share-url="${shareUrl}" title="Copia link per Instagram" aria-label="Copia link per Instagram">${shareIconMarkup('instagram')}</button>
+      <button type="button" class="share-button share-copy" data-copy-share-url="${shareUrl}" title="Copia link negli appunti" aria-label="Copia link negli appunti">${shareIconMarkup('copy')}</button>
     </div>
   `;
 }
@@ -362,8 +361,7 @@ function shareIconMarkup(platform) {
   const icons = {
     whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.8L.2 24l6.6-1.7a11.8 11.8 0 0 0 5.3 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.1-1.2-6.1-3.5-8.3ZM12.2 21.4h-.1c-1.7 0-3.4-.5-4.8-1.4l-.3-.2-3.9 1 1-3.8-.2-.3a9.6 9.6 0 1 1 8.3 4.7Zm5.3-7.2c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.7 2 .8 2.7.9 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z"/></svg>',
     telegram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.5 2.2 19 21.1c-.3 1.3-1 1.6-2.1 1L11 17.7l-2.8 2.7c-.3.3-.5.5-1 .5l.4-6.1L18.7 5c.5-.4-.1-.7-.8-.3L4.2 13.5l-5.9-1.9c-1.3-.4-1.3-1.3.3-1.9L21.5 1c1.1-.4 2 .3 1 1.2Z"/></svg>',
-    facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 23v-9h3l.5-3.5h-3.5V8.3c0-1 .3-1.7 1.8-1.7h1.9V3.5c-.3 0-1.4-.1-2.7-.1-2.7 0-4.5 1.6-4.5 4.5v2.6H7.2V14h3v9h3.5Z"/></svg>',
-    instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="share-icon-cutout"/></svg>'
+    copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg>'
   };
   return icons[platform];
 }
@@ -373,14 +371,14 @@ function initShareButtons(container = document) {
     button.addEventListener('click', async event => {
       event.preventDefault();
       event.stopPropagation();
-      const originalLabel = button.textContent;
+      const originalMarkup = button.innerHTML;
       try {
         await copyTextToClipboard(new URL(button.dataset.copyShareUrl, window.location.href).href);
         button.textContent = 'OK';
-        setTimeout(() => { button.textContent = originalLabel; }, 1200);
+        setTimeout(() => { button.innerHTML = originalMarkup; }, 1200);
       } catch {
         button.textContent = 'NO';
-        setTimeout(() => { button.textContent = originalLabel; }, 1600);
+        setTimeout(() => { button.innerHTML = originalMarkup; }, 1600);
       }
     });
   });
@@ -420,8 +418,12 @@ function initCopyableIsins(container) {
 
 async function copyTextToClipboard(text) {
   if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return;
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Prova il fallback se il browser nega l'accesso agli appunti.
+    }
   }
 
   // Il fallback consente la copia anche aprendo le pagine da file:// o in browser meno recenti.
