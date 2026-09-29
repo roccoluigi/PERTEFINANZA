@@ -2914,6 +2914,10 @@ button, input, select, textarea {
     grid-template-columns: 1fr;
   }
 
+  .review-title {
+    font-size: 1.1988rem;
+  }
+
   .review-meta-grid {
     grid-template-columns: 1fr 1fr;
   }
