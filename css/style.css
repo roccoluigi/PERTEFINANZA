@@ -2288,12 +2288,6 @@ button, input, select, textarea {
   box-sizing: border-box;
 }
 
-.review-picker-label {
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 700;
-}
-
 .scenario-description {
   margin-top: 0.25rem;
   margin-bottom: 0.75rem;
