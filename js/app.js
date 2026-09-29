@@ -280,11 +280,11 @@ function certificateCardMarkup(c) {
 
 function alignCertificateMetrics(container = document) {
   // Le card hanno intestazioni di altezza variabile: allinea i metric box
-  // alla prima riga della preview solo quando il layout e' orizzontale.
+  // al pulsante della scheda tecnica solo quando il layout e' orizzontale.
   container.querySelectorAll('.home-certificate-head').forEach(head => {
-    const summary = head.querySelector('.home-certificate-summary');
     const metrics = head.querySelector('.home-certificate-metrics');
-    if (!summary || !metrics) return;
+    const techButton = head.querySelector('.home-certificate-tech-button');
+    if (!metrics || !techButton) return;
 
     if (getComputedStyle(head).flexDirection === 'column') {
       metrics.style.marginTop = '0';
@@ -292,8 +292,8 @@ function alignCertificateMetrics(container = document) {
     }
 
     const headTop = head.getBoundingClientRect().top;
-    const summaryTop = summary.getBoundingClientRect().top;
-    metrics.style.marginTop = `${Math.max(0, summaryTop - headTop)}px`;
+    const techButtonTop = techButton.getBoundingClientRect().top;
+    metrics.style.marginTop = `${Math.max(0, techButtonTop - headTop)}px`;
   });
 }
 
@@ -326,7 +326,7 @@ function reviewPreviewMarkup(cert) {
   const ratingSentence = ratings ? ` ${cert.issuer} vanta un rating ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
   const underlyingList = `<span class="certificate-preview-underlyings" aria-label="Sottostanti">${cert.underlyings.map(name => `<span class="certificate-preview-underlying"><strong>${name}</strong></span>`).join(' <span class="certificate-preview-separator" aria-hidden="true">·</span> ')}</span>`;
-  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
+  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong> (con effetto memoria), con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
 }
 
 function issuerAnchorId(name) {
