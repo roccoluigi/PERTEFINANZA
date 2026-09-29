@@ -279,12 +279,12 @@ function certificateCardMarkup(c) {
 }
 
 function alignCertificateMetrics(container = document) {
-  // Le card della home hanno intestazioni di altezza variabile: allinea i metric box
-  // al pulsante tecnico solo quando il layout e' orizzontale.
+  // Le card hanno intestazioni di altezza variabile: allinea i metric box
+  // alla prima riga della preview solo quando il layout e' orizzontale.
   container.querySelectorAll('.home-certificate-head').forEach(head => {
-    const button = head.querySelector('.home-certificate-tech-button');
+    const summary = head.querySelector('.home-certificate-summary');
     const metrics = head.querySelector('.home-certificate-metrics');
-    if (!button || !metrics) return;
+    if (!summary || !metrics) return;
 
     if (getComputedStyle(head).flexDirection === 'column') {
       metrics.style.marginTop = '0';
@@ -292,8 +292,8 @@ function alignCertificateMetrics(container = document) {
     }
 
     const headTop = head.getBoundingClientRect().top;
-    const buttonTop = button.getBoundingClientRect().top;
-    metrics.style.marginTop = `${Math.max(0, buttonTop - headTop)}px`;
+    const summaryTop = summary.getBoundingClientRect().top;
+    metrics.style.marginTop = `${Math.max(0, summaryTop - headTop)}px`;
   });
 }
 
@@ -314,7 +314,7 @@ function reviewPreviewMarkup(cert) {
     ? ISSUERS_DATA.find(item => item.name === cert.issuer)
     : null;
   const issuerDescription = issuer
-    ? issuer.description.toLowerCase().replace(/[.!?]+$/, '')
+    ? (issuer.marketShare || issuer.description).toLowerCase().replace(/[.!?]+$/, '')
     : 'emittente attivo nel mercato dei prodotti strutturati';
   const ratingParts = issuer && issuer.ratings
     ? Object.entries(issuer.ratings)
@@ -325,7 +325,8 @@ function reviewPreviewMarkup(cert) {
     : ratingParts[0] || '';
   const ratingSentence = ratings ? ` ${cert.issuer} vanta un rating ${ratings}.` : '';
   const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  return `<p>Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence}<br>La struttura investe su ${formatUnderlyingNames(cert.underlyings)} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</p>`;
+  const underlyingList = `<ul class="certificate-preview-underlyings">${cert.underlyings.map(name => `<li><strong>${name}</strong></li>`).join('')}</ul>`;
+  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList}e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong>, con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
 }
 
 function issuerAnchorId(name) {

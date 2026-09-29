@@ -973,11 +973,22 @@ button, input, select, textarea {
 }
 
 .home-certificate-summary p,
+.certificate-preview,
 .review-summary-text p {
   margin: 0;
 }
 
-.home-certificate-summary p a {
+.certificate-preview-underlyings {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.certificate-preview-underlyings li {
+  padding-left: 0.15rem;
+}
+
+.home-certificate-summary p a,
+.certificate-preview a {
   color: var(--primary-dark);
   font-weight: 700;
 }
