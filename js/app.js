@@ -927,17 +927,13 @@ function initReviewPage() {
   let consHtml = review.cons.map(c => `<li>${c}</li>`).join('');
 
   let certOptions = CERTIFICATES_DATA.map(c => {
-    const shortName = c.name.split(/\s+su\s+/i).pop();
-    return `<option value="${c.isin}" ${c.isin === isin ? 'selected' : ''}>${c.isin} - ${shortName}</option>`;
+    return `<option value="${c.isin}" ${c.isin === isin ? 'selected' : ''}>${c.isin} - ${c.name}</option>`;
   }).join('');
 
   reviewContainer.innerHTML = `
     <div class="review-toolbar">
       <div class="review-toolbar-group">
-        <label for="review-isin-picker" class="review-picker-label">
-          Cambia Certificato:
-        </label>
-        <select id="review-isin-picker" class="form-control review-isin-picker">
+        <select id="review-isin-picker" class="form-control review-isin-picker" aria-label="Cambia Certificato">
           ${certOptions}
         </select>
       </div>
