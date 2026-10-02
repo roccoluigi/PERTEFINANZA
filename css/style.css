@@ -1081,10 +1081,10 @@ button, input, select, textarea {
   width: 100%;
   align-items: center;
   justify-content: center;
-  column-gap: 1.20467932rem;
+  column-gap: 1.08421139rem;
   margin-left: 0;
   margin-top: 0;
-  padding: 0.25rem 0.45rem;
+  padding: 0.2rem 0.405rem;
   border: 1px solid #8b98a8;
   border-radius: var(--radius-sm);
   background: #eef1f5;
@@ -1093,14 +1093,15 @@ button, input, select, textarea {
 .home-certificate-metrics > .share-actions .share-label {
   position: absolute;
   top: 50%;
-  left: 0.45rem;
+  left: 0.405rem;
   margin-right: 0;
+  font-size: 0.585rem;
   transform: translateY(-50%);
 }
 
 .home-certificate-metrics > .share-actions .share-button {
-  width: 1.65rem;
-  height: 1.65rem;
+  width: 1.5rem;
+  height: 1.5rem;
   justify-self: center;
 }
 
@@ -1109,8 +1110,8 @@ button, input, select, textarea {
 }
 
 .home-certificate-metrics > .share-actions .share-button svg {
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.08rem;
+  height: 1.08rem;
 }
 
 .home-certificate-summary p + p,
