@@ -1872,7 +1872,7 @@ button, input, select, textarea {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
   min-height: 3.25rem;
@@ -1882,7 +1882,7 @@ button, input, select, textarea {
 .review-section-links {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -2968,6 +2968,7 @@ button, input, select, textarea {
 
   .review-isin-row {
     gap: 0.5rem;
+    justify-content: center;
     flex-wrap: nowrap;
   }
 
