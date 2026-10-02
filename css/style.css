@@ -2961,7 +2961,7 @@ button, input, select, textarea {
   }
 
   .review-isin-copy.is-copied {
-    font-size: calc(0.74rem - 2px);
+    font-size: calc(0.74rem - 2px + 1pt);
   }
 
   .review-isin-picker {
@@ -2991,7 +2991,7 @@ button, input, select, textarea {
     width: 5rem;
     padding-right: 0.25rem;
     padding-left: 0.25rem;
-    font-size: 0.55rem;
+    font-size: calc(0.55rem + 0.5pt);
     white-space: normal;
   }
 
@@ -3088,17 +3088,21 @@ button, input, select, textarea {
   }
 
   .review-isin-copy {
-    flex: 0 0 5.4rem;
-    width: 5.4rem;
+    flex: 0 0 6.48rem;
+    width: 6.48rem;
     min-width: 0;
     height: 2.35rem;
     padding: 0.15rem 0.1rem;
-    font-size: 0.64rem;
+    font-size: calc(0.64rem + 1pt);
     line-height: 1.1;
   }
 
   .review-isin-copy .cert-isin-copy-label {
-    font-size: 0.55rem;
+    font-size: calc(0.55rem + 1pt);
+  }
+
+  .review-isin-copy.is-copied {
+    font-size: calc(0.64rem + 1pt);
   }
 
   .review-section-links {
@@ -3112,6 +3116,6 @@ button, input, select, textarea {
     min-width: 0;
     padding-right: 0.1rem;
     padding-left: 0.1rem;
-    font-size: 0.45rem;
+    font-size: calc(0.45rem + 0.5pt);
   }
 }
