@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
    Identita e navigazione condivise
    =========================================================================== */
 function initSiteNavigation() {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const pathnamePage = window.location.pathname.split('/').pop() || 'index.html';
+  const currentPage = pathnamePage === 'recensione.html' ? 'certificati.html' : pathnamePage;
   const navigationItems = [
     { href: 'index.html', label: 'Home', mobileLabel: 'Home' },
     { href: 'certificati.html', label: 'Certificati', mobileLabel: 'Catalogo Certificati' },
@@ -43,13 +44,13 @@ function initSiteNavigation() {
 
   document.querySelectorAll('.main-nav').forEach(nav => {
     nav.innerHTML = navigationItems.slice(0, 7).map(item => `
-      <a href="${item.href}" class="nav-link${currentPage === item.href ? ' active' : ''}">${item.label}</a>
+      <a href="${item.href}" class="nav-link${currentPage === item.href ? ' active' : ''}"${currentPage === item.href ? ' aria-current="page"' : ''}>${item.label}</a>
     `).join('');
   });
 
   document.querySelectorAll('.mobile-nav').forEach(nav => {
     nav.innerHTML = navigationItems.map(item => `
-      <a href="${item.href}" class="mobile-nav-link${currentPage === item.href ? ' active' : ''}">${item.mobileLabel}</a>
+      <a href="${item.href}" class="mobile-nav-link${currentPage === item.href ? ' active' : ''}"${currentPage === item.href ? ' aria-current="page"' : ''}>${item.mobileLabel}</a>
     `).join('');
   });
 }
@@ -549,15 +550,20 @@ function initGlossary() {
     availableLetters.forEach(l => {
       const label = l === 'ALL' ? 'Tutti' : l;
       const activeClass = l === 'ALL' ? 'active' : '';
-      lettersHtml += `<button type="button" class="glossary-letter-btn ${activeClass}" data-letter="${l}">${label}</button>`;
+      lettersHtml += `<button type="button" class="glossary-letter-btn ${activeClass}" data-letter="${l}" aria-pressed="${l === 'ALL'}">${label}</button>`;
     });
     lettersContainer.innerHTML = lettersHtml;
 
     lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        currentLetter = e.target.getAttribute('data-letter');
+        lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(button => {
+          button.classList.remove('active');
+          button.setAttribute('aria-pressed', 'false');
+        });
+        const selectedButton = e.currentTarget;
+        selectedButton.classList.add('active');
+        selectedButton.setAttribute('aria-pressed', 'true');
+        currentLetter = selectedButton.getAttribute('data-letter');
         filterGlossary();
       });
     });
@@ -570,19 +576,22 @@ function initGlossary() {
     categories.forEach(cat => {
       const label = cat === 'ALL' ? 'Tutte le categorie' : cat;
       const activeClass = cat === 'ALL' ? 'active' : '';
-      catHtml += `<button type="button" class="badge filter-pill glossary-category-pill ${activeClass ? 'badge-primary' : 'badge-neutral'}" data-category="${cat}">${label}</button>`;
+      catHtml += `<button type="button" class="badge filter-pill glossary-category-pill ${activeClass ? 'badge-primary' : 'badge-neutral'}" data-category="${cat}" aria-pressed="${cat === 'ALL'}">${label}</button>`;
     });
     categoryContainer.innerHTML = catHtml;
 
     categoryContainer.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        categoryContainer.querySelectorAll('button').forEach(b => {
-          b.classList.remove('badge-primary');
-          b.classList.add('badge-neutral');
+        categoryContainer.querySelectorAll('button').forEach(button => {
+          button.classList.remove('badge-primary');
+          button.classList.add('badge-neutral');
+          button.setAttribute('aria-pressed', 'false');
         });
-        e.target.classList.remove('badge-neutral');
-        e.target.classList.add('badge-primary');
-        currentCategory = e.target.getAttribute('data-category');
+        const selectedButton = e.currentTarget;
+        selectedButton.classList.remove('badge-neutral');
+        selectedButton.classList.add('badge-primary');
+        selectedButton.setAttribute('aria-pressed', 'true');
+        currentCategory = selectedButton.getAttribute('data-category');
         filterGlossary();
       });
     });
@@ -708,19 +717,22 @@ function initFaqAccordion() {
     categories.forEach(cat => {
       const label = cat === 'ALL' ? 'Tutte le domande' : cat;
       const activeClass = cat === 'ALL' ? 'badge-primary' : 'badge-neutral';
-      catHtml += `<button type="button" class="badge filter-pill faq-category-pill ${activeClass}" data-cat="${cat}">${label}</button>`;
+      catHtml += `<button type="button" class="badge filter-pill faq-category-pill ${activeClass}" data-cat="${cat}" aria-pressed="${cat === 'ALL'}">${label}</button>`;
     });
     categoryPillsContainer.innerHTML = catHtml;
 
     categoryPillsContainer.querySelectorAll('button').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        categoryPillsContainer.querySelectorAll('button').forEach(b => {
-          b.classList.remove('badge-primary');
-          b.classList.add('badge-neutral');
+        categoryPillsContainer.querySelectorAll('button').forEach(button => {
+          button.classList.remove('badge-primary');
+          button.classList.add('badge-neutral');
+          button.setAttribute('aria-pressed', 'false');
         });
-        e.target.classList.remove('badge-neutral');
-        e.target.classList.add('badge-primary');
-        currentCategory = e.target.getAttribute('data-cat');
+        const selectedButton = e.currentTarget;
+        selectedButton.classList.remove('badge-neutral');
+        selectedButton.classList.add('badge-primary');
+        selectedButton.setAttribute('aria-pressed', 'true');
+        currentCategory = selectedButton.getAttribute('data-cat');
         filterFaqs();
       });
     });

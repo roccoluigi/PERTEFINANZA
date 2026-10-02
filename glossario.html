@@ -84,7 +84,7 @@
             Terminologia verificata, formule di payoff, opzioni di protezione e dinamiche di mercato spiegate con rigore tecnico ed esempi numerici reali.
           </p>
         </div>
-        <div id="glossary-count" class="page-header-count">
+        <div id="glossary-count" class="page-header-count" role="status">
           Oltre 50 termini disponibili
         </div>
       </div>
@@ -107,16 +107,16 @@
 
         <!-- Filtro Categorie Tematiche -->
         <div class="glossary-category-group">
-          <label class="form-label filter-label">Filtra per Area Tematica:</label>
-          <div class="glossary-category-list" id="glossary-categories">
+          <span id="glossary-category-label" class="form-label filter-label">Filtra per Area Tematica:</span>
+          <div class="glossary-category-list" id="glossary-categories" role="group" aria-labelledby="glossary-category-label">
             <!-- App.js genera qui le categorie dal dataset del glossario. -->
           </div>
         </div>
 
         <!-- Filtro Alfabetico A-Z -->
         <div>
-          <label class="form-label filter-label">Indice Alfabetico A-Z:</label>
-          <div class="glossary-filter-bar" id="glossary-letters">
+          <span id="glossary-letters-label" class="form-label filter-label">Indice Alfabetico A-Z:</span>
+          <div class="glossary-filter-bar" id="glossary-letters" role="group" aria-labelledby="glossary-letters-label">
             <!-- App.js genera qui le lettere effettivamente presenti nei termini. -->
           </div>
         </div>

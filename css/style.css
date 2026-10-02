@@ -80,6 +80,24 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Lascia visibile il titolo quando si raggiunge una sezione tramite ancora. */
 section[id],
 article[id] {
@@ -2091,6 +2109,12 @@ button, input, select, textarea {
   color: var(--text-main);
   cursor: pointer;
   transition: var(--transition);
+}
+
+.glossary-letter-btn[data-letter="ALL"] {
+  width: 43.2px;
+  height: 36px;
+  font-size: calc(1.05rem - 0.5pt);
 }
 
 .glossary-letter-btn:hover,

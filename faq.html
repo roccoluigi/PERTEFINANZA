@@ -84,7 +84,7 @@
             Le risposte alle domande più frequenti su certificati, cedole, barriere e principali caratteristiche dei prodotti.
           </p>
         </div>
-        <div id="faq-count" class="page-header-count">
+        <div id="faq-count" class="page-header-count" role="status">
           25 domande analizzate
         </div>
       </div>
@@ -106,8 +106,8 @@
         </div>
 
         <div>
-          <label class="form-label filter-label">Seleziona Categoria:</label>
-          <div class="faq-category-list" id="faq-categories">
+          <span id="faq-category-label" class="form-label filter-label">Seleziona Categoria:</span>
+          <div class="faq-category-list" id="faq-categories" role="group" aria-labelledby="faq-category-label">
             <!-- App.js genera i filtri categoria dal dataset FAQ locale. -->
           </div>
         </div>
