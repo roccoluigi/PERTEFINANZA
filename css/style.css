@@ -1305,11 +1305,11 @@ button, input, select, textarea {
 }
 
 .glossary-card {
-  scroll-margin-top: 0.75rem;
+  scroll-margin-top: 5.25rem;
 }
 
 .module-card[id] {
-  scroll-margin-top: 0.75rem;
+  scroll-margin-top: 5.25rem;
 }
 
 .glossary-card-title > span:first-child {
@@ -1323,7 +1323,7 @@ button, input, select, textarea {
 .faq-item {
   position: relative;
   overflow: visible;
-  scroll-margin-top: 0.75rem;
+  scroll-margin-top: 5.25rem;
 }
 
 .faq-item-header {
