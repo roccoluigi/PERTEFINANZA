@@ -1695,15 +1695,18 @@ button, input, select, textarea {
   background: #ffffff;
   font-family: monospace;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   color: var(--secondary);
   cursor: copy;
-  transition: var(--transition);
+  transition: none;
 }
 
-.widget-cert-isin:hover {
-  border-color: var(--primary);
-  background: var(--primary-light);
+.widget-cert-isin:hover,
+.widget-cert-isin.is-copied,
+.widget-cert-isin.copy-failed {
+  border-color: var(--primary-border);
+  background: #ffffff;
+  color: var(--secondary);
 }
 
 .widget-cert-isin-label {
@@ -1922,12 +1925,15 @@ button, input, select, textarea {
   font-weight: 700;
   color: var(--primary-dark);
   cursor: copy;
-  transition: var(--transition);
+  transition: none;
 }
 
-.cert-isin-copy:hover {
-  border-color: var(--primary);
-  background: #ffffff;
+.cert-isin-copy:hover,
+.cert-isin-copy.is-copied,
+.cert-isin-copy.copy-failed {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary-dark);
 }
 
 .cert-isin-copy:focus-visible {
