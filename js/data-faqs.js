@@ -9,6 +9,10 @@ const FAQS_DATA = [
   {
     category: "Basi & Funzionamento",
     question: "Cosa significa esattamente 'Capitale Condizionatamente Protetto' e cosa accade se la barriera viene infranta?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-barriera-capitale-discreta-all-europea", label: "Glossario: barriera discreta" },
+      { href: "formazione.html#mod2", label: "Modulo 2: modalità di osservazione" }
+    ],
     answer: "Significa che il capitale investito (solitamente 100€ o 1.000€ per certificato) è garantito al 100% a scadenza unicamente se, alla data di rilevazione finale, il titolo peggiore del paniere (Worst-Of) quota a un livello pari o superiore alla barriera stabilita all'emissione (ad esempio al 50% o 60% del valore iniziale). Se a scadenza la barriera risulta violata, la protezione condizionata decade completamente e l'investitore subisce una perdita sul capitale proporzionale al calo percentuale registrato dal peggiore dei sottostanti rispetto al suo strike iniziale, esattamente come se avesse acquistato direttamente l'azione il primo giorno senza percepire dividendi (a meno che non sia presente un meccanismo Airbag che attenui il crollo)."
   },
   {
@@ -29,6 +33,10 @@ const FAQS_DATA = [
   {
     category: "Meccanismi & Cedole",
     question: "La barriera capitale e la barriera coupon sono sempre uguali?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-barriera-cedola-trigger-cedolare", label: "Glossario: barriera cedolare" },
+      { href: "formazione.html#mod6", label: "Modulo 6: cedole e memoria" }
+    ],
     answer: "No. Sono clausole indipendenti e possono avere livelli o modalità di osservazione differenti. La barriera capitale stabilisce la condizione per il rimborso del nominale a scadenza; la barriera coupon condiziona il pagamento delle cedole. Per conoscere l'effetto di una violazione e l'eventuale memoria occorre leggere le condizioni specifiche del certificato."
   },
   {
@@ -49,16 +57,28 @@ const FAQS_DATA = [
   {
     category: "Basi & Funzionamento",
     question: "Che cos'è la clausola Worst-Of e perché aumenta sensibilmente il rischio del portafoglio?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-worst-of-meccanismo-del-paniere", label: "Glossario: Worst-Of" },
+      { href: "formazione.html#mod15", label: "Modulo 15: panieri e correlazione" }
+    ],
     answer: "La clausola Worst-Of stabilisce che, nei certificati emessi su un paniere di più titoli (ad esempio 3 o 4 azioni), il pagamento delle cedole e il rimborso del capitale a scadenza sono determinati unicamente dall'andamento del titolo che ha registrato la peggiore performance percentuale rispetto al proprio livello di fixing iniziale. Anche se 3 titoli su 4 sono saliti del 50%, se il quarto titolo crolla del 55% e infrange la barriera a scadenza, il certificato subirà una decurtazione del 55% sul capitale nominale. La clausola Worst-Of consente all'emittente di offrire cedole mensili a doppia cifra (fino al 10-14% p.a.), ma espone l'investitore alla correlazione tra titoli e al rischio del titolo 'anello debole' del basket."
   },
   {
     category: "Meccanismi & Cedole",
     question: "Come funziona in dettaglio l'Effetto Memoria sulle cedole?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-effetto-memoria", label: "Glossario: effetto memoria" },
+      { href: "formazione.html#mod6", label: "Modulo 6: cedole e memoria" }
+    ],
     answer: "L'Effetto Memoria è una delle caratteristiche contrattuali più vantaggiose dei certificati Phoenix. Se a una determinata data di osservazione periodica (mensile o trimestrale) uno dei sottostanti si trova al di sotto della barriera cedolare, la cedola non viene pagata, ma non viene nemmeno persa per sempre: viene registrata e 'congelata' nella memoria del prodotto. Se a qualsiasi data di osservazione successiva tutti i sottostanti del paniere tornano a quotare sopra la barriera cedola, l'investitore riceve in un unico accredito la cedola del periodo in corso sommata a tutte le cedole rimaste accumulate in memoria nei mesi precedenti."
   },
   {
     category: "Meccanismi & Cedole",
     question: "Qual è la differenza fondamentale tra certificati Autocallable e Softcallable?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-autocallability-rimborso-anticipato-automatico", label: "Glossario: autocallability" },
+      { href: "formazione.html#mod8", label: "Modulo 8: Autocall e Step-Down" }
+    ],
     answer: "Nei certificati Autocallable tradizionali, il rimborso anticipato a 100€ è un automatismo vincolante: se a una data di verifica tutti i titoli sono pari o sopra il livello di trigger prefissato (es. 100%), il prodotto si chiude obbligatoriamente. Nei certificati Softcallable (chiamati anche semplicemente Callable), il rimborso anticipato NON è automatico, ma rappresenta una facoltà discrezionale riservata all'emittente bancario. La banca deciderà se richiamare o meno il certificato in base ai tassi di mercato e alla convenienza del proprio desk di derivati. Per remunerare l'investitore di questa incertezza e del rischio di veder richiamato il titolo nei momenti migliori, i certificati Softcallable riconoscono cedole periodiche sensibilmente più elevate (solitamente 1.5% - 3% in più su base annua rispetto a un Autocallable tradizionale)."
   },
   {
@@ -114,6 +134,10 @@ const FAQS_DATA = [
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "I certificati sono protetti dal Fondo Interbancario di Tutela dei Depositi (FITD)?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-rischio-emittente-e-bail-in", label: "Glossario: rischio emittente" },
+      { href: "formazione.html#mod14", label: "Modulo 14: rischio emittente e rating" }
+    ],
     answer: "Assolutamente NO. Il Fondo Interbancario di Tutela dei Depositi garantisce unicamente i depositi bancari, i conti correnti e i conti di deposito fino a un massimo di 100.000€ per singolo depositante. I certificati di investimento sono tecnicamente obbligazioni strutturate chirografarie non garantite (senior unsecured). In caso di dissesto, insolvenza o apertura della procedura di bail-in nei confronti della banca emittente (es. BNP Paribas, UniCredit, Leonteq, ecc.), l'investitore rischia la perdita parziale o totale del capitale, indipendentemente dal fatto che i titoli sottostanti si trovino o meno sopra le barriere protettive. Per questo motivo, su PERTEFINANZA monitoriamo costantemente il rating creditizio degli emittenti."
   },
   {

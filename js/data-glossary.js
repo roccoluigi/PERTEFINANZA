@@ -9,24 +9,40 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Autocallability (Rimborso Anticipato Automatico)",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: Autocall" },
+      { href: "faq.html#faq-qual-e-la-differenza-fondamentale-tra-certificati-autocallable-e-softcallable", label: "FAQ: Autocallable o Softcallable?" }
+    ],
     category: "Meccanismo",
     definition: "Condizione contrattuale che prevede la chiusura anticipata obbligatoria del certificato a determinate date di osservazione prefissate. Se tutti i sottostanti del paniere quotano a un valore pari o superiore al livello trigger di autocall (solitamente fissato al 100% dello strike iniziale o a livelli inferiori nei modelli Step-Down), l'emittente rimborsa all'investitore il valore nominale (tipicamente 100€ o 1.000€) più la cedola del periodo e tutte le eventuali cedole precedentemente trattenute in memoria.",
     example: "Al 6° mese, se tutti i titoli sono pari o sopra il 100% dello strike iniziale, il certificato si estingue rimborsando 100€ + la cedola mensile. L'investitore incassa il capitale e cessa ogni esposizione sul prodotto."
   },
   {
     term: "Barriera Capitale Discreta (all'Europea)",
+    relatedLinks: [
+      { href: "formazione.html#mod2", label: "Modulo 2: barriere" },
+      { href: "faq.html#faq-cosa-significa-esattamente-capitale-condizionatamente-protetto-e-cosa-accade-se-la-barriera-viene-infranta", label: "FAQ: capitale condizionatamente protetto" }
+    ],
     category: "Protezione",
     definition: "Livello percentuale del valore iniziale (es. 50%, 60% dello strike) rilevato esclusivamente alla data di valutazione finale del certificato (scadenza). Eventuali crolli del sottostante al di sotto della barriera durante la vita del prodotto non producono alcun effetto sulla protezione del capitale, purché alla data di fixing finale il prezzo del titolo sia tornato al di sopra di tale livello.",
     example: "Se un'azione scende del 60% durante il secondo anno di vita del prodotto ma all'ultimo giorno di quotazione recupera e chiude al -35% (sopra una barriera fissata al -40%), il capitale viene rimborsato integralmente a 100 euro."
   },
   {
     term: "Barriera Capitale Continua (all'Americana)",
+    relatedLinks: [
+      { href: "formazione.html#mod2", label: "Modulo 2: barriere" },
+      { href: "faq.html#faq-cosa-significa-esattamente-capitale-condizionatamente-protetto-e-cosa-accade-se-la-barriera-viene-infranta", label: "FAQ: capitale condizionatamente protetto" }
+    ],
     category: "Protezione",
     definition: "Soglia di protezione monitorata in modo continuativo durante l'intero orario di negoziazione di ogni giorno di borsa aperta per tutta la durata del certificato. Se il sottostante tocca o oltrepassa la barriera anche solo per una frazione di secondo (evento 'touch'), la garanzia del capitale decade definitivamente per il resto della vita del certificato, trasformando lo strumento in una replica lineare del titolo fino a scadenza.",
     example: "Un picco improvviso di volatilità intraday che porti il titolo a toccare la barriera invalida permanentemente la protezione, anche se il giorno dopo il titolo rimbalza e sale del 20%. Rischio di Gap Down: la barriera continua è esposta anche alle aperture in gap. Se un titolo chiude sopra barriera ma riapre il giorno successivo con un calo del 15% al di sotto di essa, ad esempio dopo un profit warning notturno, la barriera può essere infranta all'apertura a prezzi già penalizzati, senza la possibilità di gestire l'uscita durante la seduta precedente."
   },
   {
     term: "Barriera Cedola (Trigger Cedolare)",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: cedole e memoria" },
+      { href: "faq.html#faq-la-barriera-capitale-e-la-barriera-coupon-sono-sempre-uguali", label: "FAQ: barriera capitale e cedolare" }
+    ],
     category: "Rendimento",
     definition: "Livello percentuale prefissato (spesso compreso tra il 50% e il 70% dello strike iniziale) che il peggiore dei sottostanti deve rispettare a ciascuna data di osservazione periodica per dare diritto all'incasso della cedola contrattuale. Spesso coincide con la barriera capitale, ma in molte strutture 'Low Barrier' la barriera cedolare può essere posizionata a un livello differente.",
     example: "Con barriera cedola al 60%, se alla data di rilevazione mensile tutti i titoli quotano almeno al 61% dello strike, la cedola viene erogata; se anche uno solo quota al 58%, la cedola non viene distribuita in quel mese (ma può andare a memoria)."
@@ -93,6 +109,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Effetto Memoria",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: cedole e memoria" },
+      { href: "faq.html#faq-come-funziona-in-dettaglio-l-effetto-memoria-sulle-cedole", label: "FAQ: effetto memoria" }
+    ],
     category: "Rendimento",
     definition: "Caratteristica contrattuale che consente di non perdere definitivamente i premi periodici non distribuiti a causa del temporaneo superamento al ribasso della barriera cedola. Tutte le cedole non incassate vengono accantonate virtualmente in memoria e vengono accreditate integralmente alla prima data di rilevazione in cui tutti i titoli del basket tornano a quotare sopra la barriera.",
     example: "Se per 4 mesi consecutivi un titolo quota sotto barriera, non viene pagato alcun importo. Se al 5° mese il titolo risale sopra la soglia, l'investitore incassa in un'unica soluzione la cedola del 5° mese più le 4 cedole arretrate."
@@ -183,6 +203,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Rischio Emittente e Bail-In",
+    relatedLinks: [
+      { href: "formazione.html#mod14", label: "Modulo 14: rischio emittente" },
+      { href: "faq.html#faq-i-certificati-sono-protetti-dal-fondo-interbancario-di-tutela-dei-depositi-fitd", label: "FAQ: protezione FITD" }
+    ],
     category: "Rischi",
     definition: "Il rischio legato alla solvibilità creditizia della banca che ha emesso il certificato. I certificati sono titoli di debito chirografari privi di garanzia reale: in caso di dissesto dell'emittente o avvio della risoluzione bancaria europea (Direttiva BRRD - Bail-In), l'investitore rischia la svalutazione o il mancato rimborso del certificato, anche se tutti i titoli sottostanti quotano ben al di sopra delle barriere protettive. I certificati NON beneficiano della garanzia del Fondo Interbancario di Tutela dei Depositi (FITD).",
     example: "Per questo motivo è fondamentale monitorare il rating delle agenzie internazionali (S&P, Moody's, Fitch) e diversificare il portafoglio tra più banche emittenti."
@@ -231,6 +255,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Worst-Of (Meccanismo del Paniere)",
+    relatedLinks: [
+      { href: "formazione.html#mod15", label: "Modulo 15: meccanismo Worst-Of" },
+      { href: "faq.html#faq-che-cos-e-la-clausola-worst-of-e-perche-aumenta-sensibilmente-il-rischio-del-portafoglio", label: "FAQ: rischio del Worst-Of" }
+    ],
     category: "Meccanismo",
     definition: "Formula contrattuale tipica dei certificati multi-sottostante in cui la misurazione delle barriere, il pagamento delle cedole periodiche e il rimborso del capitale a scadenza dipendono esclusivamente dalla performance percentuale del titolo che ha registrato il calo maggiore (o il rialzo minore) rispetto al proprio strike iniziale tra tutti i componenti del basket.",
     example: "In un basket composto da Intesa (+15%), UniCredit (+8%) e Stellantis (-20%), Stellantis è il titolo Worst-Of: tutte le verifiche su barriere, cedole e rimborsi terranno conto esclusivamente del -20% di Stellantis, ignorando i rialzi degli altri due titoli."
@@ -297,6 +325,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Rating dell'Emittente",
+    relatedLinks: [
+      { href: "formazione.html#mod14", label: "Modulo 14: scale di rating" },
+      { href: "emittenti.html", label: "Profili e rating degli emittenti" }
+    ],
     category: "Rischi",
     definition: "Valutazione del merito creditizio dell'emittente assegnata da un'agenzia di rating. È un'informazione utile per il rischio di credito, ma non è una garanzia di solvibilità né sostituisce la lettura del KID, dei Final Terms e delle condizioni applicabili al certificato.",
     example: "A parità di sottostanti e struttura, due certificati emessi da banche diverse possono avere prezzi e rendimenti differenti anche per il diverso rischio di credito percepito dal mercato."

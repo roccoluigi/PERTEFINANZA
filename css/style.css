@@ -2878,6 +2878,17 @@ button, input, select, textarea {
   overflow-x: visible;
 }
 
+.related-content-links {
+  margin: 0.65rem 0 0;
+  font-size: 0.9em;
+}
+
+.related-content-links a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
 .rating-scale-table-wrapper + .rating-scale-notes {
   margin-top: 1.25rem;
 }

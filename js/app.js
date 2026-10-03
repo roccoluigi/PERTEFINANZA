@@ -402,6 +402,16 @@ function contentAnchorId(prefix, title) {
   return `${prefix}-${slug}`;
 }
 
+function relatedLinksMarkup(links = []) {
+  if (!Array.isArray(links) || links.length === 0) return '';
+
+  const linksMarkup = links
+    .map(({ href, label }) => `<a href="${escapeHtmlAttribute(href)}">${escapeHtmlAttribute(label)}</a>`)
+    .join(' <span aria-hidden="true">·</span> ');
+
+  return `<p class="related-content-links"><strong>Approfondimenti:</strong> ${linksMarkup}</p>`;
+}
+
 function escapeHtmlAttribute(value) {
   return String(value)
     .replace(/&/g, '&amp;')
@@ -735,6 +745,7 @@ function initGlossary() {
             ${item.definition}
           </div>
           ${exampleBox}
+          ${relatedLinksMarkup(item.relatedLinks)}
         </div>
       `;
     });
@@ -895,6 +906,7 @@ function initFaqAccordion() {
           </div>
           <div class="faq-answer" id="${answerId}" role="region" aria-labelledby="${questionId}">
             ${formatFaqAnswer(item.answer)}
+            ${relatedLinksMarkup(item.relatedLinks)}
           </div>
         </div>
       `;
