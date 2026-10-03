@@ -18,11 +18,21 @@ const FAQS_DATA = [
   {
     category: "Basi & Funzionamento",
     question: "Come posso valutare un certificato prima di acquistarlo?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-kid-key-information-document-ex-regolamento-priips", label: "Glossario: KID" },
+      { href: "glossario.html#glossary-final-terms-condizioni-definitive", label: "Glossario: Final Terms" },
+      { href: "formazione.html#mod20", label: "Modulo 20: checklist operativa" }
+    ],
     answer: "Leggi la scheda seguendo questi passaggi: 1) Identifica il prodotto: controlla emittente, valuta, valore nominale e scadenza. 2) Verifica su cosa investi: analizza i sottostanti, lo strike iniziale e quale titolo determina il risultato nei panieri Worst-Of. 3) Capisci le condizioni: controlla barriera capitale, barriera cedolare, modalità e date di osservazione, trigger autocall, eventuale step-down e meccanismo di memoria. 4) Valuta il rischio e il prezzo: considera cosa succede se la barriera viene violata, confronta il prezzo Bid e Ask sul mercato e verifica costi e liquidità. 5) Leggi i documenti ufficiali: consulta sempre KID e Final Terms prima di acquistare. Una cedola elevata, da sola, non indica che il prodotto sia conveniente: deve essere valutata insieme alla probabilità e all'impatto degli scenari sfavorevoli."
   },
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Perché un certificato può quotare sotto la pari anche se la barriera non è stata violata?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-prezzo-sotto-la-pari", label: "Glossario: prezzo sotto la pari" },
+      { href: "glossario.html#glossary-vega-e-volatilita-implicita", label: "Glossario: volatilità implicita" },
+      { href: "formazione.html#mod22", label: "Modulo 22: prezzo e pari" }
+    ],
     answer: "Il prezzo sul mercato secondario incorpora molte variabili oltre al livello corrente del sottostante: volatilità implicita, tassi, dividendi attesi, correlazione del paniere, distanza dalla barriera, durata residua, probabilità di autocall e rischio emittente. Una barriera ancora integra non garantisce quindi un prezzo pari al nominale né un rimborso futuro integrale."
   },
   {
@@ -52,6 +62,11 @@ const FAQS_DATA = [
   {
     category: "Basi & Funzionamento",
     question: "Come viene calcolato il rimborso finale a scadenza con un esempio numerico reale?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-strike-price-prezzo-di-esercizio-iniziale", label: "Glossario: Strike Price" },
+      { href: "glossario.html#glossary-barriera-capitale-discreta-all-europea", label: "Glossario: barriera europea" },
+      { href: "formazione.html#mod2", label: "Modulo 2: modalità di osservazione" }
+    ],
     answer: "Ipotizziamo un certificato emesso a 100€ sul titolo Eni con strike 14.00€ e barriera capitale europea al 60% (pari a 8.40€). A scadenza possono verificarsi due scenari alternativi: 1) Scenario Sopra Barriera: se Eni quota 10.00€ (-28.6% dallo strike iniziale), poiché 10.00€ è superiore a 8.40€, il certificato rimborsa il 100% del capitale nominale (100€) più l'ultima cedola e tutte le cedole in memoria. 2) Scenario Sotto Barriera: se Eni quota 7.00€ (-50% dallo strike), la barriera è violata. Il rimborso finale sarà pari a: 100€ x (7.00 / 14.00) = 50.00€. L'investitore subisce una perdita del 50% sul capitale, parzialmente attenuata unicamente dalle eventuali cedole incassate durante la vita del prodotto."
   },
   {
@@ -89,6 +104,10 @@ const FAQS_DATA = [
   {
     category: "Meccanismi & Cedole",
     question: "Come funziona la protezione Airbag e come si calcola l'attenuazione della perdita?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-airbag-meccanismo-e-fattore", label: "Glossario: meccanismo Airbag" },
+      { href: "formazione.html#mod7", label: "Modulo 7: calcolo dell'Airbag" }
+    ],
     answer: "Nei certificati Airbag, se a scadenza la barriera protettiva viene violata, la perdita non viene commisurata partendo dal 100% del valore iniziale (strike), bensì partendo dal livello della barriera stessa. Il fattore Airbag è pari a: 100 / Livello Barriera in %. Ad esempio, con barriera al 60%, il fattore Airbag è 1.666; con barriera al 50%, il fattore Airbag è 2. Se a scadenza il peggior titolo perde il 50% con barriera al 50%, un certificato tradizionale rimborsa 50€ (perdita del 50%); la struttura Airbag moltiplica la quotazione finale (50% dello strike) per il fattore Airbag (2), rimborsando 100€ (nessuna perdita sul capitale!). Se il titolo crollasse del 60%, l'Airbag rimborserebbe: 40 x 2 = 80€ (perdita limitata al 20% anziché al 60%)."
   },
   {
@@ -99,6 +118,11 @@ const FAQS_DATA = [
   {
     category: "Fiscalità & Minusvalenze",
     question: "Perché i certificati consentono di compensare le minusvalenze pregresse mentre ETF e fondi comuni no?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-minusvalenze-e-zainetto-fiscale-tuir", label: "Glossario: minusvalenze" },
+      { href: "glossario.html#glossary-redditi-diversi-vs-redditi-di-capitale", label: "Glossario: redditi diversi" },
+      { href: "formazione.html#mod11", label: "Modulo 11: compensazione fiscale" }
+    ],
     answer: "In base al Testo Unico delle Imposte sui Redditi (TUIR - D.P.R. 917/1986), il legislatore tributario italiano suddivide i proventi finanziari in due categorie non comunicanti: 'Redditi di Capitale' (interessi obbligazionari, dividendi azionari, cedole e capital gain di ETF e fondi comuni), i quali scontano sempre la ritenuta del 26% (o 12.5% su titoli di stato) e non possono MAI essere compensati con perdite pregresse; e 'Redditi Diversi' (plusvalenze su azioni, derivati e certificati d'investimento). Poiché nei certificati esiste un'intrinseca incertezza sul rimborso del capitale, l'Agenzia delle Entrate classifica sia il guadagno di capitale (capital gain) che le cedole periodiche condizionate come redditi diversi. Ciò consente di utilizzare i guadagni e i premi per azzerare le minusvalenze registrate nello zainetto fiscale nei 4 anni solari precedenti."
   },
   {
@@ -119,6 +143,11 @@ const FAQS_DATA = [
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "In che modo dividendi stimati e volatilità (Vega) influenzano il prezzo del certificato sul mercato secondario?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-vega-e-volatilita-implicita", label: "Glossario: Vega e volatilità" },
+      { href: "glossario.html#glossary-dividend-risk-rischio-dividendi", label: "Glossario: rischio dividendi" },
+      { href: "formazione.html#mod12", label: "Modulo 12: greche e volatilità" }
+    ],
     answer: "I certificati incorporano componenti opzionali e il loro prezzo riflette le dinamiche delle 'greche' finanziarie: 1) Dividendi (Dividend Risk): chi acquista un certificato non riceve i dividendi ordinari pagati dalle società sottostanti; questi dividendi stimati vengono incassati implicitamente dall'emittente per pagare le cedole e comprare le opzioni di protezione. Se le società aumentano a sorpresa i dividendi attesi futuri, il prezzo del certificato sul mercato secondario cala; se i dividendi vengono tagliati, il certificato sale. 2) Volatilità (Vega): nei Cash Collect e Bonus Cap, un aumento generalizzato della volatilità implicita fa scendere il prezzo del certificato, perché aumenta la probabilità statistica che il sottostante tocchi o infranga la barriera di protezione; viceversa, mercati azionari calmi e poco volatili tendono a far salire le quotazioni del certificato."
   },
   {

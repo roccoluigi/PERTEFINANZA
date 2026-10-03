@@ -3,6 +3,10 @@
 const GLOSSARY_DATA = [
   {
     term: "Airbag (Meccanismo e Fattore)",
+    relatedLinks: [
+      { href: "formazione.html#mod7", label: "Modulo 7: meccanismo Airbag" },
+      { href: "faq.html#faq-come-funziona-la-protezione-airbag-e-come-si-calcola-l-attenuazione-della-perdita", label: "FAQ: calcolo dell'Airbag" }
+    ],
     category: "Protezione",
     definition: "Clausola accessoria di protezione che interviene a scadenza se viene violata la barriera del capitale. Nei certificati standard, se il sottostante peggiore perde il 55% a fronte di una barriera al 60%, l'investitore subisce una perdita del 55%. Con l'Airbag, la perdita a scadenza viene ricalcolata rapportando il valore finale del sottostante non allo strike iniziale (100%), bensì al livello della barriera (Fattore Airbag = 100 / Livello Barriera). Questo attenua drasticamente la perdita in conto capitale in caso di crollo dei mercati.",
     example: "Con strike 100€ e barriera Airbag al 50% (Fattore Airbag = 2), se a scadenza il titolo quota 40€ (-60%), il certificato non rimborsa 40€ ma 40 x 2 = 80€, limitando la perdita a soli 20€ (-20%) anziché al -60% del titolo."
@@ -137,6 +141,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "KID (Key Information Document ex Regolamento PRIIPs)",
+    relatedLinks: [
+      { href: "formazione.html#mod4", label: "Modulo 4: lettura del KID" },
+      { href: "faq.html#faq-come-posso-valutare-un-certificato-prima-di-acquistarlo", label: "FAQ: valutare un certificato" }
+    ],
     category: "Normativa & KID",
     definition: "Documento informativo standardizzato a livello europeo di massimo 3 pagine, obbligatorio per legge prima della sottoscrizione o dell'acquisto di qualsiasi certificato. Riporta in modo sintetico e trasparente l'indicatore sintetico di rischio (SRI) su scala da 1 a 7, i quattro scenari di performance probabilistici (favorevole, moderato, sfavorevole, stress), i costi d'ingresso e correnti, e le informazioni sulla liquidabilità dello strumento.",
     example: "Il KID permette di comprendere immediatamente se il certificato ha costi impliciti elevati (es. 2.5% annuo) o se espone a scenari di stress con perdita totale del capitale."
@@ -161,18 +169,30 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Maxi Cedola (Maxi Coupon)",
+    relatedLinks: [
+      { href: "formazione.html#mod11", label: "Modulo 11: fiscalità e minusvalenze" },
+      { href: "faq.html#faq-come-funziona-la-strategia-della-maxi-cedola-a-fine-anno-per-recuperare-le-minusvalenze-in-scadenza", label: "FAQ: strategia Maxi Cedola" }
+    ],
     category: "Fiscalità",
     definition: "Certificato di investimento a capitale condizionatamente protetto che eroga nei primi mesi di vita un'unica cedola iniziale molto elevata (solitamente tra il 10% e il 30% del valore nominale), seguita successivamente da cedole periodiche più contenute. Può essere valutato da investitori che intendono compensare minusvalenze fiscali in scadenza, ma non crea un extra-rendimento automatico: la distribuzione anticipata modifica il prezzo e il profilo di rischio del certificato.",
     example: "Fisica del prezzo all'Ex-Date: l'incasso della Maxi Cedola non costituisce un guadagno netto autonomo. Alla data di stacco, il prezzo teorico del certificato si riduce in misura prossima all'importo lordo distribuito, a parità delle altre condizioni. L'operazione trasforma una quota di valore del prodotto in un reddito diverso potenzialmente utile a compensare minusvalenze, ma il prezzo potrebbe non recuperare sul mercato secondario il valore staccato."
   },
   {
     term: "Minusvalenze e Zainetto Fiscale (TUIR)",
+    relatedLinks: [
+      { href: "formazione.html#mod11", label: "Modulo 11: compensazione fiscale" },
+      { href: "faq.html#faq-perche-i-certificati-consentono-di-compensare-le-minusvalenze-pregresse-mentre-etf-e-fondi-comuni-no", label: "FAQ: compensazione delle minusvalenze" }
+    ],
     category: "Fiscalità",
     definition: "Le perdite finanziarie realizzate dalla vendita o chiusura di strumenti finanziari vengono registrate dall'intermediario nello 'zainetto fiscale' dell'investitore. In base al Testo Unico delle Imposte sui Redditi (TUIR), queste perdite possono essere compensate esclusivamente con plusvalenze classificate come 'redditi diversi' realizzate nell'anno in corso o nei 4 anni solari successivi. I proventi dei certificati (capital gain e cedole) sono qualificati come redditi diversi e sono pienamente compensabili.",
     example: "Una minusvalenza di 1.000€ generata a marzo 2024 può essere compensata con cedole o plusvalenze da certificati fino al 31 dicembre 2028. Senza compensazione, allo scadere dei 4 anni il credito fiscale viene cancellato definitivamente."
   },
   {
     term: "Opzione Quanto (Neutralizzazione Rischio Cambio)",
+    relatedLinks: [
+      { href: "formazione.html#mod19", label: "Modulo 19: copertura Quanto" },
+      { href: "faq.html#faq-che-cos-e-l-opzione-quanto-e-cosa-succede-se-compro-un-certificato-su-titoli-americani-non-quanto", label: "FAQ: rischio di cambio" }
+    ],
     category: "Protezione",
     definition: "Caratteristica strutturale fondamentale per i certificati emessi in Euro che hanno come sottostanti azioni o indici denominati in una valuta estera (es. Dollaro USA, Yen giapponese, Franco svizzero). L'opzione Quanto fissa il tasso di cambio a un valore costante pari a 1, neutralizzando completamente le fluttuazioni valutarie: il rendimento e il rimborso del certificato dipendono unicamente dalla performance percentuale del titolo, senza alcun impatto dovuto all'apprezzamento o deprezzamento dell'Euro rispetto alla valuta estera.",
     example: "Se un certificato su Tesla e Apple (titoli in USD) ha l'opzione Quanto, un crollo del dollaro del 15% non diminuirà né il valore del rimborso né l'importo delle cedole erogate in euro."
@@ -219,12 +239,20 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Spread Denaro-Lettera (Bid-Ask)",
+    relatedLinks: [
+      { href: "formazione.html#mod21", label: "Modulo 21: leggere il book" },
+      { href: "faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile", label: "FAQ: prezzo eseguibile" }
+    ],
     category: "Mercati & Liquidità",
     definition: "La differenza percentuale tra il prezzo a cui il Market Maker è disposto ad acquistare il certificato (Bid/Denaro) e il prezzo a cui è disposto a venderlo (Ask/Lettera). Rappresenta il costo implicito immediato per la negoziazione sul mercato secondario.",
     example: "Se il book quota Denaro 99.50€ e Lettera 100.50€, lo spread è pari all'1% (1€). Sui mercati SeDeX ed EuroTLX le regole di Borsa Italiana impongono spread massimi vincolanti per tutelare i risparmiatori."
   },
   {
     term: "Step-Down (Autocall Decrescente)",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: autocall e Step-Down" },
+      { href: "faq.html#faq-cos-e-il-meccanismo-step-down-e-perche-e-cosi-ricercato-dagli-investitori", label: "FAQ: meccanismo Step-Down" }
+    ],
     category: "Meccanismo",
     definition: "Clausola contrattuale che riduce progressivamente nel tempo il livello trigger necessario per far scattare il rimborso anticipato (Autocall) ad ogni successiva data di osservazione (ad es. 100% per i primi 6 mesi, poi 95%, 90%, 85%, fino all'80% dello strike iniziale). Questa caratteristica aumenta considerevolmente le probabilità che il certificato rimborsi anticipatamente a 100€ + cedole anche in presenza di mercati azionari discendenti.",
     example: "Se un titolo perde il 15% ed è sceso a quota 85€, un certificato tradizionale non rimborsa in anticipo. Con uno Step-Down all'85%, il certificato scatta in autocall rimborsando 100 euro e chiudendo la posizione in guadagno."
@@ -243,6 +271,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Vega e Volatilità Implicita",
+    relatedLinks: [
+      { href: "formazione.html#mod12", label: "Modulo 12: volatilità e greche" },
+      { href: "faq.html#faq-in-che-modo-dividendi-stimati-e-volatilita-vega-influenzano-il-prezzo-del-certificato-sul-mercato-secondario", label: "FAQ: volatilità e prezzo" }
+    ],
     category: "Parametri & Greche",
     definition: "Il Vega misura la sensibilità del prezzo del certificato al variare della volatilità implicita attesa sui mercati finanziari. Nei certificati a capitale condizionatamente protetto (come i Cash Collect), un forte aumento improvviso della volatilità generale tende a far scendere il prezzo del certificato sul mercato secondario, poiché aumenta matematicamente la probabilità statistica che i sottostanti possano raggiungere e rompere la barriera a scadenza.",
     example: "Durante le fasi di panico di borsa (es. aumento dell'indice VIX), il prezzo di un certificato può flettere temporaneamente anche se i titoli sono ancora ampiamente sopra barriera."
@@ -271,6 +303,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Prezzo Sotto la Pari",
+    relatedLinks: [
+      { href: "formazione.html#mod22", label: "Modulo 22: prezzo e pari" },
+      { href: "faq.html#faq-perche-un-certificato-puo-quotare-sotto-la-pari-anche-se-la-barriera-non-e-stata-violata", label: "FAQ: prezzo sotto la pari" }
+    ],
     category: "Mercati & Liquidità",
     definition: "Un certificato quota sotto la pari quando il suo prezzo di mercato è inferiore al valore nominale, spesso pari a 100 euro o 1.000 euro. La differenza può offrire un potenziale margine di recupero verso il nominale, ma non rappresenta un rendimento garantito: il prezzo incorpora aspettative, rischio emittente, distanza dalle barriere, volatilità e durata residua.",
     example: "Un certificato nominale da 100 euro quotato a 96 euro può sembrare conveniente, ma deve essere valutato insieme alla distanza dalla barriera, alle cedole ancora pagabili e alla solidità dell'emittente."
@@ -301,6 +337,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Distanza dalla Barriera",
+    relatedLinks: [
+      { href: "formazione.html#mod20", label: "Modulo 20: checklist operativa" },
+      { href: "faq.html#faq-come-posso-valutare-un-certificato-prima-di-acquistarlo", label: "FAQ: valutare un certificato" }
+    ],
     category: "Rischi",
     definition: "Misura percentuale della distanza tra il valore corrente del sottostante Worst-Of e la barriera. È un indicatore utile per leggere il margine di sicurezza attuale, ma non misura da solo la probabilità di rimborso: durata residua, volatilità, correlazione e modalità di osservazione restano determinanti.",
     example: "Se il Worst-Of quota 80 e la barriera è a 60, la distanza corrente è del 25% rispetto al prezzo del sottostante: una perdita superiore potrebbe portare al livello barriera."
@@ -319,6 +359,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Rischio di Liquidità",
+    relatedLinks: [
+      { href: "formazione.html#mod21", label: "Modulo 21: mercato e book" },
+      { href: "faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile", label: "FAQ: prezzo realmente eseguibile" }
+    ],
     category: "Rischi",
     definition: "Rischio di non riuscire a vendere il certificato rapidamente o a un prezzo vicino al valore teorico. La presenza del Market Maker non elimina il rischio: possono verificarsi sospensioni, ampliamenti dello spread, assenza temporanea di quotazioni o limiti operativi previsti dal mercato e dalla documentazione del prodotto.",
     example: "Prima di vendere, confronta il prezzo Bid, la quantità disponibile e lo spread; non considerare il prezzo teorico come garanzia del prezzo effettivamente eseguibile."
@@ -335,6 +379,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Final Terms (Condizioni Definitive)",
+    relatedLinks: [
+      { href: "formazione.html#mod24", label: "Modulo 24: documenti ufficiali" },
+      { href: "faq.html#faq-dove-trovo-le-informazioni-definitive-se-una-pagina-web-non-coincide-con-il-prodotto", label: "FAQ: fonti definitive" }
+    ],
     category: "Normativa & KID",
     definition: "Documento che completa il prospetto di base e contiene le condizioni specifiche della singola emissione: sottostanti, strike, barriere, date, cedole, trigger, modalità di rimborso, eventi straordinari e soggetti coinvolti. In caso di differenze tra una descrizione divulgativa e la documentazione ufficiale, fanno fede i documenti dell'emittente e del mercato.",
     example: "Per verificare se una barriera è europea o continua, non è sufficiente il nome commerciale: occorre controllare la sezione dedicata alle modalità di osservazione nei Final Terms."
