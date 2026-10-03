@@ -1300,6 +1300,10 @@ button, input, select, textarea {
   margin-left: auto;
 }
 
+.review-isin-row > .content-share {
+  margin-left: 0;
+}
+
 .glossary-card {
   scroll-margin-top: 1rem;
 }
@@ -3092,6 +3096,10 @@ button, input, select, textarea {
     gap: 0.5rem;
     justify-content: center;
     flex-wrap: nowrap;
+  }
+
+  .review-isin-row > .content-share {
+    margin-left: auto;
   }
 
   .review-isin-copy {

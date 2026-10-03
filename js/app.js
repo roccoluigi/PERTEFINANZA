@@ -346,24 +346,25 @@ function formatUnderlyingNames(underlyings) {
 
 function shareButtonsMarkup(c) {
   const shareUrl = new URL(`recensione.html?isin=${encodeURIComponent(c.isin)}`, window.location.href).href;
-  const shareTitle = encodeURIComponent(`${c.name} | PERTEFINANZA`);
+  const annualYield = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(c.annualYield);
+  const shareText = encodeURIComponent(`${c.name}\nRendimento potenziale annuo ${annualYield}% · barriera capitale ${c.barrierCapital}`);
   const encodedUrl = encodeURIComponent(shareUrl);
 
   return `
     <div class="share-actions" aria-label="Condividi certificato">
       <span class="share-label">Condividi</span>
-      <a class="share-button share-whatsapp" href="https://wa.me/?text=${shareTitle}%20${encodedUrl}" target="_blank" rel="noopener noreferrer" title="Condividi su WhatsApp" aria-label="Condividi su WhatsApp">${shareIconMarkup('whatsapp')}</a>
-      <a class="share-button share-telegram" href="https://t.me/share/url?url=${encodedUrl}&text=${shareTitle}" target="_blank" rel="noopener noreferrer" title="Condividi su Telegram" aria-label="Condividi su Telegram">${shareIconMarkup('telegram')}</a>
+      <a class="share-button share-whatsapp" href="https://wa.me/?text=${shareText}%0A${encodedUrl}" target="_blank" rel="noopener noreferrer" title="Condividi su WhatsApp" aria-label="Condividi su WhatsApp">${shareIconMarkup('whatsapp')}</a>
+      <a class="share-button share-telegram" href="https://t.me/share/url?url=${encodedUrl}&text=${shareText}" target="_blank" rel="noopener noreferrer" title="Condividi su Telegram" aria-label="Condividi su Telegram">${shareIconMarkup('telegram')}</a>
       <button type="button" class="share-button share-copy" data-copy-share-url="${shareUrl}" title="Copia link negli appunti" aria-label="Copia link negli appunti">${shareIconMarkup('copy')}</button>
     </div>
   `;
 }
 
-function contentShareMenuMarkup(anchorId, title) {
+function contentShareMenuMarkup(anchorId, title, shareText = title) {
   const shareUrl = new URL(window.location.href);
   shareUrl.hash = anchorId;
   const encodedUrl = encodeURIComponent(shareUrl.href);
-  const encodedTitle = encodeURIComponent(title);
+  const encodedTitle = encodeURIComponent(shareText);
 
   return `
     <details class="content-share">
@@ -1026,6 +1027,8 @@ function initReviewPage() {
   const couponBarrier = Number.parseFloat(cert.barrierCoupon) || capitalBarrier;
   const annualYield = Number(cert.annualYield) || 0;
   const monthlyYield = annualYield / 12;
+  const formattedAnnualYield = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(annualYield);
+  const reviewShareText = `${cert.name}\nRendimento potenziale annuo ${formattedAnnualYield}% · barriera capitale ${cert.barrierCapital}`;
   const ratingEntries = issuer && issuer.ratings
     ? Object.entries(issuer.ratings).filter(([, rating]) => rating && rating.toLowerCase() !== 'non rated')
     : issuer
@@ -1095,6 +1098,7 @@ function initReviewPage() {
           <a href="#review-scenarios">Matrice<br>scenari</a>
           <a href="#review-pros-cons">Punti di forza<br>e criticità</a>
         </nav>
+        ${contentShareMenuMarkup('review-overview', cert.name, reviewShareText)}
       </div>
     </div>
 
