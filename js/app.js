@@ -194,14 +194,16 @@ function initSidebarFeatured() {
   let html = '';
 
   topPicks.forEach(c => {
+    const reviewUrl = `recensione.html?isin=${encodeURIComponent(c.isin)}`;
     html += `
       <div class="widget-cert-item">
-        <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="widget-cert-link">
         <div class="widget-cert-top">
           <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
             <span class="widget-cert-isin-label">ISIN</span>${c.isin}
           </button>
+          ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewUrl)}
         </div>
+        <a href="${reviewUrl}" class="widget-cert-link">
         <div class="widget-cert-name">${c.name}</div>
         <div class="widget-cert-issuer">${c.issuer}</div>
         <div class="widget-cert-details">
@@ -212,7 +214,6 @@ function initSidebarFeatured() {
           <div><span>Sottostanti</span><strong>${formatUnderlyingNames(c.underlyings)}</strong></div>
         </div>
         </a>
-        ${shareButtonsMarkup(c)}
       </div>
     `;
   });
@@ -344,10 +345,14 @@ function formatUnderlyingNames(underlyings) {
   return underlyings.map(name => `<strong>${name}</strong>`).join(', ');
 }
 
+function certificateShareText(c) {
+  const annualYield = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(c.annualYield);
+  return `${c.name}\nRendimento potenziale annuo ${annualYield}% · barriera capitale ${c.barrierCapital}`;
+}
+
 function shareButtonsMarkup(c) {
   const shareUrl = new URL(`recensione.html?isin=${encodeURIComponent(c.isin)}`, window.location.href).href;
-  const annualYield = new Intl.NumberFormat('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(c.annualYield);
-  const shareText = encodeURIComponent(`${c.name}\nRendimento potenziale annuo ${annualYield}% · barriera capitale ${c.barrierCapital}`);
+  const shareText = encodeURIComponent(certificateShareText(c));
   const encodedUrl = encodeURIComponent(shareUrl);
 
   return `
@@ -360,9 +365,11 @@ function shareButtonsMarkup(c) {
   `;
 }
 
-function contentShareMenuMarkup(anchorId, title, shareText = title) {
-  const shareUrl = new URL(window.location.href);
-  shareUrl.hash = anchorId;
+function contentShareMenuMarkup(anchorId, title, shareText = title, destinationUrl) {
+  const shareUrl = destinationUrl
+    ? new URL(destinationUrl, window.location.href)
+    : new URL(window.location.href);
+  if (!destinationUrl) shareUrl.hash = anchorId;
   const encodedUrl = encodeURIComponent(shareUrl.href);
   const encodedTitle = encodeURIComponent(shareText);
 

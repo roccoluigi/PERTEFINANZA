@@ -3,7 +3,7 @@
 const CERTIFICATES_DATA = [
   {
     isin: "DE000BD54H77",
-    name: "Cash collect fast step down sui Colossi Tech USA",
+    name: "Cash Collect Fast Step Down su big tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["AMD", "Intel", "Dell", "Micron"],
@@ -20,7 +20,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486044",
-    name: "Cash collect low barrier su big Europee",
+    name: "Cash Collect Low Barrier su big europee",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Deutsche Bank", "Société Générale", "Commerzbank"],
@@ -37,7 +37,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3184486804",
-    name: "Cash collect low barrier su Big Italiane",
+    name: "Cash Collect Low Barrier su big italiane",
     issuer: "Barclays",
     type: "Phoenix Memory Step Down",
     underlyings: ["Leonardo", "Prysmian", "MPS", "STM"],
@@ -54,7 +54,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "DE000BD6FHT4",
-    name: "Cash collect fast step down su Big Tech USA",
+    name: "Cash Collect Fast Step Down su big tech USA",
     issuer: "Vontobel",
     type: "Phoenix Memory Step Down",
     underlyings: ["Nvidia", "AMD", "Micron", "Intel"],
@@ -71,7 +71,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127847187",
-    name: "Cash collect fast step down sull'AI",
+    name: "Cash Collect Fast Step Down sull'AI",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["Palantir", "Marvell", "Western Digital", "Intel"],
@@ -88,7 +88,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127846700",
-    name: "Cash Collect High Yield su Big Finanziari",
+    name: "Cash Collect High Yield su big finanziari",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["STM", "Banca MPS", "BPER Banca", "Commerzbank"],
@@ -105,7 +105,7 @@ const CERTIFICATES_DATA = [
   },
   {
     isin: "XS3127851296",
-    name: "Cash collect High Yield su Big Energy Europee",
+    name: "Cash Collect High Yield su big energy europee",
     issuer: "Citigroup",
     type: "Phoenix Memory Step Down",
     underlyings: ["British Petroleum", "Siemens Energy", "Engie", "ENI"],
