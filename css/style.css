@@ -2874,6 +2874,46 @@ button, input, select, textarea {
   text-align: left;
 }
 
+.rating-scale-table-wrapper {
+  overflow-x: visible;
+}
+
+.rating-scale-table-wrapper + .rating-scale-notes {
+  margin-top: 1.25rem;
+}
+
+.rating-scale-table {
+  table-layout: fixed;
+}
+
+.rating-scale-table th:first-child {
+  width: 34%;
+}
+
+.rating-scale-table th:nth-child(n + 2) {
+  width: 33%;
+}
+
+@media (max-width: 600px) {
+  .rating-scale-table {
+    font-size: 0.72rem;
+  }
+
+  .rating-scale-table caption {
+    padding-bottom: 0.35rem;
+    font-size: 0.72rem;
+    text-align: left;
+  }
+
+  .rating-scale-table th,
+  .rating-scale-table td {
+    padding: 0.35rem 0.25rem;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    vertical-align: top;
+  }
+}
+
 .legal-sidebar-index {
   margin-bottom: 1.5rem;
 }
