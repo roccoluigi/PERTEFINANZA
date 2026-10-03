@@ -779,6 +779,15 @@ function initFaqAccordion() {
 
   let currentCategory = 'ALL';
 
+  function preserveFaqControlPosition(control, initialTop) {
+    requestAnimationFrame(() => {
+      const verticalShift = control.getBoundingClientRect().top - initialTop;
+      if (Math.abs(verticalShift) > 1) {
+        window.scrollBy({ top: verticalShift, behavior: 'instant' });
+      }
+    });
+  }
+
   function formatFaqAnswer(answer) {
     const numberedParts = answer.split(/(?=\b\d+\)\s)/);
 
@@ -883,6 +892,7 @@ function initFaqAccordion() {
       if (questionBtn) {
         questionBtn.addEventListener('click', () => {
           const isCurrentlyActive = item.classList.contains('active');
+          const initialTop = questionBtn.getBoundingClientRect().top;
           if (!autoOpenAll) {
             container.querySelectorAll('.faq-item').forEach(other => {
               if (other !== item) {
@@ -895,6 +905,7 @@ function initFaqAccordion() {
           const nextIsActive = !isCurrentlyActive;
           item.classList.toggle('active', nextIsActive);
           questionBtn.setAttribute('aria-expanded', String(nextIsActive));
+          if (nextIsActive) preserveFaqControlPosition(questionBtn, initialTop);
         });
       }
 
@@ -902,6 +913,8 @@ function initFaqAccordion() {
         shareMenu.addEventListener('toggle', () => {
           if (!shareMenu.open || item.classList.contains('active')) return;
 
+          const summary = shareMenu.querySelector('summary');
+          const initialTop = summary.getBoundingClientRect().top;
           if (!autoOpenAll) {
             container.querySelectorAll('.faq-item').forEach(other => {
               if (other !== item) {
@@ -913,6 +926,7 @@ function initFaqAccordion() {
 
           item.classList.add('active');
           questionBtn.setAttribute('aria-expanded', 'true');
+          preserveFaqControlPosition(summary, initialTop);
         });
       }
     });
