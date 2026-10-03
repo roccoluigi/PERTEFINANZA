@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSidebarFeatured();
   initHomeFeaturedCertificates();
   initShareButtons();
+  initFormationShareButtons();
   initCertificatesCatalog();
   initGlossary();
   initFaqAccordion();
@@ -358,8 +359,71 @@ function shareButtonsMarkup(c) {
   `;
 }
 
+function contentShareMenuMarkup(anchorId, title) {
+  const shareUrl = new URL(window.location.href);
+  shareUrl.hash = anchorId;
+  const encodedUrl = encodeURIComponent(shareUrl.href);
+  const encodedTitle = encodeURIComponent(`${title} | PERTEFINANZA`);
+
+  return `
+    <details class="content-share">
+      <summary class="share-button share-trigger" title="Condividi: ${escapeHtmlAttribute(title)}" aria-label="Condividi: ${escapeHtmlAttribute(title)}">
+        ${shareIconMarkup('share')}
+      </summary>
+      <div class="share-menu-options">
+        <a class="share-menu-item share-whatsapp" href="https://wa.me/?text=${encodedTitle}%20${encodedUrl}" target="_blank" rel="noopener noreferrer">
+          ${shareIconMarkup('whatsapp')}<span>WhatsApp</span>
+        </a>
+        <a class="share-menu-item share-telegram" href="https://t.me/share/url?url=${encodedUrl}&amp;text=${encodedTitle}" target="_blank" rel="noopener noreferrer">
+          ${shareIconMarkup('telegram')}<span>Telegram</span>
+        </a>
+        <button type="button" class="share-menu-item share-copy" data-copy-share-url="${escapeHtmlAttribute(shareUrl.href)}">
+          ${shareIconMarkup('copy')}<span>Copia link</span>
+        </button>
+      </div>
+    </details>
+  `;
+}
+
+function contentAnchorId(prefix, title) {
+  const slug = title.normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `${prefix}-${slug}`;
+}
+
+function escapeHtmlAttribute(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function scrollToSharedContent(container) {
+  const targetId = window.location.hash.slice(1);
+  if (!targetId) return;
+
+  requestAnimationFrame(() => {
+    const target = document.getElementById(targetId);
+    if (target && container.contains(target)) target.scrollIntoView({ block: 'start' });
+  });
+}
+
+function initFormationShareButtons() {
+  document.querySelectorAll('.module-card[id]').forEach(card => {
+    const header = card.querySelector('.module-header');
+    const title = card.querySelector('.module-title');
+    if (!header || !title || header.querySelector('.content-share')) return;
+    header.insertAdjacentHTML('beforeend', contentShareMenuMarkup(card.id, title.textContent.trim()));
+  });
+}
+
 function shareIconMarkup(platform) {
   const icons = {
+    share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path></svg>',
     whatsapp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.1 1.6 5.8L.2 24l6.6-1.7a11.8 11.8 0 0 0 5.3 1.3h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.1-1.2-6.1-3.5-8.3ZM12.2 21.4h-.1c-1.7 0-3.4-.5-4.8-1.4l-.3-.2-3.9 1 1-3.8-.2-.3a9.6 9.6 0 1 1 8.3 4.7Zm5.3-7.2c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5l-.9-2.1c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.2 2.2 3.4 5.4 4.7 2 .8 2.7.9 3.7.8.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z"/></svg>',
     telegram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.5 2.2 19 21.1c-.3 1.3-1 1.6-2.1 1L11 17.7l-2.8 2.7c-.3.3-.5.5-1 .5l.4-6.1L18.7 5c.5-.4-.1-.7-.8-.3L4.2 13.5l-5.9-1.9c-1.3-.4-1.3-1.3.3-1.9L21.5 1c1.1-.4 2 .3 1 1.2Z"/></svg>',
     copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg>'
@@ -367,21 +431,43 @@ function shareIconMarkup(platform) {
   return icons[platform];
 }
 
-function initShareButtons(container = document) {
-  container.querySelectorAll('[data-copy-share-url]').forEach(button => {
-    button.addEventListener('click', async event => {
-      event.preventDefault();
-      event.stopPropagation();
-      const originalMarkup = button.innerHTML;
-      try {
-        await copyTextToClipboard(new URL(button.dataset.copyShareUrl, window.location.href).href);
-        button.textContent = 'OK';
-        setTimeout(() => { button.innerHTML = originalMarkup; }, 1200);
-      } catch {
-        button.textContent = 'NO';
-        setTimeout(() => { button.innerHTML = originalMarkup; }, 1600);
-      }
+function initShareButtons() {
+  if (initShareButtons.initialized) return;
+  initShareButtons.initialized = true;
+
+  document.addEventListener('click', async event => {
+    const button = event.target.closest('[data-copy-share-url]');
+    if (!button) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    const originalMarkup = button.innerHTML;
+    const label = button.querySelector('span');
+    try {
+      await copyTextToClipboard(new URL(button.dataset.copyShareUrl, window.location.href).href);
+      if (label) label.textContent = 'Link copiato';
+      else button.textContent = 'OK';
+      setTimeout(() => { button.innerHTML = originalMarkup; }, 1400);
+    } catch {
+      if (label) label.textContent = 'Copia non riuscita';
+      else button.textContent = 'NO';
+      setTimeout(() => { button.innerHTML = originalMarkup; }, 1600);
+    }
+  });
+
+  document.addEventListener('click', event => {
+    const currentMenu = event.target.closest('.content-share');
+    document.querySelectorAll('.content-share[open]').forEach(menu => {
+      if (menu !== currentMenu) menu.open = false;
     });
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const openMenu = document.querySelector('.content-share[open]');
+    if (!openMenu) return;
+    openMenu.open = false;
+    openMenu.querySelector('summary').focus();
   });
 }
 
@@ -494,7 +580,6 @@ function initCertificatesCatalog() {
     cardsContainer.innerHTML = data.map(certificateCardMarkup).join('');
 
     initCopyableIsins(cardsContainer);
-    initShareButtons(cardsContainer);
     alignCertificateMetrics(cardsContainer);
   }
 
@@ -614,6 +699,7 @@ function initGlossary() {
 
     let html = '';
     items.forEach(item => {
+      const itemId = contentAnchorId('glossary', item.term);
       const exampleBox = item.example ? `
         <div class="glossary-example">
           <strong class="glossary-example-label">💡 Esempio pratico / Focus operativo:</strong>
@@ -622,10 +708,11 @@ function initGlossary() {
       ` : '';
 
       html += `
-        <div class="glossary-card">
+        <div class="glossary-card" id="${itemId}">
           <div class="glossary-card-title">
             <span>${item.term}</span>
             <span class="badge badge-primary">${item.category}</span>
+            ${contentShareMenuMarkup(itemId, item.term)}
           </div>
           <div class="glossary-card-def">
             ${item.definition}
@@ -658,6 +745,7 @@ function initGlossary() {
   if (searchInput) searchInput.addEventListener('input', filterGlossary);
 
   renderGlossary(sortedGlossary);
+  scrollToSharedContent(container);
 }
 
 /* ==========================================================================
@@ -754,25 +842,31 @@ function initFaqAccordion() {
     }
 
     let html = '';
+    const requestedFaqId = window.location.hash.slice(1);
+    const hasSharedQuestion = FAQS_DATA.some(faq => contentAnchorId('faq', faq.question) === requestedFaqId);
     items.forEach((item, index) => {
       // Mostra il primo risultato; durante una ricerca apre tutte le risposte trovate.
-      const isActive = autoOpenAll || index === 0;
-      const questionId = `faq-question-${index}`;
-      const answerId = `faq-answer-${index}`;
+      const itemId = contentAnchorId('faq', item.question);
+      const questionId = `${itemId}-question`;
+      const answerId = `${itemId}-answer`;
+      const isActive = autoOpenAll || (hasSharedQuestion ? itemId === requestedFaqId : index === 0);
 
       html += `
-        <div class="faq-item ${isActive ? 'active' : ''}">
-          <button type="button" class="faq-question" id="${questionId}" aria-expanded="${isActive}" aria-controls="${answerId}">
-            <div>
-              <span class="badge badge-primary faq-item-category">
-                ${item.category}
-              </span>
-              <div class="faq-item-question-text">${item.question}</div>
-            </div>
-            <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
+        <div class="faq-item ${isActive ? 'active' : ''}" id="${itemId}">
+          <div class="faq-item-header">
+            <button type="button" class="faq-question" id="${questionId}" aria-expanded="${isActive}" aria-controls="${answerId}">
+              <div>
+                <span class="badge badge-primary faq-item-category">
+                  ${item.category}
+                </span>
+                <div class="faq-item-question-text">${item.question}</div>
+              </div>
+              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            ${contentShareMenuMarkup(itemId, item.question)}
+          </div>
           <div class="faq-answer" id="${answerId}" role="region" aria-labelledby="${questionId}">
             ${formatFaqAnswer(item.answer)}
           </div>
@@ -825,6 +919,7 @@ function initFaqAccordion() {
   if (searchInput) searchInput.addEventListener('input', filterFaqs);
 
   renderFaqs(FAQS_DATA);
+  scrollToSharedContent(container);
 }
 
 /* ==========================================================================
