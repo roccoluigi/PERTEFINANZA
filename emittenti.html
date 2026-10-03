@@ -162,8 +162,62 @@
       border-color: var(--primary, #2563eb);
     }
     @media (max-width: 768px) {
+      .issuer-card {
+        padding: 0.5rem;
+      }
+      .issuer-header {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-areas:
+          "name name"
+          "subtitle subtitle"
+          "ratings share";
+        gap: 0.2rem 0.5rem;
+      }
+      .issuer-title-box {
+        display: contents;
+      }
+      .issuer-title-box > div {
+        display: contents;
+      }
+      .issuer-name {
+        grid-area: name;
+        overflow: hidden;
+        font-size: 1rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .issuer-country {
+        grid-area: subtitle;
+        display: block;
+        overflow: hidden;
+        font-size: 0.58rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .ratings-badge-group {
+        grid-area: ratings;
+        flex: 0 0 auto;
+        gap: 0.12rem;
+        margin-left: 0;
+        flex-wrap: nowrap;
+      }
+      .rating-pill {
+        gap: 0.1rem;
+        padding: 0.16rem 0.12rem;
+        font-size: 0.58rem;
+        white-space: nowrap;
+      }
+      .rating-agency {
+        font-size: 0.48rem;
+      }
+      .rating-val {
+        font-size: 0.58rem;
+      }
       .issuer-header > .content-share {
-        margin-left: auto;
+        grid-area: share;
+        justify-self: start;
+        flex: 0 0 auto;
       }
     }
   </style>
