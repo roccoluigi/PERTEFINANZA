@@ -444,11 +444,17 @@ function initShareButtons() {
     event.stopPropagation();
     const originalMarkup = button.innerHTML;
     const label = button.querySelector('span');
+    const shareMenu = button.closest('.content-share');
     try {
       await copyTextToClipboard(new URL(button.dataset.copyShareUrl, window.location.href).href);
       if (label) label.textContent = 'Link copiato';
       else button.textContent = 'OK';
-      setTimeout(() => { button.innerHTML = originalMarkup; }, 1400);
+      setTimeout(() => {
+        button.innerHTML = originalMarkup;
+        if (!shareMenu?.isConnected) return;
+        shareMenu.open = false;
+        shareMenu.querySelector('summary')?.focus();
+      }, 1400);
     } catch {
       if (label) label.textContent = 'Copia non riuscita';
       else button.textContent = 'NO';
@@ -458,6 +464,9 @@ function initShareButtons() {
 
   document.addEventListener('click', event => {
     const currentMenu = event.target.closest('.content-share');
+    if (currentMenu && event.target.closest('.share-menu-item[href]')) {
+      currentMenu.open = false;
+    }
     document.querySelectorAll('.content-share[open]').forEach(menu => {
       if (menu !== currentMenu) menu.open = false;
     });
