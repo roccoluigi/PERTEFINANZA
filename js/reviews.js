@@ -16,6 +16,7 @@ function buildGeneratedReviewContent(cert) {
   const monthlyYield = annualYield / 12;
   const highBarrier = Math.max(capitalBarrier, couponBarrier);
   const lowBarrier = Math.min(capitalBarrier, couponBarrier);
+  const moderateRangeBreaksCapitalBarrier = capitalBarrier > lowBarrier;
   const stepDownValue = Number.parseFloat(cert.stepDown) || 0;
   const stepDownStartText = formatStepDownStartMonth(cert.stepDownStartMonth);
   const issuerData = ISSUERS_DATA.find(item => item.name === cert.issuer || item.name.startsWith(`${cert.issuer} `));
@@ -59,7 +60,7 @@ function buildGeneratedReviewContent(cert) {
   const scenarios = [
     { scenario: 'Rialzista', sottostante: 'Worst-Of >= 100%', cedole: `Cedole condizionate pagate: ${annualYield.toFixed(2)}% p.a.; incluse tutte le eventuali cedole arretrate in memoria`, capitale: 'Capitale protetto e possibile rimborso nominale anticipato', rendimentoNetto: `${annualYield.toFixed(2)}% annuo lordo annualizzato` },
     { scenario: 'Stabile', sottostante: `Worst-Of tra 100% e ${highBarrier}%`, cedole: `Cedole condizionate pagate: ${annualYield.toFixed(2)}% p.a.; se la barriera coupon viene recuperata: pagamento di tutte le eventuali cedole arretrate in memoria`, capitale: 'Capitale protetto e rimborso nominale', rendimentoNetto: `${annualYield.toFixed(2)}% annuo lordo annualizzato` },
-    { scenario: 'Moderat. ribassista', sottostante: highBarrier > lowBarrier ? `Worst-Of tra ${highBarrier}% e ${lowBarrier}%` : `Nessuna fascia intermedia: soglia unica al ${capitalBarrier}%`, cedole: couponBarrier === capitalBarrier ? `Cedole a rischio sotto ${couponBarrier}%; se la barriera coupon viene recuperata: pagamento di tutte le cedole arretrate in memoria` : `Cedole a rischio sotto ${couponBarrier}%; se la barriera coupon viene recuperata: pagamento di tutte le cedole arretrate in memoria`, capitale: 'Capitale protetto e rimborso nominale', rendimentoNetto: `${annualYield.toFixed(2)}% annuo lordo annualizzato (se barriera coupon non violata)` },
+    { scenario: 'Moderat. ribassista', sottostante: highBarrier > lowBarrier ? `Worst-Of tra ${highBarrier}% e ${lowBarrier}%` : `Nessuna fascia intermedia: soglia unica al ${capitalBarrier}%`, cedole: couponBarrier === capitalBarrier ? `Cedole a rischio sotto ${couponBarrier}%; se la barriera coupon viene recuperata: pagamento di tutte le cedole arretrate in memoria` : `Cedole a rischio sotto ${couponBarrier}%; se la barriera coupon viene recuperata: pagamento di tutte le cedole arretrate in memoria`, capitale: moderateRangeBreaksCapitalBarrier ? 'Rimborso proporzionale al Worst-Of: barriera capitale violata' : 'Capitale protetto e rimborso nominale', rendimentoNetto: moderateRangeBreaksCapitalBarrier ? 'Perdita sul capitale a scadenza, eventualmente attenuata dalle cedole incassate' : `${annualYield.toFixed(2)}% annuo lordo annualizzato (se barriera coupon non violata)` },
     { scenario: 'Ribassista', sottostante: `Worst-Of < ${lowBarrier}%`, cedole: 'Cedole non pagate finché la barriera coupon resta violata; se la barriera coupon viene recuperata: pagamento di tutte le cedole arretrate in memoria', capitale: 'Perdita proporzionale al Worst-Of sotto barriera', rendimentoNetto: 'Perdita netta sul capitale solo se le cedole incassate non compensano il ribasso del Worst-Of' }
   ];
 

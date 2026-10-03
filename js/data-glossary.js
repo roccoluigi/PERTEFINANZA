@@ -84,7 +84,7 @@ const GLOSSARY_DATA = [
   {
     term: "Classificazione ACEPI",
     category: "Normativa & KID",
-    definition: "La mappa e tassonomia ufficiale redatta dall'Associazione Italiana Certificati e Prodotti di Investimento. Suddivide i prodotti in 5 macrocategorie: 1) Certificati a Capitale Protetto (garantito al 100%); 2) Certificati a Capitale Condizionatamente Protetto (Cash Collect, Express, Bonus); 3) Certificati a Capitale Non Protetto (Benchmark, Outperformance); 4) Certificati a Leva (Leva Fissa e Leva Variabile Turbo/MiniFuture); 5) Credit Linked Notes.",
+    definition: "La Mappa ACEPI raggruppa i certificati in cinque categorie: 1) prodotti a capitale protetto, che offrono a scadenza la protezione totale o parziale dell'investimento; 2) prodotti a capitale condizionatamente protetto, il cui rimborso dipende da un evento definito nel prospetto; 3) prodotti a capitale non protetto, come Benchmark e Outperformance; 4) prodotti a leva, che amplificano guadagni e perdite; 5) Credit Linked Notes, con cedole e rimborso subordinati a uno o più eventi di credito.",
     example: "La mappa ACEPI standardizza la nomenclatura commerciale dei vari emittenti bancari, consentendo agli investitori di confrontare oggettivamente le caratteristiche strutturali dei prodotti."
   },
   {

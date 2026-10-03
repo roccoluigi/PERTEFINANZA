@@ -892,12 +892,12 @@ function initFaqAccordion() {
         <div class="faq-item ${isActive ? 'active' : ''}" id="${itemId}">
           <div class="faq-item-header">
             <button type="button" class="faq-question" id="${questionId}" aria-expanded="${isActive}" aria-controls="${answerId}">
-              <div>
+              <span class="faq-question-content">
                 <span class="badge badge-primary faq-item-category">
                   ${item.category}
                 </span>
-                <div class="faq-item-question-text">${item.question}</div>
-              </div>
+                <span class="faq-item-question-text">${item.question}</span>
+              </span>
               <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
