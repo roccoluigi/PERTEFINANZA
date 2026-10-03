@@ -363,7 +363,7 @@ function contentShareMenuMarkup(anchorId, title) {
   const shareUrl = new URL(window.location.href);
   shareUrl.hash = anchorId;
   const encodedUrl = encodeURIComponent(shareUrl.href);
-  const encodedTitle = encodeURIComponent(`${title} | PERTEFINANZA`);
+  const encodedTitle = encodeURIComponent(title);
 
   return `
     <details class="content-share">
@@ -879,6 +879,7 @@ function initFaqAccordion() {
     // Collega l'accordion e sincronizza lo stato ARIA con la classe visuale.
     container.querySelectorAll('.faq-item').forEach(item => {
       const questionBtn = item.querySelector('.faq-question');
+      const shareMenu = item.querySelector('.content-share');
       if (questionBtn) {
         questionBtn.addEventListener('click', () => {
           const isCurrentlyActive = item.classList.contains('active');
@@ -894,6 +895,24 @@ function initFaqAccordion() {
           const nextIsActive = !isCurrentlyActive;
           item.classList.toggle('active', nextIsActive);
           questionBtn.setAttribute('aria-expanded', String(nextIsActive));
+        });
+      }
+
+      if (shareMenu && questionBtn) {
+        shareMenu.addEventListener('toggle', () => {
+          if (!shareMenu.open || item.classList.contains('active')) return;
+
+          if (!autoOpenAll) {
+            container.querySelectorAll('.faq-item').forEach(other => {
+              if (other !== item) {
+                other.classList.remove('active');
+                other.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+              }
+            });
+          }
+
+          item.classList.add('active');
+          questionBtn.setAttribute('aria-expanded', 'true');
         });
       }
     });
