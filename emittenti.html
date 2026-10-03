@@ -3,8 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banche Emittenti e Rating di Credito | PERTEFINANZA</title>
-  <meta name="description" content="Guida, analisi approfondita e rating di credito per 17 principali emittenti di certificati sul mercato italiano (BNP Paribas, UniCredit, Intesa Sanpaolo, Vontobel, Leonteq, Barclays e altri).">
+  <title>Emittenti e rating | PERTEFINANZA</title>
+  <meta name="description" content="Profili e rating di credito per valutare solidità e rischio degli emittenti di certificati di investimento.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PERTEFINANZA">
+  <meta property="og:title" content="Emittenti e rating | PERTEFINANZA">
+  <meta property="og:description" content="Profili e rating di credito per valutare solidità e rischio degli emittenti di certificati di investimento.">
+  <meta property="og:url" content="https://pertefinanza.it/emittenti.html">
+  <meta property="og:image" content="https://pertefinanza.it/assets/pertefinanza-social-card.png">
+  <meta property="og:image:alt" content="PERTEFINANZA - Emittenti e rating di credito">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Emittenti e rating | PERTEFINANZA">
+  <meta name="twitter:description" content="Profili e rating di credito per valutare solidità e rischio degli emittenti di certificati di investimento.">
+  <meta name="twitter:image" content="https://pertefinanza.it/assets/pertefinanza-social-card.png">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" type="image/svg+xml" href="assets/favicon-pf-square.svg">
   <style>
@@ -64,6 +77,10 @@
       gap: 0.4rem;
       flex-wrap: wrap;
       align-items: center;
+      margin-left: auto;
+    }
+    .issuer-header > .content-share {
+      flex: 0 0 auto;
     }
     .rating-pill {
       background: var(--bg-body, #f8fafc);
@@ -143,6 +160,11 @@
       background: var(--primary, #2563eb);
       color: #ffffff;
       border-color: var(--primary, #2563eb);
+    }
+    @media (max-width: 768px) {
+      .issuer-header > .content-share {
+        margin-left: auto;
+      }
     }
   </style>
 </head>

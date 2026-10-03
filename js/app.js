@@ -975,12 +975,31 @@ function initFaqAccordion() {
 /* ==========================================================================
    6. Emittenti Grid
    ========================================================================== */
+function issuerShareText(name, profileDetail = '') {
+  const heading = profileDetail ? `${name} • ${profileDetail}` : name;
+  return `${heading}\nScopri il profilo dell’emittente, il suo rating e le informazioni utili per valutare i certificati di investimento.`;
+}
+
 function initIssuersList() {
+  document.querySelectorAll('#issuers-list .issuer-card').forEach(card => {
+    const header = card.querySelector('.issuer-header');
+    const issuerName = card.querySelector('.issuer-name')?.textContent.trim();
+    if (!header || !issuerName || !card.id || header.querySelector('.content-share')) return;
+
+    const issuerDescriptor = card.querySelector('.issuer-country')?.textContent.trim().split(' • ').slice(1).join(' • ');
+    const issuerUrl = new URL(window.location.href);
+    issuerUrl.hash = card.id;
+    header.insertAdjacentHTML('beforeend', contentShareMenuMarkup(card.id, `Emittente ${issuerName}`, issuerShareText(issuerName, issuerDescriptor), issuerUrl.href));
+  });
+
   const container = document.getElementById('issuers-grid');
   if (!container || typeof ISSUERS_DATA === 'undefined') return;
 
   let html = '';
   ISSUERS_DATA.forEach(iss => {
+    const issuerId = issuerAnchorId(iss.name);
+    const issuerUrl = new URL('emittenti.html', window.location.href);
+    issuerUrl.hash = issuerId;
     const issuerRatings = [
       ['S&P', iss.ratingSP],
       ["Moody's", iss.ratingMoodys],
@@ -994,13 +1013,16 @@ function initIssuersList() {
       .join('');
 
     html += `
-      <div class="issuer-card" id="${issuerAnchorId(iss.name)}">
+      <div class="issuer-card" id="${issuerId}">
         <div>
           <div class="issuer-rating">
             <span class="badge badge-neutral">${iss.country}</span>
             ${ratingBadges}
           </div>
-          <h3 class="issuer-name issuer-card-name">${iss.name}</h3>
+          <div class="issuer-card-heading">
+            <h3 class="issuer-name issuer-card-name">${iss.name}</h3>
+            ${contentShareMenuMarkup(issuerId, `Emittente ${iss.name}`, issuerShareText(iss.name), issuerUrl.href)}
+          </div>
           <p class="issuer-market-share">
             ${iss.marketShare}
           </p>
