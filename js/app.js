@@ -564,6 +564,9 @@ function initCertificatesCatalog() {
   const issuerSelect = document.getElementById('filter-issuer');
   const typeSelect = document.getElementById('filter-type');
   const countEl = document.getElementById('certificates-count');
+  const pagination = document.getElementById('certificates-pagination');
+  const pageSize = 12;
+  let currentPage = 1;
 
   if (!cardsContainer || typeof CERTIFICATES_DATA === 'undefined') return;
 
@@ -597,6 +600,7 @@ function initCertificatesCatalog() {
         </div>
       `;
       if (countEl) countEl.textContent = '0 certificati trovati';
+      if (pagination) pagination.innerHTML = '';
       return;
     }
 
@@ -604,17 +608,54 @@ function initCertificatesCatalog() {
       countEl.textContent = `${data.length} ${data.length === 1 ? 'certificato trovato' : 'certificati trovati'}`;
     }
 
-    cardsContainer.innerHTML = data.map(certificateCardMarkup).join('');
+    const totalPages = Math.ceil(data.length / pageSize);
+    currentPage = Math.min(currentPage, totalPages);
+    const pageStart = (currentPage - 1) * pageSize;
+    cardsContainer.innerHTML = data.slice(pageStart, pageStart + pageSize).map(certificateCardMarkup).join('');
 
     initCopyableIsins(cardsContainer);
     alignCertificateMetrics(cardsContainer);
+    renderPagination(totalPages);
   }
 
-  function filterData() {
+  function renderPagination(totalPages) {
+    if (!pagination) return;
+    if (totalPages <= 1) {
+      pagination.innerHTML = '';
+      return;
+    }
+
+    let pages = [];
+    if (totalPages <= 7) {
+      pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+    } else {
+      pages = [1];
+      if (currentPage > 3) pages.push('…');
+      const startPage = currentPage <= 2 ? 2 : Math.max(2, currentPage - 1);
+      const endPage = currentPage >= totalPages - 1 ? totalPages - 1 : Math.min(totalPages - 1, currentPage + 1);
+      for (let page = startPage; page <= endPage; page += 1) pages.push(page);
+      if (currentPage < totalPages - 2) pages.push('…');
+      pages.push(totalPages);
+    }
+
+    const pageButtons = pages.map(page => page === '…'
+      ? '<span class="pagination-ellipsis" aria-hidden="true">…</span>'
+      : `<button type="button" class="pagination-button${page === currentPage ? ' is-active' : ''}" data-page="${page}"${page === currentPage ? ' aria-current="page"' : ''} aria-label="Pagina ${page}">${page}</button>`
+    ).join('');
+
+    pagination.innerHTML = `
+      <button type="button" class="pagination-button pagination-direction" data-page="${currentPage - 1}"${currentPage === 1 ? ' disabled' : ''} aria-label="Pagina precedente">Precedente</button>
+      ${pageButtons}
+      <button type="button" class="pagination-button pagination-direction" data-page="${currentPage + 1}"${currentPage === totalPages ? ' disabled' : ''} aria-label="Pagina successiva">Successiva</button>
+    `;
+  }
+
+  function filterData(resetPage = true) {
     // Applica tutti i filtri insieme e ridisegna anche il conteggio dei risultati.
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
     const selectedIssuer = issuerSelect ? issuerSelect.value : '';
     const selectedType = typeSelect ? typeSelect.value : '';
+    if (resetPage) currentPage = 1;
 
     const filtered = CERTIFICATES_DATA.filter(c => {
       const matchQuery = !query || 
@@ -634,6 +675,14 @@ function initCertificatesCatalog() {
   if (searchInput) searchInput.addEventListener('input', filterData);
   if (issuerSelect) issuerSelect.addEventListener('change', filterData);
   if (typeSelect) typeSelect.addEventListener('change', filterData);
+  if (pagination) {
+    pagination.addEventListener('click', event => {
+      const button = event.target.closest('[data-page]');
+      if (!button || button.disabled) return;
+      currentPage = Number(button.dataset.page);
+      filterData(false);
+    });
+  }
 
   renderCertificateCards(CERTIFICATES_DATA);
 }
