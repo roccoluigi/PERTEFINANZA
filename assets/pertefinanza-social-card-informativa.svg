@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">PERTEFINANZA</title>
+  <desc id="desc">Informazione sui certificati d’investimento, analisi, formazione e approfondimenti</desc>
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <path d="M820 0h380v630H620z" fill="#17243b"/>
+  <path d="M1080 0h120v630H860z" fill="#1d4ed8" opacity="0.2"/>
+  <path d="M0 0h1200v12H0z" fill="#2563eb"/>
+  <rect x="48" y="48" width="1104" height="534" rx="18" fill="none" stroke="#334155" stroke-width="2"/>
+  <text x="600" y="278" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="108" font-weight="800"><tspan fill="#ffffff">PERTE</tspan><tspan fill="#60a5fa">FINANZA</tspan></text>
+  <rect x="490" y="326" width="220" height="4" rx="2" fill="#3b82f6"/>
+  <text x="600" y="386" text-anchor="middle" fill="#e2e8f0" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="600">INFORMAZIONE SUI CERTIFICATI D’INVESTIMENTO</text>
+  <text x="600" y="456" text-anchor="middle" fill="#94a3b8" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="500">ANALISI · FORMAZIONE · APPROFONDIMENTI</text>
+</svg>
