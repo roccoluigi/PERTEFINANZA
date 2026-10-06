@@ -32,7 +32,7 @@ const ISSUERS_DATA = [
     ratings: { "S&P": "A+", "Moody's": "Aa3", Fitch: "A+" },
     marketShare: "Colosso bancario americano",
     website: "https://it.citifirst.com/",
-    description: "Gruppo bancario americano attivo su strutture Cash Collect e panieri internazionali."
+    description: "Gruppo bancario statunitense attivo nell'emissione di prodotti Cash Collect e in strutture su panieri internazionali."
   },
   {
     name: "EFG International",
