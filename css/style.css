@@ -3168,9 +3168,26 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
+  .header-inner {
+    column-gap: 0.5rem;
+  }
+
   .brand-name,
   .footer-logo {
     font-size: 1.2rem;
+  }
+
+  .header-actions .btn-telegram {
+    gap: 0.35rem;
+    padding-right: 0.45rem;
+    padding-left: 0.45rem;
+    white-space: nowrap;
+  }
+
+  .header-actions .btn-telegram svg {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
   }
 
   .main-nav {
