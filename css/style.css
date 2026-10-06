@@ -3168,6 +3168,11 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
+  .brand-name,
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+
   .main-nav {
     display: none;
   }
