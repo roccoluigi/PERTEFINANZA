@@ -270,7 +270,7 @@ button, input, select, textarea {
 
 .brand-name {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: var(--secondary);
   letter-spacing: -0.02em;
@@ -1736,7 +1736,7 @@ button, input, select, textarea {
   border-radius: var(--radius-sm);
   background: #ffffff;
   font-family: monospace;
-  font-weight: 700;
+  font-weight: 800;
   font-size: 0.75rem;
   color: var(--text-body);
   cursor: copy;
