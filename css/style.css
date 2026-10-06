@@ -2643,6 +2643,10 @@ button, input, select, textarea {
   color: var(--success);
 }
 
+.review-overview-highlight .review-monthly-yield-value {
+  color: var(--secondary);
+}
+
 .review-title {
   font-size: 1.85rem;
   font-weight: 800;
@@ -2677,9 +2681,12 @@ button, input, select, textarea {
 }
 
 .review-underlyings-value,
-.review-capital-barrier-value,
 .review-issuer-value {
-  color: var(--primary);
+  color: var(--secondary);
+}
+
+.review-capital-barrier-value {
+  color: var(--success);
 }
 
 .meta-box-detail {

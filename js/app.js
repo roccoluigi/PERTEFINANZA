@@ -1231,7 +1231,7 @@ function initReviewPage() {
           </div>
           <div class="meta-box review-overview-item review-overview-highlight">
             <span class="meta-box-label">Rend. pot. mensile</span>
-            <span class="meta-box-value">${monthlyYield.toFixed(2)}%</span>
+            <span class="meta-box-value review-monthly-yield-value">${monthlyYield.toFixed(2)}%</span>
           </div>
           <div class="meta-box review-overview-item">
             <span class="meta-box-label">Barriera capitale</span>
