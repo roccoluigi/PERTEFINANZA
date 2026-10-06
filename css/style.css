@@ -1737,8 +1737,8 @@ button, input, select, textarea {
   background: #ffffff;
   font-family: monospace;
   font-weight: 700;
-  font-size: 0.8125rem;
-  color: var(--primary);
+  font-size: 0.75rem;
+  color: var(--text-body);
   cursor: copy;
   transition: none;
 }
@@ -1748,11 +1748,11 @@ button, input, select, textarea {
 .widget-cert-isin.copy-failed {
   border-color: var(--primary-border);
   background: #ffffff;
-  color: var(--primary);
+  color: var(--text-body);
 }
 
 .widget-cert-isin-label {
-  color: var(--primary);
+  color: var(--text-body);
   font-family: inherit;
   font-size: inherit;
   font-weight: 800;
