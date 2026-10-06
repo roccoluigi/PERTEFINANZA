@@ -199,7 +199,7 @@ function initSidebarFeatured() {
       <div class="widget-cert-item">
         <div class="widget-cert-top">
           <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
-            <span class="widget-cert-isin-label">ISIN</span>${c.isin}
+            <span class="widget-cert-isin-label">ISIN:</span>${c.isin}
           </button>
           ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewUrl)}
         </div>
@@ -1218,12 +1218,12 @@ function initReviewPage() {
         <div class="review-overview-grid">
           <div class="meta-box review-overview-item review-overview-item-wide">
             <span class="meta-box-label">Emittente e rating</span>
-            <span class="meta-box-value meta-box-value-small">${cert.issuer}</span>
+            <span class="meta-box-value meta-box-value-small review-issuer-value">${cert.issuer}</span>
             <small class="meta-box-detail">${ratingText}</small>
           </div>
           <div class="meta-box review-overview-item review-overview-item-wide">
             <span class="meta-box-label">Basket</span>
-            <span class="meta-box-value meta-box-value-small">${cert.underlyings.join(', ')}</span>
+            <span class="meta-box-value meta-box-value-small review-underlyings-value">${cert.underlyings.join(', ')}</span>
           </div>
           <div class="meta-box review-overview-item review-overview-highlight">
             <span class="meta-box-label">Rend. pot. annuo</span>
@@ -1235,7 +1235,7 @@ function initReviewPage() {
           </div>
           <div class="meta-box review-overview-item">
             <span class="meta-box-label">Barriera capitale</span>
-            <span class="meta-box-value">${cert.barrierCapital} · Europea</span>
+            <span class="meta-box-value review-capital-barrier-value">${cert.barrierCapital} · Europea</span>
             <small class="meta-box-detail">Osservazione a scadenza</small>
           </div>
           <div class="meta-box review-overview-item">
