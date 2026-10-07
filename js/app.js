@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
    =========================================================================== */
 function initSiteNavigation() {
   const pathnamePage = window.location.pathname.split('/').pop() || 'index.html';
-  const currentPage = pathnamePage === 'recensione.html' ? 'certificati.html' : pathnamePage;
+  const isReviewPage = pathnamePage === 'recensione.html' || /^recensione-[A-Z0-9]{12}\.html$/i.test(pathnamePage);
+  const currentPage = isReviewPage ? 'certificati.html' : pathnamePage;
   document.querySelectorAll('.main-nav, .mobile-nav').forEach(nav => {
     const linkClass = nav.classList.contains('mobile-nav') ? 'mobile-nav-link' : 'nav-link';
     nav.querySelectorAll(`a.${linkClass}`).forEach(link => {
@@ -42,6 +43,22 @@ function initSiteNavigation() {
       nav.insertAdjacentHTML('beforeend', themeToggleMarkup(linkClass));
     }
   });
+}
+
+function reviewTemplateUrl(isin) {
+  const inReviewFolder = window.location.pathname.split('/').includes('recensioni');
+  const encodedIsin = encodeURIComponent(isin);
+  const hasStaticReview = Array.isArray(window.STATIC_REVIEW_ISINS)
+    && window.STATIC_REVIEW_ISINS.includes(isin);
+
+  if (hasStaticReview) {
+    return inReviewFolder
+      ? `recensione-${encodedIsin}.html`
+      : `recensioni/recensione-${encodedIsin}.html`;
+  }
+
+  const templatePath = inReviewFolder ? '../recensione.html' : 'recensione.html';
+  return `${templatePath}?isin=${encodedIsin}`;
 }
 
 function themeToggleMarkup(navClass) {
@@ -154,7 +171,7 @@ function initSidebarFeatured() {
   let html = '';
 
   topPicks.forEach(c => {
-    const reviewUrl = `recensione.html?isin=${encodeURIComponent(c.isin)}`;
+    const reviewUrl = reviewTemplateUrl(c.isin);
     html += `
       <div class="widget-cert-item">
         <div class="widget-cert-top">
@@ -205,7 +222,7 @@ function certificateCardMarkup(c) {
           <h3>${c.name}</h3>
           <div class="home-certificate-isin">
             <button type="button" class="cert-isin-copy" data-copy-isin="${c.isin}" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></button>
-            <a href="recensione.html?isin=${encodeURIComponent(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
+            <a href="${reviewTemplateUrl(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
           </div>
           <div class="home-certificate-summary">${reviewPreviewMarkup(c)}</div>
         </div>
@@ -262,7 +279,14 @@ function alignCertificateMetrics(container = document) {
 
 function initHomeFeaturedCertificates() {
   const container = document.getElementById('home-featured-certificates');
-  if (!container || typeof CERTIFICATES_DATA === 'undefined') return;
+  if (!container) return;
+
+  if (container.querySelector('.home-certificate-card')) {
+    initCopyableIsins(container);
+    alignCertificateMetrics(container);
+    return;
+  }
+  if (typeof CERTIFICATES_DATA === 'undefined') return;
 
   container.innerHTML = CERTIFICATES_DATA.filter(c => c.showHome).map(certificateCardMarkup).join('');
   initCopyableIsins(container);
@@ -311,7 +335,7 @@ function certificateShareText(c) {
 }
 
 function shareButtonsMarkup(c) {
-  const shareUrl = new URL(`recensione.html?isin=${encodeURIComponent(c.isin)}`, window.location.href).href;
+  const shareUrl = new URL(reviewTemplateUrl(c.isin), window.location.href).href;
   const shareText = encodeURIComponent(certificateShareText(c));
   const encodedUrl = encodeURIComponent(shareUrl);
 
@@ -1108,10 +1132,31 @@ function initIssuersList() {
    ========================================================================== */
 function initReviewPage() {
   const reviewContainer = document.getElementById('review-content-area');
-  if (!reviewContainer || typeof CERTIFICATES_DATA === 'undefined') return;
+  if (!reviewContainer) return;
+
+  if (reviewContainer.dataset.reviewIsin) {
+    initCopyableIsins(reviewContainer);
+    const isinPicker = document.getElementById('review-isin-picker');
+    if (isinPicker) {
+      isinPicker.addEventListener('change', (event) => {
+        window.location.href = reviewTemplateUrl(event.target.value);
+      });
+    }
+    return;
+  }
+  if (typeof CERTIFICATES_DATA === 'undefined') return;
 
   const params = new URLSearchParams(window.location.search);
-  let isin = params.get('isin') || "NLBNPIT239B1";
+  const requestedIsin = params.get('isin') || CERTIFICATES_DATA[0]?.isin;
+  if (
+    requestedIsin
+    && Array.isArray(window.STATIC_REVIEW_ISINS)
+    && window.STATIC_REVIEW_ISINS.includes(requestedIsin)
+  ) {
+    window.location.replace(reviewTemplateUrl(requestedIsin));
+    return;
+  }
+  let isin = params.get('isin') || reviewContainer.dataset.reviewIsin || "NLBNPIT239B1";
 
   let cert = CERTIFICATES_DATA.find(c => c.isin === isin);
   if (!cert) {
@@ -1313,7 +1358,7 @@ function initReviewPage() {
   const isinPicker = document.getElementById('review-isin-picker');
   if (isinPicker) {
     isinPicker.addEventListener('change', (e) => {
-      window.location.href = `recensione.html?isin=${encodeURIComponent(e.target.value)}`;
+      window.location.href = reviewTemplateUrl(e.target.value);
     });
   }
 }

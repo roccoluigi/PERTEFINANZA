@@ -19,7 +19,9 @@ function buildGeneratedReviewContent(cert) {
   const moderateRangeBreaksCapitalBarrier = capitalBarrier > lowBarrier;
   const stepDownValue = Number.parseFloat(cert.stepDown) || 0;
   const stepDownStartText = formatStepDownStartMonth(cert.stepDownStartMonth);
-  const issuerData = ISSUERS_DATA.find(item => item.name === cert.issuer || item.name.startsWith(`${cert.issuer} `));
+  const issuerData = typeof ISSUERS_DATA !== 'undefined'
+    ? ISSUERS_DATA.find(item => item.name === cert.issuer || item.name.startsWith(`${cert.issuer} `))
+    : null;
   const issuerDescription = issuerData ? issuerData.description : `L'emittente ${cert.issuer} opera nel mercato dei prodotti strutturati.`;
   const issuerDescriptionStart = issuerDescription.charAt(0).toLowerCase() + issuerDescription.slice(1);
   const ratingEntries = issuerData && issuerData.ratings
