@@ -677,6 +677,10 @@ button, input, select, textarea {
   border-left: 4px solid var(--primary);
 }
 
+.issuer-evaluation {
+  margin-bottom: 2rem;
+}
+
 .issuer-risk-intro-text {
   margin-top: 0.5rem;
   color: var(--text-body);
