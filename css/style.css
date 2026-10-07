@@ -282,6 +282,12 @@ button, input, select, textarea {
   height: 72px;
 }
 
+@media (min-width: 1105px) and (max-width: 1280px) {
+  .header-inner {
+    padding-inline: calc(1.25rem + clamp(0px, calc(288px - 22.5vw), 36px));
+  }
+}
+
 .brand-logo {
   display: flex;
   align-items: center;
@@ -409,9 +415,24 @@ button, input, select, textarea {
 }
 
 .main-nav .theme-toggle {
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   border: 0;
-  background: transparent;
-  text-align: left;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--text-body);
+  gap: 0;
+}
+
+.main-nav .theme-toggle:hover {
+  background-color: transparent;
+  color: var(--primary);
+}
+
+.main-nav .theme-toggle-label {
+  display: none;
 }
 
 .mobile-nav .theme-toggle {
@@ -427,6 +448,12 @@ button, input, select, textarea {
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
+}
+
+.main-nav .theme-toggle svg {
+  flex-basis: 22px;
+  width: 22px;
+  height: 22px;
 }
 
 /* ==========================================================================
@@ -3204,7 +3231,7 @@ button, input, select, textarea {
    Responsive Breakpoints
    ========================================================================== */
 
-@media (max-width: 1120px) {
+@media (max-width: 1104px) {
   .main-nav {
     display: none;
   }
@@ -3620,6 +3647,10 @@ html[data-theme="dark"] .cons-title {
 
 html[data-theme="dark"] .theme-toggle:hover {
   background-color: var(--primary-light);
+}
+
+html[data-theme="dark"] .main-nav .theme-toggle:hover {
+  background-color: transparent;
 }
 
 html[data-theme="dark"] .home-benefits-grid > .card > .home-benefit-icon {
