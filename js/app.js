@@ -42,7 +42,7 @@ function initSiteNavigation() {
   ];
 
   document.querySelectorAll('.brand-tag').forEach(tag => {
-    tag.textContent = 'CERTIFICATI & STRATEGIE DI INVESTIMENTO';
+    tag.textContent = 'CERTIFICATI: ANALISI E FORMAZIONE';
   });
 
   document.querySelectorAll('.main-nav').forEach(nav => {
