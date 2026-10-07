@@ -4,6 +4,10 @@ const FAQS_DATA = [
   {
     category: "Basi & Funzionamento",
     question: "Cosa sono esattamente i certificati di investimento e come si collocano nella classificazione ACEPI?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-classificazione-acepi", label: "Glossario: classificazione ACEPI" },
+      { href: "formazione.html#mod5", label: "Modulo 5: famiglie di certificati" }
+    ],
     answer: "I certificati di investimento (investment certificates) sono strumenti finanziari derivati cartolarizzati emessi da banche e negoziati sui mercati regolamentati e MTF di Borsa Italiana (SeDeX ed EuroTLX/Cert-X). La Mappa ACEPI raggruppa i prodotti in cinque categorie: 1) Capitale Protetto, con protezione totale o parziale dell'investimento a scadenza; 2) Capitale Condizionatamente Protetto, come Cash Collect, Phoenix Memory, Express e Bonus, con rimborso subordinato a condizioni definite nel prospetto; 3) Capitale Non Protetto, come Benchmark e Outperformance; 4) Certificati a Leva, tra cui Leva Fissa, Turbo e Mini Futures; 5) Credit Linked Notes, con cedole e rimborso legati a eventi di credito. Le strutture possono combinare una componente obbligazionaria con una o più componenti opzionali."
   },
   {
@@ -38,6 +42,10 @@ const FAQS_DATA = [
   {
     category: "Mercati & Liquidità",
     question: "Qual è la differenza tra prezzo teorico e prezzo realmente eseguibile?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-ask-e-bid-lettera-e-denaro", label: "Glossario: denaro e lettera" },
+      { href: "formazione.html#mod21", label: "Modulo 21: lettura del book" }
+    ],
     answer: "Il prezzo teorico è una stima del valore del prodotto elaborata secondo un modello; il prezzo realmente eseguibile è quello disponibile sul book, in particolare il Bid per la vendita e l'Ask per l'acquisto, tenendo conto di quantità e spread. In presenza di mercato poco liquido o di quotazioni assenti, l'esecuzione può essere difficoltosa o avvenire a condizioni meno favorevoli."
   },
   {
@@ -52,11 +60,19 @@ const FAQS_DATA = [
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Che cosa significa che il certificato dipende dal Worst-Of?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-worst-of-meccanismo-del-paniere", label: "Glossario: meccanismo Worst-Of" },
+      { href: "formazione.html#mod15", label: "Modulo 15: panieri e correlazione" }
+    ],
     answer: "Significa che, in base alla clausola contrattuale, le verifiche principali possono dipendere dal sottostante che ha ottenuto la performance peggiore rispetto al proprio strike. Il rialzo degli altri titoli non compensa automaticamente la debolezza del Worst-Of. Per questo è importante valutare qualità, volatilità e correlazione di ogni componente del paniere."
   },
   {
     category: "Normativa & KID",
     question: "Dove trovo le informazioni definitive se una pagina web non coincide con il prodotto?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-final-terms-condizioni-definitive", label: "Glossario: Final Terms" },
+      { href: "formazione.html#mod24", label: "Modulo 24: documenti ufficiali" }
+    ],
     answer: "La fonte primaria è la documentazione ufficiale dell'emittente e del mercato: KID, Prospetto di Base, Final Terms, eventuali avvisi di rettifica e scheda di negoziazione. Per le condizioni contrattuali specifiche fanno riferimento soprattutto i Final Terms, letti insieme al Prospetto di Base; il KID sintetizza le informazioni chiave ma non sostituisce questi documenti. Le pagine divulgative e il materiale pubblicitario possono contenere dati sintetici o non aggiornati e non costituiscono la documentazione contrattuale su cui fondare un reclamo. In caso di discrepanza, sospendi l'ordine e verifica la versione ufficiale più recente presso l'emittente, il mercato e il tuo intermediario."
   },
   {
@@ -99,6 +115,10 @@ const FAQS_DATA = [
   {
     category: "Meccanismi & Cedole",
     question: "Cos'è il meccanismo Step-Down e perché è così ricercato dagli investitori?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-step-down-autocall-decrescente", label: "Glossario: Step-Down" },
+      { href: "formazione.html#mod8", label: "Modulo 8: autocall e Step-Down" }
+    ],
     answer: "Il meccanismo Step-Down prevede che la soglia di prezzo richiesta per far scattare il rimborso anticipato (Autocall) diminuisca progressivamente nel tempo ad ogni successiva data di rilevazione (ad esempio partendo dal 100% dello strike iniziale al sesto mese, per poi scendere del 1% al mese o del 5% a semestre: 95%, 90%, 85%, fino al 75% o 70%). Questo accorgimento tecnico aumenta drasticamente le probabilità statistiche di chiusura anticipata dell'investimento con rimborso a 100€ + cedole anche in scenari di mercato azionario laterale o moderatamente ribassista, riducendo l'orizzonte temporale effettivo dell'investimento."
   },
   {
@@ -113,6 +133,11 @@ const FAQS_DATA = [
   {
     category: "Meccanismi & Cedole",
     question: "Quali sono le 4 date chiave per incassare la cedola e quando conviene comprare il certificato?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-fixing-e-data-di-valutazione", label: "Glossario: fixing e valutazione" },
+      { href: "glossario.html#glossary-ex-date-data-di-stacco-della-cedola", label: "Glossario: Ex-Date" },
+      { href: "formazione.html#mod23", label: "Modulo 23: cedole e scenari" }
+    ],
     answer: "Il ciclo cedolare comprende normalmente 4 date: 1) Data di Valutazione (Fixing Date): il giorno in cui si rilevano i prezzi ufficiali dei sottostanti per verificare le condizioni della cedola; 2) Data di Stacco (Ex-Date): il giorno dal quale il certificato quota senza il diritto alla cedola; 3) Record Date: la data in cui il sistema di regolamento identifica gli aventi diritto, secondo quanto previsto dai Final Terms; 4) Payment Date: il giorno dell'effettivo accredito. Nel regime ordinario di regolamento T+2, l'acquisto deve essere eseguito entro l'ultimo giorno cum-date indicato dal mercato e dalla documentazione del prodotto, normalmente precedente alla Ex-Date. Non è però corretto applicare automaticamente la stessa sequenza a ogni emissione: date, calendario e modalità di regolamento vanno verificati nei Final Terms e presso l'intermediario."
   },
   {
@@ -128,16 +153,28 @@ const FAQS_DATA = [
   {
     category: "Fiscalità & Minusvalenze",
     question: "Come si differenzia la compensazione fiscale tra i principali intermediari bancari (Fineco, Directa, Webank, Banca Sella)?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-redditi-diversi-vs-redditi-di-capitale", label: "Glossario: redditi diversi e di capitale" },
+      { href: "formazione.html#mod11", label: "Modulo 11: compensazione fiscale" }
+    ],
     answer: "La contabilizzazione può variare in base al regime fiscale, alle procedure dell'intermediario e alla natura del certificato. In una modalità assimilabile alla compensazione immediata, il provento fiscalmente rilevante viene registrato già al momento dell'accredito e può ridurre subito le minusvalenze disponibili. In una modalità differita, invece, la cedola può incidere sul valore fiscale della posizione e la compensazione effettiva emergere alla vendita o al rimborso. Le associazioni tra singoli broker e metodo non devono essere date per definitive: Fineco, Directa, Webank, Banca Sella e gli altri intermediari possono aggiornare le proprie procedure o applicare regole diverse a seconda del prodotto. Prima di pianificare il recupero, chiedi una conferma scritta al tuo intermediario e controlla l'estratto dello zainetto fiscale, soprattutto se le minusvalenze scadono il 31 dicembre."
   },
   {
     category: "Fiscalità & Minusvalenze",
     question: "Come funziona la strategia della Maxi Cedola a fine anno per recuperare le minusvalenze in scadenza?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-maxi-cedola-maxi-coupon", label: "Glossario: Maxi Cedola" },
+      { href: "formazione.html#mod11", label: "Modulo 11: fiscalità e minusvalenze" }
+    ],
     answer: "Le minusvalenze accumulate nello zainetto fiscale hanno una validità di 4 anni solari oltre all'anno di formazione: le minusvalenze realizzate nel 2022, ad esempio, scadono improrogabilmente il 31 dicembre 2026. Per evitare di perdere definitivamente il credito d'imposta del 26%, molti risparmiatori acquistano tra ottobre e dicembre certificati con 'Maxi Cedola' (premi unici tra il 10% e il 30% erogati a breve distanza dall'emissione). L'incasso del maxipremio genera un reddito diverso che va a compensare e cancellare le minusvalenze in scadenza. Attenzione: dopo lo stacco della maxi cedola, il prezzo del certificato scende sul mercato secondario di un importo proporzionale al dividendo staccato, generando una nuova minusvalenza che avrà tuttavia validità per altri 4 anni, 'allungando' di fatto la vita del credito fiscale."
   },
   {
     category: "Fiscalità & Minusvalenze",
     question: "I certificati sono soggetti alla Tobin Tax italiana (Financial Transaction Tax)?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-eurotlx-cert-x-e-sedex", label: "Glossario: mercati SeDeX ed EuroTLX" },
+      { href: "formazione.html#mod16", label: "Modulo 16: mercati e market maker" }
+    ],
     answer: "I certificati negoziati sui mercati SeDeX ed EuroTLX godono di un regime di favore rispetto all'acquisto diretto di azioni italiane. Sui certificati non si applica la Tobin Tax proporzionale dello 0.10% tipica delle compravendite azionarie. Ai sensi dell'art. 1, comma 492 della Legge 228/2012, i certificati sono assoggettati alla Tobin Tax per strumenti derivati, che prevede una tassazione in misura fissa parametrata al nozionale scambiato: per la fascia retail (fino a 50.000€ di controvalore su mercati regolamentati), la tassa ammonta a importi irrisori (spesso compresi tra 0.01€ e pochi centesimi per eseguito), rendendo l'operatività estremamente efficiente rispetto alle azioni dirette."
   },
   {
@@ -153,11 +190,20 @@ const FAQS_DATA = [
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Cosa significa quando un certificato entra in modalità 'Bid-Only' sul SeDeX o EuroTLX? Posso ancora venderlo?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-bid-only-status-di-negoziazione", label: "Glossario: Bid-Only" },
+      { href: "glossario.html#glossary-virtual-offer-price-vop", label: "Glossario: Virtual Offer Price" },
+      { href: "formazione.html#mod16", label: "Modulo 16: mercato secondario" }
+    ],
     answer: "Quando un certificato è in 'Bid-Only', il Liquidity Provider (Market Maker) dell'emittente espone sul book di negoziazione soltanto il prezzo di acquisto (Bid/Denaro) e non offre più il prezzo di vendita (Ask/Lettera). Questo si verifica tipicamente quando l'ammontare di titoli emesso è stato interamente collocato e acquistato dal mercato (prodotto 'sold out'), oppure in prossimità della scadenza o per ragioni interne di copertura del rischio. Conseguenza pratica: puoi SEMPRE vendere i tuoi certificati al Market Maker incassando il denaro, ma né tu né altri investitori potete acquistare nuove quote dall'emittente. Per evitare speculazioni, Borsa Italiana calcola un Virtual Offer Price (VOP) che pone un tetto massimo alle proposte di vendita tra investitori privati."
   },
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Che cos'è l'opzione Quanto e cosa succede se compro un certificato su titoli americani non-quanto?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-opzione-quanto-neutralizzazione-rischio-cambio", label: "Glossario: opzione Quanto" },
+      { href: "formazione.html#mod19", label: "Modulo 19: copertura del cambio" }
+    ],
     answer: "L'opzione Quanto è una clausola contrattuale che protegge l'investitore europeo dal rischio di cambio. Se un certificato è emesso in Euro ma i titoli sottostanti sono quotati in valuta estera (es. Apple, Tesla o Nvidia scambiate in Dollari USA), la presenza della dicitura 'Quanto' garantisce che il cambio EUR/USD venga convenzionalmente fissato a 1 per tutta la vita del prodotto: né il capitale a scadenza né le cedole risentiranno delle fluttuazioni valutarie. Se invece il certificato NON è Quanto, l'investitore è esposto al rischio di cambio: anche se i titoli tech salgono, un deprezzamento del dollaro rispetto all'euro ridurrebbe proporzionalmente sia l'importo delle cedole che il valore di rimborso finale."
   },
   {
@@ -172,11 +218,20 @@ const FAQS_DATA = [
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Come si legge l'indicatore sintetico di rischio (SRI da 1 a 7) nel KID e dove si trovano i costi impliciti?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-kid-key-information-document-ex-regolamento-priips", label: "Glossario: KID e PRIIPs" },
+      { href: "glossario.html#glossary-final-terms-condizioni-definitive", label: "Glossario: Final Terms" },
+      { href: "formazione.html#mod4", label: "Modulo 4: rischio, scenari e costi" }
+    ],
     answer: "Il KID (Key Information Document) sintetizza il profilo di rischio con l'indicatore SRI (Summary Risk Indicator) su una scala da 1 (rischio minimo, es. titoli di stato a brevissimo termine) a 7 (rischio massimo, es. derivati speculativi o criptovalute). I certificati a capitale condizionatamente protetto si attestano tipicamente tra il livello 4 (rischio medio) e il livello 6 (rischio elevato per titoli volatili o basket Worst-Of ampi). Per quanto riguarda i costi, a differenza degli ETF che applicano un TER annuo visibile, i certificati incorporano costi di strutturazione e collocamento impliciti (visibili nella 'Tabella dei Costi' del KID, solitamente compresi tra l'1.5% e il 3.5% una tantum sul prezzo di emissione); chi acquista sul mercato secondario dopo l'emissione compra a prezzi di mercato che scontano già tali costi."
   },
   {
     category: "Rischi & Dinamiche di Prezzo",
     question: "Cosa accade a un certificato in caso di operazioni societarie straordinarie (OPA, aumenti di capitale, spin-off)?",
+    relatedLinks: [
+      { href: "glossario.html#glossary-final-terms-condizioni-definitive", label: "Glossario: Final Terms" },
+      { href: "formazione.html#mod25", label: "Modulo 25: rettifiche contrattuali" }
+    ],
     answer: "In presenza di operazioni societarie sul capitale di uno dei titoli sottostanti (Corporate Actions), come offerte pubbliche di acquisto (OPA), raggruppamenti, scissioni (spin-off) o aumenti di capitale a pagamento, le regole dei mercati e i regolamenti degli emittenti prevedono l'applicazione del 'Fattore di Rettifica K' stabilito dalle autorità di borsa (Euronext / Borsa Italiana). Il prezzo di strike iniziale e la barriera del certificato vengono ricalcolati moltiplicandoli per il fattore K al fine di neutralizzare l'evento straordinario e garantire che l'operazione non arrechi né un ingiusto vantaggio né un danno economico all'investitore."
   }
 ];

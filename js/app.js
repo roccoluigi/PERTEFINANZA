@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initSiteNavigation();
+  initFormationRelatedLinks();
   initThemeToggle();
   initFooter();
   initTelegramCards();
@@ -478,6 +479,107 @@ function relatedLinksMarkup(links = []) {
     .join(' <span aria-hidden="true">·</span> ');
 
   return `<p class="related-content-links"><strong>Approfondimenti:</strong> ${linksMarkup}</p>`;
+}
+
+function initFormationRelatedLinks() {
+  const moduleLinks = {
+    mod3: [
+      { href: 'glossario.html#glossary-valore-nominale', label: 'Glossario: valore nominale' },
+      { href: 'formazione.html#mod32', label: 'Modulo 32: scomposizione del prezzo' }
+    ],
+    mod5: [
+      { href: 'glossario.html#glossary-classificazione-acepi', label: 'Glossario: classificazione ACEPI' },
+      { href: 'faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi', label: 'FAQ: classificazione dei certificati' }
+    ],
+    mod9: [
+      { href: 'glossario.html#glossary-bonus-cap-certificato', label: 'Glossario: Bonus Cap' },
+      { href: 'glossario.html#glossary-twin-win', label: 'Glossario: Twin Win' },
+      { href: 'faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi', label: 'FAQ: famiglie di certificati' }
+    ],
+    mod10: [
+      { href: 'glossario.html#glossary-rischio-emittente-e-bail-in', label: 'Glossario: rischio emittente' },
+      { href: 'faq.html#faq-i-certificati-sono-protetti-dal-fondo-interbancario-di-tutela-dei-depositi-fitd', label: 'FAQ: tutela dei depositi e certificati' }
+    ],
+    mod13: [
+      { href: 'glossario.html#glossary-dividend-risk-rischio-dividendi', label: 'Glossario: rischio dividendi' },
+      { href: 'faq.html#faq-in-che-modo-dividendi-stimati-e-volatilita-vega-influenzano-il-prezzo-del-certificato-sul-mercato-secondario', label: 'FAQ: dividendi, volatilità e prezzo' }
+    ],
+    mod16: [
+      { href: 'glossario.html#glossary-liquidity-provider-market-maker-specialist', label: 'Glossario: market maker' },
+      { href: 'faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile', label: 'FAQ: prezzo eseguibile' }
+    ],
+    mod17: [
+      { href: 'glossario.html#glossary-low-barrier-deep-barrier-barriera-profonda', label: 'Glossario: barriera profonda' },
+      { href: 'faq.html#faq-come-posso-valutare-un-certificato-prima-di-acquistarlo', label: 'FAQ: valutare un certificato' }
+    ],
+    mod18: [
+      { href: 'glossario.html#glossary-rischio-emittente-e-bail-in', label: 'Glossario: rischio emittente' },
+      { href: 'faq.html#faq-che-cos-e-la-clausola-worst-of-e-perche-aumenta-sensibilmente-il-rischio-del-portafoglio', label: 'FAQ: rischio di concentrazione nel paniere' }
+    ],
+    mod21: [
+      { href: 'glossario.html#glossary-ask-e-bid-lettera-e-denaro', label: 'Glossario: denaro e lettera' },
+      { href: 'glossario.html#glossary-spread-denaro-lettera-bid-ask', label: 'Glossario: spread denaro-lettera' },
+      { href: 'faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile', label: 'FAQ: prezzo realmente eseguibile' }
+    ],
+    mod23: [
+      { href: 'glossario.html#glossary-trigger-cedolare', label: 'Glossario: trigger cedolare' },
+      { href: 'glossario.html#glossary-fixing-e-data-di-valutazione', label: 'Glossario: fixing e valutazione' },
+      { href: 'faq.html#faq-quali-sono-le-4-date-chiave-per-incassare-la-cedola-e-quando-conviene-comprare-il-certificato', label: 'FAQ: date della cedola' }
+    ],
+    mod24: [
+      { href: 'glossario.html#glossary-kid-key-information-document-ex-regolamento-priips', label: 'Glossario: KID' },
+      { href: 'glossario.html#glossary-final-terms-condizioni-definitive', label: 'Glossario: Final Terms' },
+      { href: 'faq.html#faq-dove-trovo-le-informazioni-definitive-se-una-pagina-web-non-coincide-con-il-prodotto', label: 'FAQ: fonti definitive' }
+    ],
+    mod25: [
+      { href: 'glossario.html#glossary-final-terms-condizioni-definitive', label: 'Glossario: Final Terms' },
+      { href: 'faq.html#faq-cosa-accade-a-un-certificato-in-caso-di-operazioni-societarie-straordinarie-opa-aumenti-di-capitale-spin-off', label: 'FAQ: operazioni societarie' }
+    ],
+    mod26: [
+      { href: 'glossario.html#glossary-rating-dell-emittente', label: 'Glossario: rating dell’emittente' },
+      { href: 'glossario.html#glossary-rischio-emittente-e-bail-in', label: 'Glossario: rischio emittente' },
+      { href: 'faq.html#faq-i-certificati-sono-protetti-dal-fondo-interbancario-di-tutela-dei-depositi-fitd', label: 'FAQ: rischio di credito' }
+    ],
+    mod27: [
+      { href: 'glossario.html#glossary-worst-of-meccanismo-del-paniere', label: 'Glossario: Worst-Of' },
+      { href: 'glossario.html#glossary-distanza-dalla-barriera', label: 'Glossario: distanza dalla barriera' },
+      { href: 'faq.html#faq-che-cosa-significa-che-il-certificato-dipende-dal-worst-of', label: 'FAQ: monitorare il Worst-Of' }
+    ],
+    mod28: [
+      { href: 'glossario.html#glossary-autocallability-rimborso-anticipato-automatico', label: 'Glossario: autocallability' },
+      { href: 'faq.html#faq-qual-e-la-differenza-fondamentale-tra-certificati-autocallable-e-softcallable', label: 'FAQ: autocallable e softcallable' }
+    ],
+    mod29: [
+      { href: 'glossario.html#glossary-fixing-e-data-di-valutazione', label: 'Glossario: fixing e data di valutazione' },
+      { href: 'glossario.html#glossary-valore-nominale', label: 'Glossario: valore nominale' },
+      { href: 'faq.html#faq-come-posso-valutare-un-certificato-prima-di-acquistarlo', label: 'FAQ: controlli prima dell’acquisto' }
+    ],
+    mod30: [
+      { href: 'glossario.html#glossary-kid-key-information-document-ex-regolamento-priips', label: 'Glossario: KID' },
+      { href: 'glossario.html#glossary-distanza-dalla-barriera', label: 'Glossario: distanza dalla barriera' },
+      { href: 'faq.html#faq-come-posso-valutare-un-certificato-prima-di-acquistarlo', label: 'FAQ: valutazione completa' }
+    ],
+    mod31: [
+      { href: 'glossario.html#glossary-rischio-emittente-e-bail-in', label: 'Glossario: rischio emittente' },
+      { href: 'faq.html#faq-i-certificati-sono-protetti-dal-fondo-interbancario-di-tutela-dei-depositi-fitd', label: 'FAQ: tutela dei depositi e rischio emittente' }
+    ],
+    mod32: [
+      { href: 'glossario.html#glossary-strike-price-prezzo-di-esercizio-iniziale', label: 'Glossario: Strike Price' },
+      { href: 'faq.html#faq-come-si-legge-l-indicatore-sintetico-di-rischio-sri-da-1-a-7-nel-kid-e-dove-si-trovano-i-costi-impliciti', label: 'FAQ: rischio e costi impliciti' }
+    ],
+    mod33: [
+      { href: 'glossario.html#glossary-trigger-autocall', label: 'Glossario: trigger di autocall' },
+      { href: 'faq.html#faq-qual-e-la-differenza-fondamentale-tra-certificati-autocallable-e-softcallable', label: 'FAQ: rimborso automatico e facoltà dell’emittente' },
+      { href: 'faq.html#faq-cos-e-il-meccanismo-step-down-e-perche-e-cosi-ricercato-dagli-investitori', label: 'FAQ: meccanismo Step-Down' }
+    ]
+  };
+
+  Object.entries(moduleLinks).forEach(([moduleId, links]) => {
+    const content = document.querySelector(`#${moduleId} .module-content`);
+    if (!content || content.querySelector('.related-content-links')) return;
+
+    content.insertAdjacentHTML('beforeend', relatedLinksMarkup(links));
+  });
 }
 
 function escapeHtmlAttribute(value) {

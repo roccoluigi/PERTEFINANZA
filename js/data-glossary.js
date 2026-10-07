@@ -53,60 +53,100 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Bid-Only (Status di Negoziazione)",
+    relatedLinks: [
+      { href: "formazione.html#mod16", label: "Modulo 16: mercato secondario" },
+      { href: "faq.html#faq-cosa-significa-quando-un-certificato-entra-in-modalita-bid-only-sul-sedex-o-eurotlx-posso-ancora-venderlo", label: "FAQ: operatività in Bid-Only" }
+    ],
     category: "Mercati & Liquidità",
     definition: "Particolare condizione operativa in cui il Liquidity Provider (Market Maker) dell'emittente espone sul book di negoziazione unicamente proposte di acquisto (Bid/Denaro) e non più proposte di vendita (Ask/Lettera). Questo si verifica quando l'emittente ha esaurito i certificati emessi (size interamente collocata), quando si avvicina la scadenza, o per specifiche decisioni di risk management. Gli investitori possono continuare a vendere le proprie quote alla banca emittente, ma non possono acquistarne di nuove sul book (salvo che altri investitori privati espongano offerte in lettera).",
     example: "In un certificato in Bid-Only, se l'emittente compra a 102€, puoi monetizzare la tua posizione vendendola al Market Maker. Se un privato mette in vendita a 102.50€, puoi comprare solo da lui entro i limiti del Virtual Offer Price fissato dal mercato."
   },
   {
     term: "Bonus Cap (Certificato)",
+    relatedLinks: [
+      { href: "formazione.html#mod9", label: "Modulo 9: Bonus Cap e altre strutture" },
+      { href: "faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi", label: "FAQ: classificazione dei certificati" }
+    ],
     category: "Tipologia",
     definition: "Struttura a capitale condizionatamente protetto appartenente alla classificazione ACEPI che riconosce a scadenza un premio prefissato (il 'Bonus') se il sottostante non viola mai la barriera durante la vita del certificato (solitamente barriera continua americana). La presenza del 'Cap' stabilisce il rendimento massimo ottenibile dall'investitore in caso di forte rialzo del titolo sottostante.",
     example: "Bonus Cap a 115€ con barriera continua al 70%. Se il titolo non tocca mai il -30%, il certificato rimborsa 115€ a scadenza. Se la barriera viene infranta, rimborsa la performance lineare del sottostante fino al valore massimo del Cap."
   },
   {
     term: "Buffer (Cuscinetto dalla Barriera)",
+    relatedLinks: [
+      { href: "formazione.html#mod27", label: "Modulo 27: distanza dalla barriera" },
+      { href: "faq.html#faq-cosa-significa-esattamente-capitale-condizionatamente-protetto-e-cosa-accade-se-la-barriera-viene-infranta", label: "FAQ: protezione condizionata" }
+    ],
     category: "Parametri & Greche",
     definition: "Distanza percentuale che separa la quotazione corrente del sottostante (in particolare del titolo 'Worst-Of') dal livello della barriera capitale o cedolare. Rappresenta l'indicatore fondamentale per valutare il margine di sicurezza immediato del certificato.",
     example: "Se un titolo ha strike 20€ e barriera al 60% (12€), e attualmente quota 16€, il Buffer dalla barriera è pari a: (16 - 12) / 16 = 25%. Il titolo può ancora perdere il 25% dal prezzo attuale prima di raggiungere la barriera."
   },
   {
     term: "Cash Collect (Famiglia)",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: Cash Collect e cedole" },
+      { href: "faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi", label: "FAQ: classificazione dei certificati" }
+    ],
     category: "Tipologia",
     definition: "La macrofamiglia di certificati a capitale condizionatamente protetto più scambiata in Italia. È strutturata per erogare flussi cedolari periodici (mensili, trimestrali o semestrali) vincolati al mancato superamento al ribasso di una barriera di prezzo, con rimborso integrale del valore nominale a scadenza in caso di tenuta del livello barriera.",
     example: "Comprende le varianti Phoenix Memory, Fixed Cash Collect, Step-Down, Airbag e Softcallable, ideate per estrarre rendimento in scenari di mercato rialzisti, laterali o moderatamente calanti."
   },
   {
     term: "Cedola Incondizionata (Fixed)",
+    relatedLinks: [
+      { href: "formazione.html#mod23", label: "Modulo 23: cedole e scenari" },
+      { href: "faq.html#faq-la-barriera-capitale-e-la-barriera-coupon-sono-sempre-uguali", label: "FAQ: barriere capitale e cedola" }
+    ],
     category: "Rendimento",
     definition: "Premio periodico garantito che viene pagato all'investitore indipendentemente dall'andamento di mercato dei titoli sottostanti. Anche in caso di crollo drastico o violazione delle barriere durante la vita del prodotto, l'emittente è obbligato a erogare la cedola pattuita alle date di stacco stabilite.",
     example: "Un certificato con cedola fissa dello 0.70% mensile pagherà sempre tale importo ogni mese per tutta la sua durata; solo il rimborso del capitale a scadenza finale resterà condizionato al rispetto della barriera."
   },
   {
     term: "Classificazione ACEPI",
+    relatedLinks: [
+      { href: "formazione.html#mod5", label: "Modulo 5: famiglie di certificati" },
+      { href: "faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi", label: "FAQ: classificazione ACEPI" }
+    ],
     category: "Normativa & KID",
     definition: "La Mappa ACEPI raggruppa i certificati in cinque categorie: 1) prodotti a capitale protetto, che offrono a scadenza la protezione totale o parziale dell'investimento; 2) prodotti a capitale condizionatamente protetto, il cui rimborso dipende da un evento definito nel prospetto; 3) prodotti a capitale non protetto, come Benchmark e Outperformance; 4) prodotti a leva, che amplificano guadagni e perdite; 5) Credit Linked Notes, con cedole e rimborso subordinati a uno o più eventi di credito.",
     example: "La mappa ACEPI standardizza la nomenclatura commerciale dei vari emittenti bancari, consentendo agli investitori di confrontare oggettivamente le caratteristiche strutturali dei prodotti."
   },
   {
     term: "Delta (Greca del Certificato)",
+    relatedLinks: [
+      { href: "formazione.html#mod12", label: "Modulo 12: greche e volatilità" },
+      { href: "faq.html#faq-in-che-modo-dividendi-stimati-e-volatilita-vega-influenzano-il-prezzo-del-certificato-sul-mercato-secondario", label: "FAQ: greche e prezzo" }
+    ],
     category: "Parametri & Greche",
     definition: "Rapporto che esprime la sensibilità del prezzo del certificato al variare di un euro (o di un punto percentuale) del prezzo del sottostante. Un certificato con sottostante sopra strike ha solitamente un Delta basso (il prezzo oscilla poco al muoversi del titolo), mentre un certificato con sottostanti vicini o sotto la barriera ha un Delta vicino a 1, replicando fedelmente le oscillazioni azionarie.",
     example: "Se un certificato ha un Delta di 0.35, ad un aumento dell'1% del titolo peggiore corrisponde un aumento teorico stimato dello 0.35% nel prezzo del certificato sul secondario."
   },
   {
     term: "Discount Certificate (a Sconto)",
+    relatedLinks: [
+      { href: "formazione.html#mod9", label: "Modulo 9: strutture senza cedola" },
+      { href: "faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi", label: "FAQ: classificazione dei certificati" }
+    ],
     category: "Tipologia",
     definition: "Certificato a capitale non protetto acquistato a un prezzo sensibilmente inferiore (a sconto) rispetto al valore di mercato corrente dell'azione o dell'indice sottostante. Prevede un tetto massimo di rimborso (Cap) che limita il guadagno potenziale in cambio dello sconto iniziale, che funge da cuscinetto protettivo contro ribassi moderati.",
     example: "Se un'azione quota 100€, il Discount Certificate viene emesso a 85€ con Cap a 100€. Se a scadenza il titolo quota 100€ o più, rimborsa 100€ (+17.6% di guadagno); l'investitore è in utile per qualsiasi valore del titolo superiore a 85€."
   },
   {
     term: "Dividend Risk (Rischio Dividendi)",
+    relatedLinks: [
+      { href: "formazione.html#mod13", label: "Modulo 13: dividendi e tassi" },
+      { href: "faq.html#faq-in-che-modo-dividendi-stimati-e-volatilita-vega-influenzano-il-prezzo-del-certificato-sul-mercato-secondario", label: "FAQ: dividendi e prezzo" }
+    ],
     category: "Parametri & Greche",
     definition: "Rischio legato alle variazioni delle stime sui dividendi futuri distribuiti dai titoli sottostanti. Gli emittenti utilizzano i dividendi attesi per acquistare le opzioni che finanziano le cedole e le barriere protettive (l'investitore in certificati non incassa i dividendi ordinari delle azioni). Se una società annuncia a sorpresa un dividendo straordinario o molto più alto del previsto, il prezzo del certificato cala sul mercato secondario; se il dividendo viene tagliato, il prezzo del certificato tende ad apprezzarsi.",
     example: "Nei basket su titoli bancari o utility (generosi distributori di dividendi), una modifica delle politiche di payout incide direttamente sulla curva dei prezzi dei certificati sul secondario."
   },
   {
     term: "Effetto Magnet (Trigger Adattivo)",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: autocall e trigger" },
+      { href: "faq.html#faq-cos-e-il-meccanismo-step-down-e-perche-e-cosi-ricercato-dagli-investitori", label: "FAQ: trigger decrescente" }
+    ],
     category: "Meccanismo",
     definition: "Meccanismo innovativo introdotto nei Cash Collect di ultima generazione dove la soglia di autocall per il rimborso anticipato non è fissa, ma si adatta dinamicamente verso il basso, 'attratta' dal livello calante del sottostante Worst-Of fino a un valore minimo consentito. Questo aumenta considerevolmente la probabilità statistica di chiudere l'investimento in anticipo con profitto anche in mercati laterali o ribassisti.",
     example: "Se il peggior titolo perde il 15%, il trigger di rimborso anticipato si abbassa automaticamente dall'iniziale 100% all'85% dello strike, permettendo al certificato di rimborsare anticipatamente a 100€ + cedola senza dover attendere un recupero del titolo."
@@ -123,18 +163,30 @@ const GLOSSARY_DATA = [
   },
   {
     term: "EuroTLX / Cert-X e SeDeX",
+    relatedLinks: [
+      { href: "formazione.html#mod16", label: "Modulo 16: mercati dei certificati" },
+      { href: "faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile", label: "FAQ: prezzi sul mercato" }
+    ],
     category: "Mercati & Liquidità",
     definition: "I due mercati telematici multilaterali e regolamentati di Borsa Italiana dedicati alla negoziazione di certificati e covered warrant. Prevedono la presenza di un Market Maker (Specialist) soggetto agli obblighi di quotazione previsti dal regolamento del mercato, dal segmento e dalle condizioni dello specifico strumento: spread denaro-lettera, quantità minime e finestre temporali possono essere definiti o modificati secondo le regole applicabili.",
     example: "Gli orari di negoziazione tipici su SeDeX ed EuroTLX vanno dalle 09:05 alle 17:30. La presenza del Market Maker non garantisce però l'esecuzione in qualsiasi momento: durante fasi di stress possono verificarsi sospensioni, spread più ampi o assenza temporanea di quotazioni."
   },
   {
     term: "Ex-Date (Data di Stacco della Cedola)",
+    relatedLinks: [
+      { href: "formazione.html#mod23", label: "Modulo 23: calendario cedolare" },
+      { href: "faq.html#faq-quali-sono-le-4-date-chiave-per-incassare-la-cedola-e-quando-conviene-comprare-il-certificato", label: "FAQ: date della cedola" }
+    ],
     category: "Rendimento",
     definition: "Il giorno di borsa aperta a partire dal quale il certificato quota sul mercato 'senza diritto alla cedola' (ex-coupon). Chi acquista il certificato il giorno della Ex-Date o successivamente non riceverà il premio in corso di distribuzione; per avere diritto all'incasso della cedola occorre acquistare il certificato almeno il giorno precedente la Ex-Date (cum-date). Nel giorno di Ex-Date il prezzo del certificato tipicamente scende di un importo pari all'ammontare della cedola staccata.",
     example: "Se la Ex-Date è il 14 maggio, l'ultimo giorno utile per acquistare il certificato e incassare la cedola è il 13 maggio. Acquistando il 14 maggio non si riceverà l'accredito."
   },
   {
     term: "Express Certificate",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: rimborso anticipato" },
+      { href: "faq.html#faq-qual-e-la-differenza-fondamentale-tra-certificati-autocallable-e-softcallable", label: "FAQ: autocall e softcall" }
+    ],
     category: "Tipologia",
     definition: "Certificato a capitale condizionatamente protetto strutturato specificamente per sfruttare l'autocallability precoce: ad ogni data periodica di verifica, se il sottostante quota sopra lo strike iniziale, il prodotto viene rimborsato a 100 euro più un premio progressivamente cumulato che aumenta proporzionalmente al passare del tempo.",
     example: "Se al 1° anno il titolo è sopra strike rimborsa 100€ + 8€ di premio; se non rimborsa e passa al 2° anno, rimborserà 100€ + 16€, e così via, offrendo rendimenti cumulativi attraenti."
@@ -151,18 +203,30 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Liquidity Provider / Market Maker (Specialist)",
+    relatedLinks: [
+      { href: "formazione.html#mod16", label: "Modulo 16: ruolo del market maker" },
+      { href: "faq.html#faq-cosa-significa-quando-un-certificato-entra-in-modalita-bid-only-sul-sedex-o-eurotlx-posso-ancora-venderlo", label: "FAQ: quotazioni Bid-Only" }
+    ],
     category: "Mercati & Liquidità",
     definition: "L'intermediario finanziario o la divisione trading dell'emittente bancario che, secondo le regole del mercato e le condizioni dello specifico strumento, espone proposte di acquisto (Bid) e di vendita (Ask). Il suo compito è favorire la liquidità, ma non garantisce in ogni momento un prezzo vicino al valore teorico: in fasi di elevata volatilità può ampliare lo spread, ridurre le quantità o sospendere temporaneamente le quotazioni.",
     example: "Se un investitore vuole vendere 500 pezzi di un certificato, il Market Maker può facilitare l'esecuzione attraverso il prezzo Bid esposto. In fasi di stress, tuttavia, lo spread Denaro-Lettera può aumentare sensibilmente: acquistare o vendere sul secondario comporta quindi uno slippage, cioè un costo implicito di transazione, superiore rispetto ai periodi di stabilità."
   },
   {
     term: "Lock-In (Meccanismo di Consolidamento)",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: meccanismi cedolari" },
+      { href: "faq.html#faq-come-funziona-in-dettaglio-l-effetto-memoria-sulle-cedole", label: "FAQ: memoria delle cedole" }
+    ],
     category: "Meccanismo",
     definition: "Condizione contrattuale presente in alcune tipologie di Cash Collect che 'blocca' definitivamente il pagamento di tutte le cedole future trasformandole da condizionate a incondizionate (fisse) se a una determinata data di rilevazione tutti i sottostanti raggiungono un livello di prezzo prestabilito (Trigger Lock-In, ad esempio il 105% dello strike iniziale).",
     example: "Una volta verificatosi l'evento Lock-In, anche se in seguito i sottostanti dovessero crollare sotto la barriera cedola, tutte le cedole rimanenti fino a scadenza verranno pagate con certezza matematica."
   },
   {
     term: "Low Barrier / Deep Barrier (Barriera Profonda)",
+    relatedLinks: [
+      { href: "formazione.html#mod2", label: "Modulo 2: osservazione delle barriere" },
+      { href: "faq.html#faq-cosa-significa-esattamente-capitale-condizionatamente-protetto-e-cosa-accade-se-la-barriera-viene-infranta", label: "FAQ: barriera e protezione" }
+    ],
     category: "Protezione",
     definition: "Definizione attribuita a certificati di investimento dotati di una barriera capitale particolarmente conservativa, collocata al 40%, 45% o 50% del valore iniziale dei sottostanti. Queste strutture offrono un margine di protezione straordinariamente elevato, proteggendo il capitale da cali del mercato fino al 50% o 60% dal livello iniziale.",
     example: "Un certificato con barriera al 40% su Eni (strike 15€) tutela il capitale fino a un ribasso del titolo fino a 6.00€ a scadenza."
@@ -199,24 +263,40 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Payment Date (Data di Pagamento)",
+    relatedLinks: [
+      { href: "formazione.html#mod23", label: "Modulo 23: calendario cedolare" },
+      { href: "faq.html#faq-quali-sono-le-4-date-chiave-per-incassare-la-cedola-e-quando-conviene-comprare-il-certificato", label: "FAQ: date della cedola" }
+    ],
     category: "Rendimento",
     definition: "La data ufficiale in cui l'importo della cedola staccata o il rimborso del capitale a scadenza viene effettivamente accreditato sul conto corrente dell'investitore (data valuta contabile). Cade solitamente alcuni giorni lavorativi dopo la Ex-Date e la Record Date.",
     example: "Se la Ex-Date cade il 14 del mese e la Record Date il 15, la Payment Date sarà indicativamente fissata tra il 16 e il 20 del mese a seconda del calendario di regolamento bancario Target2."
   },
   {
     term: "Phoenix Memory",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: Phoenix e memoria" },
+      { href: "faq.html#faq-come-funziona-in-dettaglio-l-effetto-memoria-sulle-cedole", label: "FAQ: effetto memoria" }
+    ],
     category: "Tipologia",
     definition: "La variante più celebre ed efficiente della famiglia Cash Collect. Combina barriere cedolari condizionate con l'Effetto Memoria per il recupero dei premi arretrati e clausole di Autocallability periodica (spesso con meccanismo Step-Down) per il rimborso anticipato a 100 euro.",
     example: "Rappresenta oltre il 60% dei volumi complessivi di certificati scambiati sul mercato italiano SeDeX ed EuroTLX."
   },
   {
     term: "Record Date (Data di Registrazione)",
+    relatedLinks: [
+      { href: "formazione.html#mod23", label: "Modulo 23: calendario cedolare" },
+      { href: "faq.html#faq-quali-sono-le-4-date-chiave-per-incassare-la-cedola-e-quando-conviene-comprare-il-certificato", label: "FAQ: date della cedola" }
+    ],
     category: "Rendimento",
     definition: "La data in cui l'intermediario finanziario e la clearing house (Monte Titoli / Euronext Securities Milan) fotografano le posizioni contabili dei conti deposito per stabilire chi ha ufficialmente diritto a percepire la cedola in distribuzione. Cade esattamente il giorno lavorativo successivo alla Ex-Date (regolamento T+2 rispetto alla data di contrattazione).",
     example: "Chi possiede il certificato al termine della seduta precedente la Ex-Date risulta registrato come avente diritto nella Record Date e riceverà regolarmente l'accredito."
   },
   {
     term: "Redditi Diversi vs Redditi di Capitale",
+    relatedLinks: [
+      { href: "formazione.html#mod11", label: "Modulo 11: compensazione fiscale" },
+      { href: "faq.html#faq-perche-i-certificati-consentono-di-compensare-le-minusvalenze-pregresse-mentre-etf-e-fondi-comuni-no", label: "FAQ: compensazione delle minusvalenze" }
+    ],
     category: "Fiscalità",
     definition: "Distinzione cardine del sistema tributario italiano (D.P.R. 917/1986). I 'Redditi di Capitale' (cedole di obbligazioni, dividendi azionari, proventi di ETF e fondi comuni) sono sempre tassati al 26% e NON possono essere usati per compensare le minusvalenze. I 'Redditi Diversi' (plusvalenze su azioni, derivati, proventi e cedole dei certificati) riflettono un'incertezza sul capitale e POSSONO essere utilizzati per compensare le minusvalenze pregresse accumulate nello zainetto fiscale.",
     example: "Un dividendo di un ETF azionario viene tassato al 26% anche se hai 10.000€ di minusvalenze; una cedola di un certificato Cash Collect azzera 260€ di imposta compensando direttamente le perdite pregresse."
@@ -233,6 +313,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Softcallable / Callable (Facoltà dell'Emittente)",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: modalità di autocall" },
+      { href: "faq.html#faq-qual-e-la-differenza-fondamentale-tra-certificati-autocallable-e-softcallable", label: "FAQ: autocallable e softcallable" }
+    ],
     category: "Meccanismo",
     definition: "Certificato a capitale condizionatamente protetto in cui la decisione di procedere al rimborso anticipato prima della scadenza naturale NON è automatica (come negli Autocallable), bensì è lasciata alla facoltà discrezionale dell'emittente bancario. La banca richiamerà il certificato se per lei risulterà finanziariamente conveniente rifinanziarsi a tassi più bassi sul mercato. Per compensare l'investitore di questa incertezza e del rischio di richiamo nei momenti favorevoli, i certificati Softcallable offrono solitamente cedole periodiche sensibilmente più alte rispetto a strutture equivalenti tradizionali.",
     example: "Un certificato Softcallable può offrire una cedola del 13% annuo rispetto all'10% di un Autocallable tradizionale: l'extra-rendimento del 3% ripaga l'investitore della facoltà discrezionale concessa all'emittente."
@@ -259,12 +343,20 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Strike Price (Prezzo di Esercizio Iniziale)",
+    relatedLinks: [
+      { href: "formazione.html#mod2", label: "Modulo 2: strike e barriere" },
+      { href: "faq.html#faq-come-viene-calcolato-il-rimborso-finale-a-scadenza-con-un-esempio-numerico-reale", label: "FAQ: calcolo del rimborso" }
+    ],
     category: "Meccanismo",
     definition: "Il prezzo ufficiale di chiusura registrato dal titolo o indice sottostante alla data di fissazione iniziale (Fixing Date). Tutti i livelli percentuali del certificato (barriera capitale al 50%, barriera cedola al 60%, livelli di autocall al 100%) vengono calcolati in valore assoluto moltiplicando la percentuale per il prezzo di Strike.",
     example: "Se Eni registra uno strike di 14.00€ alla data iniziale, una barriera al 60% corrisponderà esattamente a 8.40€ (14 x 0.60)."
   },
   {
     term: "Twin Win",
+    relatedLinks: [
+      { href: "formazione.html#mod9", label: "Modulo 9: Twin Win e Bonus Cap" },
+      { href: "faq.html#faq-cosa-sono-esattamente-i-certificati-di-investimento-e-come-si-collocano-nella-classificazione-acepi", label: "FAQ: classificazione dei certificati" }
+    ],
     category: "Tipologia",
     definition: "Particolare struttura a capitale condizionatamente protetto appartenente alla classificazione ACEPI che consente all'investitore di guadagnare sia in caso di rialzo sia in caso di ribasso del sottostante a scadenza, purché non venga mai violata la barriera prefissata. In caso di ribasso contenuto sopra barriera, la variazione negativa del titolo viene trasformata specularmente in rendimento positivo.",
     example: "Se a scadenza il titolo ha perso il 25% ma la barriera era fissata al 40%, il certificato Twin Win rimborsa 100€ + il 25% di rendimento positivo, chiudendo a 125€."
@@ -281,6 +373,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Virtual Offer Price (VOP)",
+    relatedLinks: [
+      { href: "formazione.html#mod16", label: "Modulo 16: mercato secondario" },
+      { href: "faq.html#faq-cosa-significa-quando-un-certificato-entra-in-modalita-bid-only-sul-sedex-o-eurotlx-posso-ancora-venderlo", label: "FAQ: Bid-Only e VOP" }
+    ],
     category: "Mercati & Liquidità",
     definition: "Prezzo massimo teorico calcolato automaticamente dai sistemi di Borsa Italiana (SeDeX ed EuroTLX) quando un certificato entra in stato di 'Bid-Only' (ossia quando il Market Maker è presente solo in denaro). Il VOP impedisce che ordini di vendita da parte di investitori privati vengano inseriti a prezzi irragionevolmente alti o fuori mercato, proteggendo gli altri risparmiatori da esecuzioni anomale.",
     example: "Se il Market Maker è in acquisto a 100€, il circuito di borsa imposta un VOP (es. a 101.50€): nessun privato potrà inserire una proposta di vendita al di sopra di tale limite virtuale."
@@ -297,6 +393,10 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Ask e Bid (Lettera e Denaro)",
+    relatedLinks: [
+      { href: "formazione.html#mod21", label: "Modulo 21: lettura del book" },
+      { href: "faq.html#faq-qual-e-la-differenza-tra-prezzo-teorico-e-prezzo-realmente-eseguibile", label: "FAQ: prezzo eseguibile" }
+    ],
     category: "Mercati & Liquidità",
     definition: "Il Bid è il prezzo al quale il mercato, normalmente tramite il Market Maker, è disposto ad acquistare il certificato; l'Ask è il prezzo al quale è disposto a venderlo. La differenza tra i due valori è lo spread denaro-lettera. Prima di inserire un ordine è importante controllare prezzo, quantità disponibili e validità della quotazione.",
     example: "Con Bid a 98,50 euro e Ask a 99,20 euro, chi acquista deve considerare il prezzo in lettera, mentre chi vende normalmente considera il prezzo in denaro."
@@ -313,24 +413,40 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Valore Nominale",
+    relatedLinks: [
+      { href: "formazione.html#mod3", label: "Modulo 3: struttura finanziaria" },
+      { href: "faq.html#faq-come-viene-calcolato-il-rimborso-finale-a-scadenza-con-un-esempio-numerico-reale", label: "FAQ: rimborso a scadenza" }
+    ],
     category: "Parametri & Greche",
     definition: "Importo di riferimento utilizzato per calcolare rimborso, cedole e livelli economici del certificato. Il valore nominale non coincide necessariamente con il prezzo di acquisto sul mercato secondario e non costituisce una garanzia autonoma di rimborso.",
     example: "Un prodotto con nominale di 1.000 euro può essere acquistato a 980 euro o 1.020 euro sul mercato secondario; cedole e rimborso seguono comunque le condizioni previste dai Final Terms."
   },
   {
     term: "Fixing e Data di Valutazione",
+    relatedLinks: [
+      { href: "formazione.html#mod23", label: "Modulo 23: date di valutazione" },
+      { href: "faq.html#faq-quali-sono-le-4-date-chiave-per-incassare-la-cedola-e-quando-conviene-comprare-il-certificato", label: "FAQ: date della cedola" }
+    ],
     category: "Meccanismo",
     definition: "Il fixing è la rilevazione ufficiale del valore del sottostante in una data stabilita nei Final Terms. Le date di valutazione possono servire a determinare il pagamento della cedola, il superamento del trigger di autocall o il rispetto della barriera a scadenza. Il metodo di rilevazione e la fonte del prezzo devono essere verificati nella documentazione del prodotto.",
     example: "Una barriera europea può essere verificata solo alla data di valutazione finale, mentre una barriera continua può essere monitorata durante tutta la vita del certificato."
   },
   {
     term: "Trigger Cedolare",
+    relatedLinks: [
+      { href: "formazione.html#mod6", label: "Modulo 6: trigger cedolare e memoria" },
+      { href: "faq.html#faq-la-barriera-capitale-e-la-barriera-coupon-sono-sempre-uguali", label: "FAQ: barriera cedolare" }
+    ],
     category: "Rendimento",
     definition: "Livello percentuale che deve essere rispettato dal sottostante o dal paniere alla data di osservazione perché la cedola condizionata venga pagata. Il trigger cedolare può coincidere con la barriera capitale, ma può anche essere fissato a un livello diverso. Il contratto specifica inoltre se il premio non pagato viene perso o memorizzato.",
     example: "Con trigger cedolare al 60%, se il Worst-Of rileva al 58% alla data prevista, la cedola non viene pagata, salvo che il prodotto preveda memoria o altre clausole specifiche."
   },
   {
     term: "Trigger Autocall",
+    relatedLinks: [
+      { href: "formazione.html#mod8", label: "Modulo 8: trigger di autocall" },
+      { href: "faq.html#faq-cos-e-il-meccanismo-step-down-e-perche-e-cosi-ricercato-dagli-investitori", label: "FAQ: meccanismo Step-Down" }
+    ],
     category: "Meccanismo",
     definition: "Livello che tutti i sottostanti, oppure il sottostante previsto dal contratto, devono raggiungere alla data di osservazione perché si attivi il rimborso anticipato automatico. Il trigger può essere fisso o decrescente tramite Step-Down e il rimborso può includere la cedola del periodo secondo quanto indicato nei Final Terms.",
     example: "Se il trigger autocall è al 90% e il Worst-Of quota al 92% nella data di osservazione, la condizione può essere soddisfatta; occorre comunque verificare le regole specifiche del certificato."
@@ -347,12 +463,20 @@ const GLOSSARY_DATA = [
   },
   {
     term: "Parità e Valore di Rimborso",
+    relatedLinks: [
+      { href: "formazione.html#mod22", label: "Modulo 22: prezzo e parità" },
+      { href: "faq.html#faq-perche-un-certificato-puo-quotare-sotto-la-pari-anche-se-la-barriera-non-e-stata-violata", label: "FAQ: prezzo sotto la pari" }
+    ],
     category: "Parametri & Greche",
     definition: "La parità confronta il valore teorico del sottostante o del paniere con il valore nominale del certificato secondo il rapporto di conversione previsto. Nei certificati a capitale condizionatamente protetto, il valore di rimborso dipende dalle clausole del prodotto e non segue necessariamente in modo lineare il prezzo del sottostante.",
     example: "Due certificati sullo stesso titolo possono avere prezzi diversi perché differiscono per nominale, rapporto di conversione, cedole, barriera, scadenza e rischio emittente."
   },
   {
     term: "Durata Residua",
+    relatedLinks: [
+      { href: "formazione.html#mod22", label: "Modulo 22: prezzo e durata" },
+      { href: "faq.html#faq-perche-un-certificato-puo-quotare-sotto-la-pari-anche-se-la-barriera-non-e-stata-violata", label: "FAQ: fattori del prezzo" }
+    ],
     category: "Rischi",
     definition: "Tempo che intercorre tra la data di osservazione e la scadenza o la prossima data di rimborso anticipato. Una durata maggiore lascia più tempo al sottostante per raggiungere una barriera, ma può anche offrire più date di osservazione e più premi potenziali: il suo effetto deve essere letto insieme a struttura e scenari del KID.",
     example: "Un certificato con barriera profonda ma scadenza lunga non è automaticamente meno rischioso di uno con durata breve: il tempo di esposizione è una variabile essenziale."
