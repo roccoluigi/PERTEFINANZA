@@ -3204,6 +3204,16 @@ button, input, select, textarea {
    Responsive Breakpoints
    ========================================================================== */
 
+@media (max-width: 1120px) {
+  .main-nav {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+}
+
 @media (max-width: 1024px) {
   .home-benefits-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3239,11 +3249,6 @@ button, input, select, textarea {
 @media (max-width: 768px) {
   .header-inner {
     column-gap: 0.5rem;
-  }
-
-  .brand-name,
-  .footer-logo {
-    font-size: 1.2rem;
   }
 
   .header-actions .btn-telegram {
@@ -3459,6 +3464,13 @@ button, input, select, textarea {
   }
 }
 
+@media (max-width: 768px) and (pointer: coarse) {
+  .brand-name,
+  .footer-logo {
+    font-size: 1.2rem;
+  }
+}
+
 @media (max-width: 480px) {
   .review-isin-row,
   .review-section-links {
@@ -3610,6 +3622,11 @@ html[data-theme="dark"] .theme-toggle:hover {
   background-color: var(--primary-light);
 }
 
+html[data-theme="dark"] .home-benefits-grid > .card > .home-benefit-icon {
+  background: var(--primary-light) !important;
+  color: var(--primary) !important;
+}
+
 html[data-theme="dark"] .module-card,
 html[data-theme="dark"] .toc-container {
   background-color: var(--bg-surface);
@@ -3632,4 +3649,14 @@ html[data-theme="dark"] .level-header {
 html[data-theme="dark"] .home-certificate-metrics > .share-actions {
   border-color: var(--border);
   background-color: var(--bg-subtle);
+}
+
+html.theme-transitioning,
+html.theme-transitioning body,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition-property: color, background-color, border-color, box-shadow, fill, stroke !important;
+  transition-duration: 250ms !important;
+  transition-timing-function: ease !important;
 }

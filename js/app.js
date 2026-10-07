@@ -79,8 +79,17 @@ function initThemeToggle() {
     console.warn('Impossibile leggere la preferenza del tema dal browser.', error);
   }
 
-  const applyTheme = isDark => {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+  const rootElement = document.documentElement;
+  let transitionTimeoutId;
+
+  const applyTheme = (isDark, animate = false) => {
+    const shouldAnimate = animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (shouldAnimate) {
+      window.clearTimeout(transitionTimeoutId);
+      rootElement.classList.add('theme-transitioning');
+    }
+
+    rootElement.dataset.theme = isDark ? 'dark' : 'light';
 
     toggles.forEach(toggle => {
       toggle.setAttribute('aria-label', isDark ? 'Attiva tema giorno' : 'Attiva tema notte');
@@ -90,14 +99,21 @@ function initThemeToggle() {
         ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>'
         : '<path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/>';
     });
+
+    if (shouldAnimate) {
+      transitionTimeoutId = window.setTimeout(() => {
+        rootElement.classList.remove('theme-transitioning');
+        transitionTimeoutId = undefined;
+      }, 300);
+    }
   };
 
   applyTheme(savedTheme === 'dark');
 
   toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
-      const isDark = document.documentElement.dataset.theme !== 'dark';
-      applyTheme(isDark);
+      const isDark = rootElement.dataset.theme !== 'dark';
+      applyTheme(isDark, true);
 
       try {
         localStorage.setItem('pertefinanza-theme', isDark ? 'dark' : 'light');
