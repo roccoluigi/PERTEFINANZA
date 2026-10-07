@@ -24,6 +24,14 @@ node scripts/generate-review.mjs --all
 
 Le pagine già esistenti vengono sovrascritte; quelle mancanti vengono create. Le eventuali modifiche manuali alle pagine rigenerate vengono perse. Il comando non elimina i file relativi a certificati che non sono più nei dati.
 
+GENERARE SOLO LE RECENSIONI MANCANTI
+
+Per creare solo le pagine non ancora presenti, confrontando gli ISIN in js/data-certificates.js con i file nella cartella recensioni:
+
+node scripts/generate-review.mjs --missing
+
+Le pagine già esistenti vengono saltate e non sovrascritte. Al termine, l'indice delle recensioni statiche e i collegamenti in home vengono sincronizzati. Per aggiornare anche le pagine esistenti usa --all.
+
 DA DOVE ARRIVANO I DATI
 
 Le caratteristiche dei certificati provengono da js/data-certificates.js. Rating e descrizioni degli emittenti vengono letti dalle schede HTML in emittenti.html.

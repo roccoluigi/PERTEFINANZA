@@ -10,15 +10,18 @@ const renderStop = Symbol('review markup captured');
 const homeRenderStop = Symbol('home markup captured');
 
 function parseArguments(args) {
-  if (args.length === 1 && args[0] === '--sync') return { syncOnly: true, all: false };
-  if (args.length === 1 && args[0] === '--all') return { syncOnly: false, all: true };
-  if (args.length !== 1) throw new Error('Uso: node scripts/generate-review.mjs <ISIN|--all|--sync>');
+  if (args.length === 1 && args[0] === '--sync') return { syncOnly: true, all: false, missing: false };
+  if (args.length === 1 && args[0] === '--all') return { syncOnly: false, all: true, missing: false };
+  if (args.length === 1 && args[0] === '--missing') return { syncOnly: false, all: false, missing: true };
+  if (args.length !== 1) {
+    throw new Error('Uso: node scripts/generate-review.mjs <ISIN|--all|--missing|--sync>');
+  }
   const isin = args[0].toUpperCase();
   if (!/^[A-Z0-9]{12}$/.test(isin)) {
     throw new Error(`Formato ISIN non valido: ${isin}`);
   }
 
-  return { isin, syncOnly: false, all: false };
+  return { isin, syncOnly: false, all: false, missing: false };
 }
 
 function decodeHtmlText(value) {
@@ -315,15 +318,25 @@ async function syncStaticReviewIndex() {
 }
 
 async function main() {
-  const { isin, syncOnly, all } = parseArguments(process.argv.slice(2));
+  const { isin, syncOnly, all, missing } = parseArguments(process.argv.slice(2));
   const issuerHtml = await readFile(path.join(projectRoot, 'emittenti.html'), 'utf8');
   const issuerData = parseIssuers(issuerHtml);
   if (!syncOnly) {
-    const certificates = all ? await loadCertificates() : [{ isin }];
-    const template = await readFile(path.join(projectRoot, 'recensione.html'), 'utf8');
+    let certificates = all || missing ? await loadCertificates() : [{ isin }];
     const outputDirectory = path.join(projectRoot, 'recensioni');
     await mkdir(outputDirectory, { recursive: true });
 
+    if (missing) {
+      const entries = await readdir(outputDirectory, { withFileTypes: true });
+      const existingIsins = new Set(entries
+        .filter(entry => entry.isFile())
+        .map(entry => entry.name.match(/^recensione-([A-Z0-9]{12})\.html$/i)?.[1]?.toUpperCase())
+        .filter(Boolean));
+      certificates = certificates.filter(certificate => !existingIsins.has(certificate.isin.toUpperCase()));
+      console.log(`Recensioni mancanti da generare: ${certificates.length}.`);
+    }
+
+    const template = await readFile(path.join(projectRoot, 'recensione.html'), 'utf8');
     for (const item of certificates) {
       const { certificate, markup } = await renderReviewMarkup(item.isin, issuerData);
       const page = buildPage(template, certificate, markup);
