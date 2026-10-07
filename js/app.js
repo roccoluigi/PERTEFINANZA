@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initSiteNavigation();
+  initThemeToggle();
   initFooter();
   initTelegramCards();
   initMobileMenu();
@@ -46,13 +47,64 @@ function initSiteNavigation() {
   document.querySelectorAll('.main-nav').forEach(nav => {
     nav.innerHTML = navigationItems.slice(0, 7).map(item => `
       <a href="${item.href}" class="nav-link${currentPage === item.href ? ' active' : ''}"${currentPage === item.href ? ' aria-current="page"' : ''}>${item.label}</a>
-    `).join('');
+    `).join('') + themeToggleMarkup('nav-link');
   });
 
   document.querySelectorAll('.mobile-nav').forEach(nav => {
     nav.innerHTML = navigationItems.map(item => `
       <a href="${item.href}" class="mobile-nav-link${currentPage === item.href ? ' active' : ''}"${currentPage === item.href ? ' aria-current="page"' : ''}>${item.mobileLabel}</a>
-    `).join('');
+    `).join('') + themeToggleMarkup('mobile-nav-link');
+  });
+}
+
+function themeToggleMarkup(navClass) {
+  return `
+    <button type="button" class="${navClass} theme-toggle" aria-label="Attiva tema notte" aria-pressed="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/>
+      </svg>
+      <span class="theme-toggle-label">Notte</span>
+    </button>
+  `;
+}
+
+function initThemeToggle() {
+  const toggles = document.querySelectorAll('.theme-toggle');
+  if (toggles.length === 0) return;
+
+  let savedTheme = 'light';
+  try {
+    savedTheme = localStorage.getItem('pertefinanza-theme') || 'light';
+  } catch (error) {
+    console.warn('Impossibile leggere la preferenza del tema dal browser.', error);
+  }
+
+  const applyTheme = isDark => {
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+
+    toggles.forEach(toggle => {
+      toggle.setAttribute('aria-label', isDark ? 'Attiva tema giorno' : 'Attiva tema notte');
+      toggle.setAttribute('aria-pressed', String(isDark));
+      toggle.querySelector('.theme-toggle-label').textContent = isDark ? 'Giorno' : 'Notte';
+      toggle.querySelector('svg').innerHTML = isDark
+        ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>'
+        : '<path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/>';
+    });
+  };
+
+  applyTheme(savedTheme === 'dark');
+
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const isDark = document.documentElement.dataset.theme !== 'dark';
+      applyTheme(isDark);
+
+      try {
+        localStorage.setItem('pertefinanza-theme', isDark ? 'dark' : 'light');
+      } catch (error) {
+        console.warn('Impossibile salvare la preferenza del tema nel browser.', error);
+      }
+    });
   });
 }
 
