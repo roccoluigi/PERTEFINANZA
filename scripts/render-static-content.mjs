@@ -224,7 +224,7 @@ for (const fileName of htmlFiles) {
     '<footer class="site-footer"></footer>',
     `<footer class="site-footer">\n${footer}\n  </footer>`
   );
-  html = html.replace(/js\/app\.js\?v=20261007-5/g, 'js/app.js?v=20261007-6');
+  html = html.replace(/js\/app\.js\?v=20261007-6/g, 'js/app.js?v=20261007-7');
 
   if (fileName === 'faq.html') {
     html = replaceContainerContent(

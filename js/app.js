@@ -757,132 +757,118 @@ function initGlossary() {
   const lettersContainer = document.getElementById('glossary-letters');
   const categoryContainer = document.getElementById('glossary-categories');
   const countDisplay = document.getElementById('glossary-count');
+  if (!container) return;
 
-  if (!container || typeof GLOSSARY_DATA === 'undefined') return;
-
-  const sortedGlossary = [...GLOSSARY_DATA].sort((a, b) => a.term.localeCompare(b.term));
+  const cards = [...container.querySelectorAll('.glossary-card')];
+  if (cards.length === 0) return;
 
   let currentLetter = 'ALL';
   let currentCategory = 'ALL';
 
-  // Genera il filtro alfabetico usando solo le iniziali realmente presenti nei dati.
+  const entries = cards.map(card => {
+    const title = card.querySelector('.glossary-card-title');
+    const termElement = title?.querySelector(':scope > span:first-child');
+    const categoryElement = title?.querySelector(':scope > .badge');
+    const definitionElement = card.querySelector('.glossary-card-def');
+    const exampleElement = card.querySelector('.glossary-example');
+    const term = termElement?.textContent.trim() || '';
+
+    if (title && term && !title.querySelector('.content-share')) {
+      title.insertAdjacentHTML('beforeend', contentShareMenuMarkup(card.id, term));
+    }
+
+    return {
+      card,
+      term,
+      category: categoryElement?.textContent.trim() || '',
+      searchableText: [
+        term,
+        categoryElement?.textContent || '',
+        definitionElement?.textContent || '',
+        exampleElement?.textContent || ''
+      ].join(' ').toLowerCase()
+    };
+  });
+
+  const emptyState = document.createElement('div');
+  emptyState.className = 'card empty-state';
+  emptyState.style.display = 'none';
+  const emptyTitle = document.createElement('p');
+  emptyTitle.className = 'empty-state-title';
+  emptyTitle.textContent = 'Nessun termine trovato';
+  const emptyText = document.createElement('p');
+  emptyText.className = 'empty-state-text';
+  emptyText.textContent = 'Prova a modificare la ricerca testuale o reimposta i filtri alfabetici.';
+  emptyState.append(emptyTitle, emptyText);
+  container.append(emptyState);
+
   if (lettersContainer) {
-    const availableLetters = ['ALL', ...[...new Set(sortedGlossary.map(item => item.term.charAt(0).toUpperCase()))].sort()];
-    let lettersHtml = '';
-    availableLetters.forEach(l => {
-      const label = l === 'ALL' ? 'Tutti' : l;
-      const activeClass = l === 'ALL' ? 'active' : '';
-      lettersHtml += `<button type="button" class="glossary-letter-btn ${activeClass}" data-letter="${l}" aria-pressed="${l === 'ALL'}">${label}</button>`;
-    });
-    lettersContainer.innerHTML = lettersHtml;
-
-    lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(button => {
-          button.classList.remove('active');
-          button.setAttribute('aria-pressed', 'false');
+    const availableLetters = ['ALL', ...[...new Set(entries.map(item => item.term.charAt(0).toUpperCase()))].sort()];
+    availableLetters.forEach(letter => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `glossary-letter-btn${letter === 'ALL' ? ' active' : ''}`;
+      button.dataset.letter = letter;
+      button.setAttribute('aria-pressed', String(letter === 'ALL'));
+      button.textContent = letter === 'ALL' ? 'Tutti' : letter;
+      button.addEventListener('click', () => {
+        lettersContainer.querySelectorAll('.glossary-letter-btn').forEach(other => {
+          const isSelected = other === button;
+          other.classList.toggle('active', isSelected);
+          other.setAttribute('aria-pressed', String(isSelected));
         });
-        const selectedButton = e.currentTarget;
-        selectedButton.classList.add('active');
-        selectedButton.setAttribute('aria-pressed', 'true');
-        currentLetter = selectedButton.getAttribute('data-letter');
+        currentLetter = letter;
         filterGlossary();
       });
+      lettersContainer.append(button);
     });
   }
 
-  // Genera le categorie e mantiene una sola categoria visivamente attiva.
   if (categoryContainer) {
-    const categories = ['ALL', ...new Set(sortedGlossary.map(item => item.category))].sort();
-    let catHtml = '';
-    categories.forEach(cat => {
-      const label = cat === 'ALL' ? 'Tutte le categorie' : cat;
-      const activeClass = cat === 'ALL' ? 'active' : '';
-      catHtml += `<button type="button" class="badge filter-pill glossary-category-pill ${activeClass ? 'badge-primary' : 'badge-neutral'}" data-category="${cat}" aria-pressed="${cat === 'ALL'}">${label}</button>`;
-    });
-    categoryContainer.innerHTML = catHtml;
-
-    categoryContainer.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        categoryContainer.querySelectorAll('button').forEach(button => {
-          button.classList.remove('badge-primary');
-          button.classList.add('badge-neutral');
-          button.setAttribute('aria-pressed', 'false');
+    const categories = ['ALL', ...new Set(entries.map(item => item.category))].sort();
+    categories.forEach(category => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `badge filter-pill glossary-category-pill ${category === 'ALL' ? 'badge-primary' : 'badge-neutral'}`;
+      button.dataset.category = category;
+      button.setAttribute('aria-pressed', String(category === 'ALL'));
+      button.textContent = category === 'ALL' ? 'Tutte le categorie' : category;
+      button.addEventListener('click', () => {
+        categoryContainer.querySelectorAll('button').forEach(other => {
+          const isSelected = other === button;
+          other.classList.toggle('badge-primary', isSelected);
+          other.classList.toggle('badge-neutral', !isSelected);
+          other.setAttribute('aria-pressed', String(isSelected));
         });
-        const selectedButton = e.currentTarget;
-        selectedButton.classList.remove('badge-neutral');
-        selectedButton.classList.add('badge-primary');
-        selectedButton.setAttribute('aria-pressed', 'true');
-        currentCategory = selectedButton.getAttribute('data-category');
+        currentCategory = category;
         filterGlossary();
       });
+      categoryContainer.append(button);
     });
-  }
-
-  function renderGlossary(items) {
-    if (countDisplay) {
-      countDisplay.textContent = `${items.length} ${items.length === 1 ? 'termine visualizzato' : 'termini visualizzati'}`;
-    }
-
-    if (items.length === 0) {
-      container.innerHTML = `
-        <div class="card empty-state">
-          <p class="empty-state-title">Nessun termine trovato</p>
-          <p class="empty-state-text">Prova a modificare la ricerca testuale o reimposta i filtri alfabetici.</p>
-        </div>
-      `;
-      return;
-    }
-
-    let html = '';
-    items.forEach(item => {
-      const itemId = contentAnchorId('glossary', item.term);
-      const exampleBox = item.example ? `
-        <div class="glossary-example">
-          <strong class="glossary-example-label">💡 Esempio pratico / Focus operativo:</strong>
-          ${item.example}
-        </div>
-      ` : '';
-
-      html += `
-        <div class="glossary-card" id="${itemId}">
-          <div class="glossary-card-title">
-            <span>${item.term}</span>
-            <span class="badge badge-primary">${item.category}</span>
-            ${contentShareMenuMarkup(itemId, item.term)}
-          </div>
-          <div class="glossary-card-def">
-            ${item.definition}
-          </div>
-          ${exampleBox}
-          ${relatedLinksMarkup(item.relatedLinks)}
-        </div>
-      `;
-    });
-    container.innerHTML = html;
   }
 
   function filterGlossary() {
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+    let visibleCount = 0;
 
-    const filtered = sortedGlossary.filter(item => {
+    entries.forEach(item => {
       const matchesLetter = currentLetter === 'ALL' || item.term.charAt(0).toUpperCase() === currentLetter;
       const matchesCategory = currentCategory === 'ALL' || item.category === currentCategory;
-      const matchesQuery = !query || 
-        item.term.toLowerCase().includes(query) || 
-        item.definition.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query) ||
-        (item.example && item.example.toLowerCase().includes(query));
-
-      return matchesLetter && matchesCategory && matchesQuery;
+      const matchesQuery = !query || item.searchableText.includes(query);
+      const isVisible = matchesLetter && matchesCategory && matchesQuery;
+      item.card.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount += 1;
     });
 
-    renderGlossary(filtered);
+    emptyState.style.display = visibleCount === 0 ? '' : 'none';
+    if (countDisplay) {
+      countDisplay.textContent = `${visibleCount} ${visibleCount === 1 ? 'termine visualizzato' : 'termini visualizzati'}`;
+    }
   }
 
   if (searchInput) searchInput.addEventListener('input', filterGlossary);
 
-  renderGlossary(sortedGlossary);
+  filterGlossary();
   scrollToSharedContent(container);
 }
 
@@ -894,28 +880,54 @@ function initFaqAccordion() {
   const searchInput = document.getElementById('faq-search');
   const categoryPillsContainer = document.getElementById('faq-categories');
   const countEl = document.getElementById('faq-count');
+  if (!container) return;
 
-  if (!container || typeof FAQS_DATA === 'undefined') {
-    // Supporta eventuali FAQ statiche anche senza il dataset dinamico.
-    const staticItems = document.querySelectorAll('.faq-item');
-    if (staticItems.length > 0) {
-      staticItems.forEach(item => {
-        const questionBtn = item.querySelector('.faq-question');
-        if (questionBtn) {
-          questionBtn.addEventListener('click', () => {
-            const isActive = item.classList.contains('active');
-            staticItems.forEach(other => {
-              if (other !== item) other.classList.remove('active');
-            });
-            item.classList.toggle('active', !isActive);
-          });
-        }
-      });
-    }
-    return;
-  }
+  const items = [...container.querySelectorAll('.faq-item')];
+  if (items.length === 0) return;
 
   let currentCategory = 'ALL';
+  let autoOpenAll = false;
+  const requestedFaqId = window.location.hash.slice(1);
+  const hasSharedQuestion = items.some(item => item.id === requestedFaqId);
+
+  const entries = items.map(item => {
+    const questionButton = item.querySelector('.faq-question');
+    const header = item.querySelector('.faq-item-header');
+    const questionElement = item.querySelector('.faq-item-question-text');
+    const categoryElement = item.querySelector('.faq-item-category');
+    const answerElement = item.querySelector('.faq-answer');
+    const answerText = answerElement?.cloneNode(true);
+    answerText?.querySelectorAll('.related-content-links').forEach(link => link.remove());
+    const question = questionElement?.textContent.trim() || '';
+
+    if (header && question && !header.querySelector('.content-share')) {
+      header.insertAdjacentHTML('beforeend', contentShareMenuMarkup(item.id, question));
+    }
+
+    return {
+      item,
+      questionButton,
+      question,
+      category: categoryElement?.textContent.trim() || '',
+      searchableText: [
+        question,
+        categoryElement?.textContent || '',
+        answerText?.textContent || ''
+      ].join(' ').toLowerCase()
+    };
+  });
+
+  const emptyState = document.createElement('div');
+  emptyState.className = 'card empty-state';
+  emptyState.style.display = 'none';
+  const emptyTitle = document.createElement('p');
+  emptyTitle.className = 'empty-state-title';
+  emptyTitle.textContent = 'Nessuna risposta trovata';
+  const emptyText = document.createElement('p');
+  emptyText.className = 'empty-state-text';
+  emptyText.textContent = 'Prova ad utilizzare parole chiave differenti (es. minusvalenze, barriera, airbag, market maker).';
+  emptyState.append(emptyTitle, emptyText);
+  container.append(emptyState);
 
   function preserveFaqControlPosition(control, initialTop) {
     requestAnimationFrame(() => {
@@ -926,171 +938,98 @@ function initFaqAccordion() {
     });
   }
 
-  function formatFaqAnswer(answer) {
-    const numberedParts = answer.split(/(?=\b\d+\)\s)/);
-
-    if (numberedParts.length >= 3 && numberedParts.slice(1).every(part => /^\d+\)\s/.test(part))) {
-      const introduction = numberedParts.shift().trim();
-      const listItems = numberedParts.map(part => part.replace(/^\d+\)\s/, '').trim());
-      return `${introduction ? `<p>${introduction}</p>` : ''}<ol>${listItems.map(item => `<li>${item}</li>`).join('')}</ol>`;
-    }
-
-    const bulletParts = answer.split(/(?=•\s)/);
-    if (bulletParts.length >= 2 && bulletParts.slice(1).every(part => /^•\s/.test(part))) {
-      const introduction = bulletParts.shift().trim();
-      const listItems = bulletParts.map(part => part.replace(/^•\s/, '').trim());
-      return `${introduction ? `<p>${introduction}</p>` : ''}<ul>${listItems.map(item => `<li>${item}</li>`).join('')}</ul>`;
-    }
-
-    return `<p>${answer}</p>`;
+  function setItemExpanded(entry, isExpanded) {
+    entry.item.classList.toggle('active', isExpanded);
+    entry.questionButton?.setAttribute('aria-expanded', String(isExpanded));
   }
 
-  // Genera i filtri categoria e collega ciascun pulsante alla nuova ricerca.
   if (categoryPillsContainer) {
-    const categories = ['ALL', ...new Set(FAQS_DATA.map(f => f.category))];
-    let catHtml = '';
-    categories.forEach(cat => {
-      const label = cat === 'ALL' ? 'Tutte le domande' : cat;
-      const activeClass = cat === 'ALL' ? 'badge-primary' : 'badge-neutral';
-      catHtml += `<button type="button" class="badge filter-pill faq-category-pill ${activeClass}" data-cat="${cat}" aria-pressed="${cat === 'ALL'}">${label}</button>`;
-    });
-    categoryPillsContainer.innerHTML = catHtml;
-
-    categoryPillsContainer.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        categoryPillsContainer.querySelectorAll('button').forEach(button => {
-          button.classList.remove('badge-primary');
-          button.classList.add('badge-neutral');
-          button.setAttribute('aria-pressed', 'false');
+    const categories = ['ALL', ...new Set(entries.map(entry => entry.category))];
+    categories.forEach(category => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `badge filter-pill faq-category-pill ${category === 'ALL' ? 'badge-primary' : 'badge-neutral'}`;
+      button.dataset.cat = category;
+      button.setAttribute('aria-pressed', String(category === 'ALL'));
+      button.textContent = category === 'ALL' ? 'Tutte le domande' : category;
+      button.addEventListener('click', () => {
+        categoryPillsContainer.querySelectorAll('button').forEach(other => {
+          const isSelected = other === button;
+          other.classList.toggle('badge-primary', isSelected);
+          other.classList.toggle('badge-neutral', !isSelected);
+          other.setAttribute('aria-pressed', String(isSelected));
         });
-        const selectedButton = e.currentTarget;
-        selectedButton.classList.remove('badge-neutral');
-        selectedButton.classList.add('badge-primary');
-        selectedButton.setAttribute('aria-pressed', 'true');
-        currentCategory = selectedButton.getAttribute('data-cat');
+        currentCategory = category;
         filterFaqs();
       });
-    });
-  }
-
-  function renderFaqs(items, autoOpenAll = false) {
-    if (countEl) {
-      countEl.textContent = `${items.length} ${items.length === 1 ? 'domanda trovata' : 'domande trovate'}`;
-    }
-
-    if (items.length === 0) {
-      container.innerHTML = `
-        <div class="card empty-state">
-          <p class="empty-state-title">Nessuna risposta trovata</p>
-          <p class="empty-state-text">Prova ad utilizzare parole chiave differenti (es. minusvalenze, barriera, airbag, market maker).</p>
-        </div>
-      `;
-      return;
-    }
-
-    let html = '';
-    const requestedFaqId = window.location.hash.slice(1);
-    const hasSharedQuestion = FAQS_DATA.some(faq => contentAnchorId('faq', faq.question) === requestedFaqId);
-    items.forEach((item, index) => {
-      // Mostra il primo risultato; durante una ricerca apre tutte le risposte trovate.
-      const itemId = contentAnchorId('faq', item.question);
-      const questionId = `${itemId}-question`;
-      const answerId = `${itemId}-answer`;
-      const isActive = autoOpenAll || (hasSharedQuestion ? itemId === requestedFaqId : index === 0);
-
-      html += `
-        <div class="faq-item ${isActive ? 'active' : ''}" id="${itemId}">
-          <div class="faq-item-header">
-            <button type="button" class="faq-question" id="${questionId}" aria-expanded="${isActive}" aria-controls="${answerId}">
-              <span class="faq-question-content">
-                <span class="badge badge-primary faq-item-category">
-                  ${item.category}
-                </span>
-                <span class="faq-item-question-text">${item.question}</span>
-              </span>
-              <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            ${contentShareMenuMarkup(itemId, item.question)}
-          </div>
-          <div class="faq-answer" id="${answerId}" role="region" aria-labelledby="${questionId}">
-            ${formatFaqAnswer(item.answer)}
-            ${relatedLinksMarkup(item.relatedLinks)}
-          </div>
-        </div>
-      `;
-    });
-
-    container.innerHTML = html;
-
-    // Collega l'accordion e sincronizza lo stato ARIA con la classe visuale.
-    container.querySelectorAll('.faq-item').forEach(item => {
-      const questionBtn = item.querySelector('.faq-question');
-      const shareMenu = item.querySelector('.content-share');
-      if (questionBtn) {
-        questionBtn.addEventListener('click', () => {
-          const isCurrentlyActive = item.classList.contains('active');
-          const initialTop = questionBtn.getBoundingClientRect().top;
-          if (!autoOpenAll) {
-            container.querySelectorAll('.faq-item').forEach(other => {
-              if (other !== item) {
-                other.classList.remove('active');
-                const otherButton = other.querySelector('.faq-question');
-                if (otherButton) otherButton.setAttribute('aria-expanded', 'false');
-              }
-            });
-          }
-          const nextIsActive = !isCurrentlyActive;
-          item.classList.toggle('active', nextIsActive);
-          questionBtn.setAttribute('aria-expanded', String(nextIsActive));
-          if (nextIsActive) preserveFaqControlPosition(questionBtn, initialTop);
-        });
-      }
-
-      if (shareMenu && questionBtn) {
-        shareMenu.addEventListener('toggle', () => {
-          if (!shareMenu.open || item.classList.contains('active')) return;
-
-          const summary = shareMenu.querySelector('summary');
-          const initialTop = summary.getBoundingClientRect().top;
-          if (!autoOpenAll) {
-            container.querySelectorAll('.faq-item').forEach(other => {
-              if (other !== item) {
-                other.classList.remove('active');
-                other.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
-              }
-            });
-          }
-
-          item.classList.add('active');
-          questionBtn.setAttribute('aria-expanded', 'true');
-          preserveFaqControlPosition(summary, initialTop);
-        });
-      }
+      categoryPillsContainer.append(button);
     });
   }
 
   function filterFaqs() {
     const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+    autoOpenAll = query.length > 0;
+    const visibleEntries = [];
 
-    const filtered = FAQS_DATA.filter(item => {
-      const matchCat = currentCategory === 'ALL' || item.category === currentCategory;
-      const matchQuery = !query || 
-        item.question.toLowerCase().includes(query) || 
-        item.answer.toLowerCase().includes(query) ||
-        item.category.toLowerCase().includes(query);
-
-      return matchCat && matchQuery;
+    entries.forEach(entry => {
+      const matchesCategory = currentCategory === 'ALL' || entry.category === currentCategory;
+      const matchesQuery = !query || entry.searchableText.includes(query);
+      const isVisible = matchesCategory && matchesQuery;
+      entry.item.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleEntries.push(entry);
     });
 
-    // Durante la ricerca mostra tutte le risposte per rendere visibili i match testuali.
-    renderFaqs(filtered, query.length > 0);
+    const sharedEntry = hasSharedQuestion
+      ? visibleEntries.find(entry => entry.item.id === requestedFaqId)
+      : null;
+    const firstVisibleEntry = visibleEntries[0];
+    visibleEntries.forEach(entry => {
+      const shouldExpand = autoOpenAll || entry === sharedEntry || (!sharedEntry && entry === firstVisibleEntry);
+      setItemExpanded(entry, shouldExpand);
+    });
+    entries.filter(entry => !visibleEntries.includes(entry)).forEach(entry => setItemExpanded(entry, false));
+
+    emptyState.style.display = visibleEntries.length === 0 ? '' : 'none';
+    if (countEl) {
+      countEl.textContent = `${visibleEntries.length} ${visibleEntries.length === 1 ? 'domanda trovata' : 'domande trovate'}`;
+    }
   }
+
+  entries.forEach(entry => {
+    const { item, questionButton } = entry;
+    const shareMenu = item.querySelector('.content-share');
+    questionButton?.addEventListener('click', () => {
+      const isCurrentlyActive = item.classList.contains('active');
+      const initialTop = questionButton.getBoundingClientRect().top;
+      if (!autoOpenAll) {
+        entries.forEach(other => {
+          if (other !== entry && other.item.style.display !== 'none') setItemExpanded(other, false);
+        });
+      }
+      setItemExpanded(entry, !isCurrentlyActive);
+      if (!isCurrentlyActive) preserveFaqControlPosition(questionButton, initialTop);
+    });
+
+    if (shareMenu && questionButton) {
+      shareMenu.addEventListener('toggle', () => {
+        if (!shareMenu.open || item.classList.contains('active')) return;
+
+        const summary = shareMenu.querySelector('summary');
+        const initialTop = summary.getBoundingClientRect().top;
+        if (!autoOpenAll) {
+          entries.forEach(other => {
+            if (other !== entry && other.item.style.display !== 'none') setItemExpanded(other, false);
+          });
+        }
+        setItemExpanded(entry, true);
+        preserveFaqControlPosition(summary, initialTop);
+      });
+    }
+  });
 
   if (searchInput) searchInput.addEventListener('input', filterFaqs);
 
-  renderFaqs(FAQS_DATA);
+  filterFaqs();
   scrollToSharedContent(container);
 }
 
