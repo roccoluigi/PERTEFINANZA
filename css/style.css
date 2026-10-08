@@ -2749,7 +2749,20 @@ button, input, select, textarea {
   line-height: 1.2;
   color: var(--secondary);
   margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.review-title-isin {
   margin-bottom: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.review-title-isin strong {
+  color: var(--text-main);
+  font-variant-numeric: tabular-nums;
 }
 
 .meta-box {

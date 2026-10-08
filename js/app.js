@@ -1248,8 +1248,9 @@ function initReviewPage() {
 
     <div class="review-hero">
       <h1 class="review-title">
-        Analisi ${cert.type} su paniere: ${cert.underlyings.join(', ')}
+        Analisi del certificato ${cert.name}
       </h1>
+      <p class="review-title-isin">ISIN: <strong>${cert.isin}</strong></p>
 
       <div class="review-summary-text">
         ${review.summary}

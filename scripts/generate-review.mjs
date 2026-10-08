@@ -198,7 +198,8 @@ function buildPage(template, certificate, reviewMarkup) {
   html = updateMetaContent(html, 'name', 'twitter:title', title);
   html = updateMetaContent(html, 'name', 'twitter:description', description);
   html = setCanonicalLink(html, canonicalUrl);
-  html = html.replace(/js\/app\.js\?v=20261007-10/g, 'js/app.js?v=20261007-11');
+  html = html.replace(/css\/style\.css\?v=[^"']+/g, 'css/style.css?v=20261008-1');
+  html = html.replace(/js\/app\.js\?v=[^"']+/g, 'js/app.js?v=20261008-1');
   html = html.replace(
     /^\s*<script\s+src=["']js\/(?:data-certificates|data-issuers|data-underlyings|reviews)\.js(?:\?[^"']*)?["']><\/script>\s*$/gim,
     ''
