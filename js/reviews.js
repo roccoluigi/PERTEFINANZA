@@ -23,7 +23,8 @@ function buildGeneratedReviewContent(cert) {
     ? ISSUERS_DATA.find(item => item.name === cert.issuer || item.name.startsWith(`${cert.issuer} `))
     : null;
   const issuerDescription = issuerData ? issuerData.description : `L'emittente ${cert.issuer} opera nel mercato dei prodotti strutturati.`;
-  const issuerDescriptionStart = issuerDescription.charAt(0).toLowerCase() + issuerDescription.slice(1);
+  const issuerDescriptionStart = issuerDescriptionWithoutName(cert.issuer, issuerDescription);
+  const lowercaseIssuerDescriptionStart = issuerDescriptionStart.charAt(0).toLowerCase() + issuerDescriptionStart.slice(1);
   const ratingEntries = issuerData && issuerData.ratings
     ? Object.entries(issuerData.ratings).filter(([, rating]) => rating && rating.toLowerCase() !== 'non rated')
     : issuerData
@@ -41,9 +42,11 @@ function buildGeneratedReviewContent(cert) {
   const ratingSummary = ratingDescriptions.length > 1
     ? `${ratingDescriptions.slice(0, -1).join(', ')} e ${ratingDescriptions[ratingDescriptions.length - 1]}`
     : ratingDescriptions[0];
-  const ratingSentence = ratingEntries.length > 0
-    ? `I rating assegnati dalle agenzie sulla solidità creditizia dell'emittente sono ${ratingSummary}. Poiché queste valutazioni possono cambiare, è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.`
-    : `Le valutazioni delle agenzie sulla solidità creditizia dell'emittente non sono disponibili: è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.`;
+  const ratingSentence = ratingEntries.length === 1
+    ? `${ratingEntries[0][0]} assegna all'emittente un rating di credito pari ad ${ratingEntries[0][1]}. Poiché il rating può cambiare, è opportuno verificarne il valore più aggiornato sul sito dell'agenzia e nella documentazione ufficiale del prodotto.`
+    : ratingEntries.length > 1
+      ? `Le agenzie assegnano all'emittente i seguenti rating di credito: ${ratingSummary}. Poiché queste valutazioni possono cambiare, è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.`
+      : `Le valutazioni delle agenzie sulla solidità creditizia dell'emittente non sono disponibili: è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.`;
   const barrierComment = `La barriera capitale europea al <strong>${cert.barrierCapital}</strong> è osservata a scadenza e corrisponde a una soglia pari al ${capitalBarrier}% dei livelli iniziali (buffer del ${100 - capitalBarrier}%). Il buffer è condizionato e non limita la perdita massima: se alla scadenza il Worst-of chiude sotto barriera, il rimborso segue la sua performance finale. Per esempio, se il Worst-of chiudesse a ${capitalBarrier - 5}% (5 punti percentuali sotto la barriera), il rimborso sarebbe pari al ${capitalBarrier - 5}% dell'importo investito, con una perdita del ${100 - (capitalBarrier - 5)}% prima di considerare gli eventuali premi già incassati.`;
   const couponComment = `Il pagamento della cedola mensile è condizionato al rispetto della barriera coupon del ${cert.barrierCoupon} a ogni data di osservazione. Se il Worst-of non raggiunge questa soglia, la cedola non viene pagata. Grazie all'<strong>effetto memoria</strong>, le cedole sospese possono essere recuperate in una successiva data di osservazione solo se il Worst-of torna almeno al ${cert.barrierCoupon}.`;
   const underlyingProfiles = typeof UNDERLYING_PROFILES !== 'undefined' ? UNDERLYING_PROFILES : {};
@@ -55,7 +58,7 @@ function buildGeneratedReviewContent(cert) {
     : `Il prodotto non prevede uno Step-down: la soglia di rimborso anticipato non si riduce nel tempo, secondo i dati disponibili.`;
 
   const paragraphs = [
-    `Il certificato è emesso da <strong>${cert.issuer}</strong>, ${issuerDescriptionStart} ${ratingSentence}`,
+    `Il presente certificato di investimento è emesso da <strong>${cert.issuer}</strong>, ${lowercaseIssuerDescriptionStart} ${ratingSentence}`,
     `La scadenza teorica del certificato è fissata per il ${cert.expiryDate}. Il rendimento potenziale annuo lordo è pari al <strong>${annualYield.toFixed(2)}%</strong> e, poiché presuppone il pagamento di tutte le cedole condizionate previste, non è garantito.`,
     barrierComment,
     couponComment,

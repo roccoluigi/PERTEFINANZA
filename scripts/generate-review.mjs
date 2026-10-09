@@ -67,7 +67,7 @@ function parseIssuers(html) {
     }
 
     const fullDescription = htmlText(bodyMatch[1]);
-    const description = fullDescription.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0] || fullDescription;
+    const description = fullDescription.match(/^[\s\S]*?[.!?](?=\s+[A-ZÀ-ÖØ-Þ]|$)/u)?.[0] || fullDescription;
     return {
       name: htmlText(nameMatch[1]),
       ratings,
@@ -199,7 +199,7 @@ function buildPage(template, certificate, reviewMarkup) {
   html = updateMetaContent(html, 'name', 'twitter:description', description);
   html = setCanonicalLink(html, canonicalUrl);
   html = html.replace(/css\/style\.css\?v=[^"']+/g, 'css/style.css?v=20261008-1');
-  html = html.replace(/js\/app\.js\?v=[^"']+/g, 'js/app.js?v=20261008-1');
+  html = html.replace(/js\/app\.js\?v=[^"']+/g, 'js/app.js?v=20261009-1');
   html = html.replace(
     /^\s*<script\s+src=["']js\/(?:data-certificates|data-issuers|data-underlyings|reviews)\.js(?:\?[^"']*)?["']><\/script>\s*$/gim,
     ''
