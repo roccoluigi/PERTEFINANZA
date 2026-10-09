@@ -414,25 +414,29 @@ button, input, select, textarea {
   font: inherit;
 }
 
-.main-nav .theme-toggle {
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
+.header-actions .theme-toggle {
+  min-height: 36px;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background-color: var(--bg-surface);
   color: var(--text-body);
-  gap: 0;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: var(--transition);
 }
 
-.main-nav .theme-toggle:hover {
-  background-color: transparent;
+.header-actions .theme-toggle:hover {
+  border-color: var(--primary-border);
+  background-color: var(--primary-light);
   color: var(--primary);
 }
 
-.main-nav .theme-toggle-label {
-  display: none;
+.header-actions .theme-toggle:focus-visible {
+  outline: 3px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
 .mobile-nav .theme-toggle {
@@ -450,10 +454,10 @@ button, input, select, textarea {
   height: 18px;
 }
 
-.main-nav .theme-toggle svg {
-  flex-basis: 22px;
-  width: 22px;
-  height: 22px;
+.header-actions .theme-toggle svg {
+  flex-basis: 16px;
+  width: 16px;
+  height: 16px;
 }
 
 /* ==========================================================================
@@ -3249,6 +3253,10 @@ button, input, select, textarea {
     display: none;
   }
 
+  .header-actions .header-theme-toggle {
+    display: none;
+  }
+
   .mobile-menu-btn {
     display: block;
   }
@@ -3660,10 +3668,6 @@ html[data-theme="dark"] .cons-title {
 
 html[data-theme="dark"] .theme-toggle:hover {
   background-color: var(--primary-light);
-}
-
-html[data-theme="dark"] .main-nav .theme-toggle:hover {
-  background-color: transparent;
 }
 
 html[data-theme="dark"] .home-benefits-grid > .card > .home-benefit-icon {

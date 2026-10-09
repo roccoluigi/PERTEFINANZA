@@ -39,10 +39,15 @@ function initSiteNavigation() {
       else link.removeAttribute('aria-current');
     });
 
-    if (!nav.querySelector('.theme-toggle')) {
+    if (nav.classList.contains('mobile-nav') && !nav.querySelector('.theme-toggle')) {
       nav.insertAdjacentHTML('beforeend', themeToggleMarkup(linkClass));
     }
   });
+
+  const headerActions = document.querySelector('.header-actions');
+  if (headerActions && !headerActions.querySelector('.theme-toggle')) {
+    headerActions.insertAdjacentHTML('afterbegin', themeToggleMarkup('header-theme-toggle'));
+  }
 }
 
 function reviewTemplateUrl(isin) {
@@ -61,9 +66,9 @@ function reviewTemplateUrl(isin) {
   return `${templatePath}?isin=${encodedIsin}`;
 }
 
-function themeToggleMarkup(navClass) {
+function themeToggleMarkup(toggleClass) {
   return `
-    <button type="button" class="${navClass} theme-toggle" aria-label="Attiva tema notte" aria-pressed="false">
+    <button type="button" class="${toggleClass} theme-toggle" aria-label="Attiva tema notte" aria-pressed="false">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/>
       </svg>
