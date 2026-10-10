@@ -37,14 +37,16 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Accesso amministratore | PERTEFINANZA</title>
   <script src="admin.js?v=20261009-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261009-1">
+  <link rel="stylesheet" href="admin.css?v=20261010-49">
 </head>
 <body>
   <main class="admin-shell admin-auth">
     <div class="admin-auth-topbar">
-      <a class="admin-brand" href="../index.html">
-        <span class="admin-brand-mark" aria-hidden="true">PF</span>
-        <span class="admin-brand-copy"><strong>PERTEFINANZA</strong><small>Area riservata</small></span>
+      <a class="admin-brand admin-site-brand" href="../index.html" aria-label="PERTEFINANZA, area di amministrazione">
+        <span class="admin-brand-copy">
+          <strong class="admin-brand-name">PERTE<span>FINANZA</span></strong>
+          <small>AREA DI AMMINISTRAZIONE</small>
+        </span>
       </a>
       <button class="theme-toggle" type="button" aria-label="Attiva tema notte" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg><span class="theme-toggle-label">Notte</span></button>
     </div>

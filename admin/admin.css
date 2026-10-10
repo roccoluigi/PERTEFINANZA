@@ -69,6 +69,7 @@ a:hover { color: var(--admin-primary-hover); }
 }
 
 .admin-topbar {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -137,6 +138,7 @@ h1, h2, h3 { color: var(--admin-text); line-height: 1.2; }
 .admin-topbar-actions form,
 .row-actions form { margin: 0; }
 .admin-topbar-actions .theme-toggle,
+.admin-auth-topbar .theme-toggle,
 .admin-topbar-actions form[action="logout.php"] .button.secondary {
   min-height: 36px;
   padding: 6px 12px;
@@ -147,6 +149,7 @@ h1, h2, h3 { color: var(--admin-text); line-height: 1.2; }
   font-weight: 650;
 }
 .admin-topbar-actions .theme-toggle:hover,
+.admin-auth-topbar .theme-toggle:hover,
 .admin-topbar-actions form[action="logout.php"] .button.secondary:hover {
   transform: none;
   border-color: var(--admin-primary);
@@ -166,7 +169,8 @@ h1, h2, h3 { color: var(--admin-text); line-height: 1.2; }
   background: var(--admin-primary-soft);
   color: var(--admin-primary);
 }
-.admin-topbar-actions .theme-toggle svg { width: 16px; height: 16px; }
+.admin-topbar-actions .theme-toggle svg,
+.admin-auth-topbar .theme-toggle svg { width: 16px; height: 16px; }
 
 .theme-toggle {
   display: inline-flex;
@@ -388,6 +392,20 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 }
 .certificate-row:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--admin-primary) 50%, var(--admin-border)); background: var(--admin-surface-soft); }
 .certificate-row-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.certificate-row-link {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 4px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+.certificate-row-link:hover { background: var(--admin-surface-soft); }
+.certificate-row-link.is-disabled { cursor: default; }
 .certificate-row-info { min-width: 0; }
 .certificate-row strong { display: block; color: var(--admin-text); font-size: 0.96rem; }
 .certificate-row small { display: block; margin-top: 3px; color: var(--admin-muted); font-size: 0.79rem; }
@@ -408,7 +426,6 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 .status-removal { border-color: color-mix(in srgb, var(--admin-danger) 38%, var(--admin-border)); background: var(--admin-danger-soft); color: var(--admin-danger); }
 .status-published { border-color: color-mix(in srgb, var(--admin-success) 35%, var(--admin-border)); background: var(--admin-success-soft); color: var(--admin-success); }
 .row-actions { flex-wrap: wrap; gap: 8px; margin-top: 2px; }
-.row-actions > a { font-size: 0.86rem; font-weight: 750; }
 .row-actions .button { min-height: 34px; padding: 6px 10px; font-size: 0.78rem; }
 .row-actions .certificate-mark-removal { min-height: 24px; padding: 2px 7px; font-size: 0.7rem; }
 .admin-footer { margin: 18px 4px 0; color: var(--admin-muted); font-size: 0.82rem; }
@@ -421,7 +438,9 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   background: var(--admin-surface);
   box-shadow: var(--admin-shadow);
 }
-.admin-auth-topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 25px; }
+.admin-auth-topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 25px; }
+.admin-auth-topbar .theme-toggle { margin-top: -5px; }
+.admin-topbar-actions .theme-toggle { margin-top: -5px; }
 .admin-auth h1 { margin-bottom: 9px; font-size: 1.65rem; letter-spacing: -0.035em; }
 .admin-auth > p { color: var(--admin-muted); }
 .admin-auth form { margin-top: 20px; }
@@ -437,23 +456,120 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 @media (max-width: 560px) {
   .admin-shell { width: min(100% - 22px, 1180px); margin: 11px auto 24px; }
   .admin-topbar { gap: 18px; padding: 14px; border-radius: 14px; }
+  .editorial-help,
+  .cms-mobile-guide,
+  .cms-mobile-guide-title { display: none; }
+  .cms-empty-editor-panel { display: none; }
   .admin-heading { align-items: stretch; flex-direction: column; gap: 13px; }
   .admin-heading-copy { text-align: center; }
-  .admin-topbar-actions { width: 100%; gap: 8px; }
-  .admin-topbar-actions .button,
-  .admin-topbar-actions .theme-toggle { flex: 1; }
+  .admin-topbar-actions {
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+  }
+  .admin-topbar-actions .theme-toggle {
+    position: absolute;
+    z-index: 1;
+    inset-block-start: 14px;
+    inset-inline-end: 17px;
+    flex: 0 0 auto;
+  }
+  .admin-topbar-actions form:not([action="logout.php"]) {
+    flex: 0 1 calc(50% - 4px);
+    max-width: calc(50% - 4px);
+  }
+  .admin-topbar-actions form:not([action="logout.php"]) .button {
+    width: 100%;
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+  }
+  .admin-topbar-actions form[action="logout.php"] { flex: 0 0 auto; }
+  .admin-topbar-actions form[action="logout.php"] .button {
+    width: auto;
+    min-width: 92px;
+    min-height: 42px;
+    padding: 9px 20px;
+    font-size: 0.9rem;
+  }
   .panel,
   .admin-auth { padding: 18px; border-radius: 14px; }
   .form-grid { grid-template-columns: minmax(0, 1fr); }
   .editorial-scenario-grid { grid-template-columns: minmax(0, 1fr); }
   .editorial-list-grid { grid-template-columns: minmax(0, 1fr); }
-  .cms-tabs { gap: 4px; padding: 6px; }
-  .cms-tabs a { flex: 1 1 calc(50% - 4px); justify-content: center; padding: 6px; }
+  .cms-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 7px;
+  }
+  .cms-tabs a {
+    display: flex;
+    min-width: 0;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 6px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: var(--admin-surface-soft);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
   .cms-form-actions .button.danger { margin-left: 0; }
   .panel-heading { align-items: flex-start; flex-direction: column; }
+  .panel-heading h2 { font-size: 1.12rem; }
   .certificate-row-heading { flex-direction: column; }
-  .certificate-row-status { align-items: flex-start; }
-  .certificate-visibility-tags { align-items: flex-start; }
+  .certificate-row {
+    padding: 14px 12px;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgb(15 23 42 / 5%);
+    text-align: center;
+  }
+  .certificate-row-heading { align-items: stretch; width: 100%; }
+  .certificate-row-link {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 10px;
+    border: 1px solid var(--admin-border);
+    border-radius: 14px;
+    background: var(--admin-surface-soft);
+    text-align: center;
+  }
+  .certificate-row-link:hover {
+    border-color: color-mix(in srgb, var(--admin-primary) 50%, var(--admin-border));
+    background: var(--admin-primary-soft);
+  }
+  .certificate-row-info { display: grid; width: 100%; gap: 6px; }
+  .certificate-row-info > strong,
+  .certificate-row-info > small {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: var(--admin-surface);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  .certificate-row strong { line-height: 1.35; }
+  .certificate-row-info > strong { font-size: 0.86rem; }
+  .certificate-row small { margin-top: 0; line-height: 1.5; }
+  .certificate-row-status { align-items: center; width: 100%; }
+  .certificate-visibility-tags { align-items: center; }
+  .row-actions { display: grid; width: 100%; grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+  .row-actions form { width: 100%; }
+  .row-actions .button { width: 100%; min-height: 40px; white-space: normal; }
+  .row-actions .button.certificate-mark-removal { min-height: 30px; padding: 4px 12px; font-size: 0.72rem; }
+  .status-pill { justify-content: center; text-align: center; }
   .status-pill { white-space: normal; }
   .checkbox-row { align-items: stretch; flex-direction: column; }
 }

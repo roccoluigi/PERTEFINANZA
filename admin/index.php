@@ -306,7 +306,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-31">
+  <link rel="stylesheet" href="admin.css?v=20261010-49">
 </head>
 <body>
   <main class="admin-shell">
@@ -351,6 +351,11 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <?php foreach ($certificateRows as $row): $certificate = $row['certificate']; $isin = (string)$certificate['isin']; ?>
             <article class="certificate-row certificate-row-<?= h($row['status']) ?>">
               <div class="certificate-row-heading">
+                <?php if ($row['status'] !== 'removal'): ?>
+                  <a class="certificate-row-link" href="index.php?isin=<?= rawurlencode($isin) ?>">
+                <?php else: ?>
+                  <div class="certificate-row-link is-disabled" aria-disabled="true">
+                <?php endif; ?>
                 <div class="certificate-row-info">
                   <strong><?= h((string)$certificate['name']) ?></strong>
                   <small><?= h($isin) ?> · <?= h((string)$certificate['issuer']) ?> · <?= number_format((float)$certificate['annualYield'], 2, ',', '') ?>% annuo</small>
@@ -365,11 +370,13 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                     <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
                   </div>
                 </div>
+                <?php if ($row['status'] !== 'removal'): ?>
+                  </a>
+                <?php else: ?>
+                  </div>
+                <?php endif; ?>
               </div>
               <div class="row-actions">
-                <?php if ($row['status'] !== 'removal'): ?>
-                  <a href="index.php?isin=<?= rawurlencode($isin) ?>">Modifica</a>
-                <?php endif; ?>
                 <?php if (in_array($row['status'], ['new', 'modified'], true)): ?>
                   <form method="post" onsubmit="return confirm('Pubblicare solo questa scheda? Le altre modifiche resteranno in attesa.')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_one"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button" type="submit"><?= $row['status'] === 'new' ? 'Pubblica scheda' : 'Pubblica modifiche' ?></button></form>
                 <?php endif; ?>

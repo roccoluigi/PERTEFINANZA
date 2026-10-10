@@ -63,6 +63,15 @@ try {
         throw new RuntimeException('Archivio della sezione non valido.');
     }
     $items = cmsMigrateSectionItems($section, $items);
+    if (
+        !$isNew
+        && $editingId === ''
+        && in_array($section, ['contacts', 'transparency'], true)
+        && isset($items[0]['id'])
+        && is_string($items[0]['id'])
+    ) {
+        $editingId = $items[0]['id'];
+    }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         verifyCsrf($_POST['csrf'] ?? null);
@@ -199,7 +208,7 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestione contenuti | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-31">
+  <link rel="stylesheet" href="admin.css?v=20261010-49">
 </head>
 <body>
   <main class="admin-shell">
@@ -242,7 +251,7 @@ try {
           <?php endforeach; ?>
         </div>
       </section>
-      <section class="panel">
+      <section class="panel<?= !is_array($formItem) && !in_array($section, ['contacts', 'transparency'], true) ? ' cms-empty-editor-panel' : '' ?>">
         <?php if (is_array($formItem)): ?>
           <h2><?= $isNew ? 'Nuovo elemento' : 'Modifica elemento' ?></h2>
           <form method="post" class="cms-editor-form">
@@ -250,7 +259,7 @@ try {
             <input type="hidden" name="action" value="save_content_draft">
             <input type="hidden" name="old_id" value="<?= h($editingId) ?>">
             <?php if ($section === 'contacts'): ?>
-              <p class="cms-editor-help">Il modulo email e i suoi campi restano invariati. I recapiti aggiornano anche gli indirizzi email visibili nella pagina.</p>
+              <p class="cms-editor-help cms-mobile-guide">Il modulo email e i suoi campi restano invariati. I recapiti aggiornano anche gli indirizzi email visibili nella pagina.</p>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Introduzione della pagina<textarea name="description" required maxlength="1000"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>
               <?= cmsEditor('intro', 'Testo introduttivo del modulo', cmsFormValue($formItem, 'intro')) ?>
@@ -264,7 +273,7 @@ try {
               <label>Titolo dei dati del titolare<input name="ownerTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'ownerTitle')) ?>"></label>
               <?= cmsEditor('ownerDescription', 'Dati e descrizione del titolare', cmsFormValue($formItem, 'ownerDescription')) ?>
             <?php elseif ($section === 'transparency'): ?>
-              <p class="cms-editor-help">Questo testo compare nel footer di tutte le pagine del sito. Il titolo e il paragrafo vengono aggiornati insieme alla pubblicazione di tutte le modifiche.</p>
+              <p class="cms-editor-help cms-mobile-guide">Questo testo compare nel footer di tutte le pagine del sito. Il titolo e il paragrafo vengono aggiornati insieme alla pubblicazione di tutte le modifiche.</p>
               <label>Titolo della sezione<input name="title" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Testo informativo<textarea name="content" required maxlength="2000" rows="6"><?= h(cmsFormValue($formItem, 'content')) ?></textarea></label>
             <?php elseif ($section === 'disclaimer' && $editingId === 'page-header'): ?>
@@ -309,15 +318,19 @@ try {
             <form id="cms-delete-form" method="post" class="cms-hidden-form"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete_content_draft"><input type="hidden" name="id" value="<?= h($editingId) ?>"></form>
           <?php endif; ?>
         <?php else: ?>
-          <h2>Seleziona un elemento</h2>
-          <div class="cms-editor-help">
-            <p>Scegli un elemento dall’elenco o aggiungine uno nuovo. Il salvataggio crea una bozza; per pubblicare o annullare le modifiche usa i comandi globali nell’header.</p>
-            <p>Quando modifichi il testo, puoi usare i pulsanti di formattazione. I contenuti HTML vengono filtrati per rimuovere codice attivo non sicuro. Gli approfondimenti e i relativi collegamenti sono conservati ma non vengono mostrati nell’editor.</p>
-          </div>
+          <?php if (in_array($section, ['contacts', 'transparency'], true)): ?>
+            <h2>Elemento non disponibile</h2>
+            <p class="cms-editor-help">Ricarica la sezione o controlla che l’elemento esistente sia disponibile.</p>
+          <?php else: ?>
+            <h2 class="cms-mobile-guide-title">Seleziona un elemento</h2>
+            <div class="cms-editor-help cms-mobile-guide">
+              <p>Scegli un elemento dall’elenco o aggiungine uno nuovo. Il salvataggio crea una bozza; per pubblicare o annullare le modifiche usa i comandi globali nell’header.</p>
+              <p>Quando modifichi il testo, puoi usare i pulsanti di formattazione. I contenuti HTML vengono filtrati per rimuovere codice attivo non sicuro. Gli approfondimenti e i relativi collegamenti sono conservati ma non vengono mostrati nell’editor.</p>
+            </div>
+          <?php endif; ?>
         <?php endif; ?>
       </section>
     </div>
-    <p class="admin-footer">Controlla contenuti, rating e collegamenti prima della pubblicazione.</p>
   </main>
 </body>
 </html>
