@@ -444,8 +444,8 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 .certificate-row-info { min-width: 0; }
 .certificate-row strong { display: block; color: var(--admin-text); font-size: 0.96rem; }
 .certificate-row small { display: block; margin-top: 3px; color: var(--admin-muted); font-size: 0.79rem; }
-.certificate-row-status { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-end; gap: 3px; }
-.certificate-visibility-tags { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; margin-top: 0; }
+.certificate-row-status { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-end; gap: 5px; }
+.certificate-visibility-tags { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; margin-top: 0; }
 .status-visibility {
   border-color: var(--admin-border);
   background: var(--admin-surface-soft);
@@ -462,7 +462,7 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 .status-published { border-color: color-mix(in srgb, var(--admin-success) 35%, var(--admin-border)); background: var(--admin-success-soft); color: var(--admin-success); }
 .row-actions { flex-wrap: wrap; gap: 8px; margin-top: 2px; }
 .row-actions .button { min-height: 34px; padding: 6px 10px; font-size: 0.78rem; }
-.row-actions .certificate-mark-removal { min-height: 24px; padding: 2px 7px; font-size: 0.7rem; }
+.row-actions .certificate-mark-removal { min-height: 26px; padding: 3px 8px; font-size: 0.74rem; }
 .admin-footer { margin: 18px 4px 0; color: var(--admin-muted); font-size: 0.82rem; }
 
 .admin-auth {
@@ -654,7 +654,7 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   .row-actions { display: grid; width: 100%; grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
   .row-actions form { width: 100%; }
   .row-actions .button { width: 100%; min-height: 40px; white-space: normal; }
-  .row-actions .button.certificate-mark-removal { min-height: 30px; padding: 4px 12px; font-size: 0.72rem; }
+  .row-actions .button.certificate-mark-removal { min-height: 32px; padding: 5px 12px; font-size: 0.74rem; }
   .status-pill { justify-content: center; text-align: center; }
   .status-pill { white-space: normal; }
   .checkbox-row { align-items: stretch; flex-direction: column; }
