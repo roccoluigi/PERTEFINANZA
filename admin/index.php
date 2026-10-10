@@ -306,7 +306,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-50">
+  <link rel="stylesheet" href="admin.css?v=20261010-55">
 </head>
 <body>
   <main class="admin-shell">
@@ -476,7 +476,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
         </form>
       </section>
       <?php else: ?>
-      <section class="panel">
+      <section class="panel<?= !is_array($formCertificate) ? ' certificate-empty-editor-panel' : '' ?>">
         <h2>Seleziona un certificato</h2>
         <div class="editorial-help">
           <p>Scegli una scheda dall’elenco oppure seleziona <strong>+ Nuovo ISIN</strong>. La recensione, inclusi analisi, scenari, punti di forza e criticità, viene generata automaticamente dai dati del certificato. Il salvataggio crea una bozza: la pagina pubblica cambia solo dopo aver selezionato <strong>Pubblica modifiche</strong> o <strong>Pubblica tutte le modifiche</strong>.</p>
@@ -485,7 +485,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
       </section>
       <?php endif; ?>
     </div>
-    <p class="admin-footer">Dati finanziari e testi vanno verificati sulla documentazione ufficiale prima della pubblicazione.</p>
+    <p class="admin-footer certificate-publishing-guidance">Dati finanziari e testi vanno verificati sulla documentazione ufficiale prima della pubblicazione.</p>
   </main>
 </body>
 </html>

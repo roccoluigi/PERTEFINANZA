@@ -146,8 +146,16 @@ h1, h2, h3 { color: var(--admin-text); line-height: 1.2; }
   border-color: var(--admin-border);
   background: var(--admin-surface);
   color: var(--admin-muted);
+}
+.admin-topbar-actions .theme-toggle,
+.admin-auth-topbar .theme-toggle {
   font-size: 0.82rem;
   font-weight: 650;
+}
+.admin-topbar-actions .admin-password-link,
+.admin-topbar-actions form[action="logout.php"] .button.secondary {
+  font-size: 0.88rem;
+  font-weight: 750;
 }
 .admin-topbar-actions .theme-toggle:hover,
 .admin-auth-topbar .theme-toggle:hover,
@@ -375,6 +383,18 @@ hr { height: 1px; margin: 24px 0; border: 0; background: var(--admin-border); }
 .button.danger { border-color: var(--admin-danger); background: var(--admin-danger-soft); color: var(--admin-danger); }
 .button.danger:hover { background: var(--admin-danger); color: #fff; }
 .button:disabled { transform: none; border-color: var(--admin-border); background: var(--admin-surface-soft); box-shadow: none; color: var(--admin-muted); cursor: not-allowed; }
+.admin-topbar-actions form:not([action="logout.php"]) .button,
+.admin-topbar-actions .admin-password-link,
+.admin-topbar-actions form[action="logout.php"] .button.secondary {
+  color: var(--admin-muted);
+  font-family: inherit;
+  font-size: calc(0.88rem + 0.5pt);
+  font-weight: 750;
+  line-height: 1.25;
+}
+.admin-topbar-actions form:not([action="logout.php"]) .button:hover,
+.admin-topbar-actions .admin-password-link:hover,
+.admin-topbar-actions form[action="logout.php"] .button.secondary:hover { color: var(--admin-muted); }
 .button:focus-visible,
 .theme-toggle:focus-visible,
 a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, transparent); outline-offset: 2px; }
@@ -462,6 +482,8 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   .cms-mobile-guide,
   .cms-mobile-guide-title { display: none; }
   .cms-empty-editor-panel { display: none; }
+  .certificate-empty-editor-panel,
+  .certificate-publishing-guidance { display: none; }
   .admin-heading { align-items: stretch; flex-direction: column; gap: 13px; }
   .admin-heading-copy { text-align: center; }
   .admin-topbar-actions {
@@ -484,7 +506,8 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
     width: 100%;
     min-height: 36px;
     padding: 6px 8px;
-    font-size: 0.72rem;
+    font-size: calc(0.72rem + 0.5pt);
+    font-weight: 750;
     line-height: 1.25;
     text-align: center;
     white-space: normal;
@@ -495,12 +518,16 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
     min-width: 92px;
     min-height: 42px;
     padding: 9px 20px;
-    font-size: 0.9rem;
+    font-size: calc(0.72rem + 0.5pt);
+    font-weight: 750;
+    color: var(--admin-muted);
   }
   .admin-topbar-actions .admin-password-link {
     min-height: 42px;
     padding: 9px 12px;
-    font-size: 0.82rem;
+    font-size: calc(0.72rem + 0.5pt);
+    font-weight: 750;
+    color: var(--admin-muted);
   }
   .panel,
   .admin-auth { padding: 18px; border-radius: 14px; }
