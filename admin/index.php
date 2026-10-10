@@ -19,6 +19,10 @@ $contentSectionLabels = [
 ];
 $message = '';
 $error = '';
+$sitemapFeedback = '';
+$sitemapFeedbackType = '';
+$sitemapButtonLabel = '';
+$action = '';
 $certificates = [];
 $publishedCertificates = [];
 $overrides = [];
@@ -61,7 +65,14 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         verifyCsrf($_POST['csrf'] ?? null);
         $action = (string)($_POST['action'] ?? '');
-        if ($action === 'discard_all') {
+        if ($action === 'regenerate_sitemap') {
+            $result = regenerateSitemap();
+            $sitemapFeedback = $result['changed']
+                ? 'Sitemap rigenerata con ' . $result['count'] . ' recensioni pubblicate.'
+                : 'La sitemap è già aggiornata con ' . $result['count'] . ' recensioni pubblicate.';
+            $sitemapFeedbackType = 'success';
+            $sitemapButtonLabel = 'Sitemap aggiornata!';
+        } elseif ($action === 'discard_all') {
             if ($contentDrafts === [] && countPendingCertificateChanges($certificates, $publishedCertificates, $overrides, $publishedOverrides) === 0) {
                 $message = 'Non ci sono modifiche in attesa da annullare.';
             } else {
@@ -241,7 +252,13 @@ try {
         $error = 'Certificato non trovato.';
     }
 } catch (Throwable $exception) {
-    $error = $exception->getMessage();
+    if ($action === 'regenerate_sitemap') {
+        $sitemapFeedback = $exception->getMessage();
+        $sitemapFeedbackType = 'error';
+        $sitemapButtonLabel = 'Errore sitemap';
+    } else {
+        $error = $exception->getMessage();
+    }
 }
 
 try {
@@ -306,7 +323,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-55">
+  <link rel="stylesheet" href="admin.css?v=20261010-67">
 </head>
 <body>
   <main class="admin-shell">
@@ -322,9 +339,16 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
       <div class="admin-topbar-actions">
         <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="discard_all"><button class="button secondary" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Annullare tutte le modifiche non pubblicate di certificati e contenuti? Le nuove schede verranno eliminate, le modifiche scartate e le rimozioni annullate.')">Annulla tutte le modifiche</button></form>
         <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_all"><button class="button cms-publish-all" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Pubblicare tutte le modifiche in attesa di certificati e di tutte le sezioni editoriali?')">Pubblica tutte le modifiche</button></form>
-        <a class="button secondary admin-password-link" href="password.php">Cambia password</a>
-        <button class="theme-toggle" type="button" aria-label="Attiva tema notte" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg><span class="theme-toggle-label">Notte</span></button>
-        <form method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><button class="button secondary" type="submit">Esci</button></form>
+        <form class="admin-sitemap-form" method="post" action="index.php">
+          <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>">
+          <input type="hidden" name="action" value="regenerate_sitemap">
+          <button class="button secondary admin-sitemap-button<?= $sitemapFeedbackType !== '' ? ' is-' . h($sitemapFeedbackType) : '' ?>" type="submit"<?= $sitemapFeedback !== '' ? ' title="' . h($sitemapFeedback) . '"' : '' ?> onclick="return confirm('Rigenerare sitemap.xml usando solo i certificati già pubblicati?')"><span<?= $sitemapFeedback !== '' ? ' role="status" aria-live="polite"' : '' ?>><?= h($sitemapButtonLabel !== '' ? $sitemapButtonLabel : 'Rigenera sitemap') ?></span></button>
+        </form>
+        <div class="admin-mobile-secondary-actions">
+          <a class="button secondary admin-password-link" href="password.php">Cambia password</a>
+          <button class="theme-toggle" type="button" aria-label="Attiva tema notte" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg><span class="theme-toggle-label">Notte</span></button>
+          <form method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><button class="button secondary" type="submit">Esci</button></form>
+        </div>
       </div>
     </header>
     <nav class="cms-tabs" aria-label="Sezioni del pannello">

@@ -490,6 +490,76 @@ function updateReviewPicker(string $html, array $certificates, string $selectedI
     return (string)preg_replace_callback($pattern, static fn($match) => $match[1] . $options . $match[2], $html, 1);
 }
 
+function publicSitemapBaseUrl(string $siteUrl): string
+{
+    $parts = parse_url(trim($siteUrl));
+    if (!is_array($parts) || strtolower((string)($parts['scheme'] ?? '')) !== 'https'
+        || empty($parts['host']) || isset($parts['user']) || isset($parts['pass'])
+        || isset($parts['query']) || isset($parts['fragment'])
+        || !in_array($parts['path'] ?? '', ['', '/'], true)
+        || (isset($parts['port']) && $parts['port'] !== 443)) {
+        throw new RuntimeException('Per rigenerare la sitemap, imposta site_url in config.php su un indirizzo HTTPS pubblico, ad esempio https://pertefinanza.it.');
+    }
+
+    $host = strtolower(rtrim((string)$parts['host'], '.'));
+    $ip = filter_var($host, FILTER_VALIDATE_IP);
+    if ($ip !== false) {
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            throw new RuntimeException('site_url non può puntare a localhost o a un indirizzo IP privato.');
+        }
+    } elseif (!str_contains($host, '.') || preg_match('/(?:^|\.)(?:localhost|local|test|invalid|example)$/i', $host)
+        || filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === false) {
+        throw new RuntimeException('site_url deve indicare un dominio pubblico valido, non localhost o un host di test.');
+    }
+
+    return 'https://' . $host;
+}
+
+function buildReviewSitemap(array $isins, string $siteUrl): string
+{
+    $sitemap = readProjectFile('sitemap.xml');
+    $sitemap = str_replace(["\r\n", "\r"], "\n", $sitemap);
+    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/recensione-[A-Z0-9]{12}\.html<\/loc>\s*<\/url>/i', '', $sitemap);
+    if (!is_string($sitemap)) throw new RuntimeException('Impossibile aggiornare gli URL delle recensioni nella sitemap.');
+
+    $reviewUrls = '';
+    foreach ($isins as $isin) {
+        if (!is_string($isin) || !validIsin($isin)) throw new RuntimeException('ISIN non valido nell’archivio pubblicato.');
+        $reviewUrls .= "  <url>\n    <loc>" . $siteUrl . '/recensioni/recensione-' . $isin . ".html</loc>\n  </url>\n";
+    }
+    $sitemap = preg_replace('/<\/urlset>\s*$/', $reviewUrls . '</urlset>' . "\n", $sitemap, 1, $sitemapCount);
+    if (!is_string($sitemap) || $sitemapCount !== 1) throw new RuntimeException('Formato sitemap non valido.');
+    return $sitemap;
+}
+
+function regenerateSitemap(): array
+{
+    $config = adminConfig();
+    $siteUrl = publicSitemapBaseUrl((string)$config['site_url']);
+    $publishedCertificates = loadPublishedCertificates();
+    $isins = array_map(static fn($certificate) => (string)$certificate['isin'], $publishedCertificates);
+    if (count(array_unique($isins)) !== count($isins)) throw new RuntimeException('ISIN duplicati nei dati pubblicati.');
+    sort($isins, SORT_STRING);
+
+    $targetPath = projectPath('sitemap.xml');
+    $previous = readProjectFile('sitemap.xml');
+    $updated = buildReviewSitemap($isins, $siteUrl);
+    if ($updated === $previous) return ['count' => count($isins), 'changed' => false];
+
+    $backupDir = storagePath('backups') . DIRECTORY_SEPARATOR . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
+    if (!mkdir($backupDir, 0750, true) && !is_dir($backupDir)) throw new RuntimeException('Impossibile creare il backup della sitemap.');
+    if (file_put_contents($backupDir . DIRECTORY_SEPARATOR . 'sitemap.xml', $previous, LOCK_EX) === false) {
+        throw new RuntimeException('Impossibile salvare il backup della sitemap.');
+    }
+
+    $temporary = $targetPath . '.' . bin2hex(random_bytes(5)) . '.tmp';
+    if (file_put_contents($temporary, $updated, LOCK_EX) === false || !rename($temporary, $targetPath)) {
+        if (is_file($temporary)) unlink($temporary);
+        throw new RuntimeException('Impossibile aggiornare sitemap.xml.');
+    }
+    return ['count' => count($isins), 'changed' => true];
+}
+
 function publishSite(?string $onlyIsin = null): array
 {
     $config = adminConfig();
@@ -608,13 +678,7 @@ function publishSite(?string $onlyIsin = null): array
     if ($markerCount !== 1) throw new RuntimeException('Marcatori delle schede statiche non trovati in index.html.');
     $files['index.html'] = (string)$indexUpdated;
 
-    $sitemap = readProjectFile('sitemap.xml');
-    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/recensione-[A-Z0-9]{12}\.html<\/loc>\s*<\/url>/i', '', $sitemap);
-    $reviewUrls = '';
-    foreach ($isins as $isin) $reviewUrls .= "  <url>\n    <loc>" . rtrim((string)$config['site_url'], '/') . '/recensioni/recensione-' . $isin . ".html</loc>\n  </url>\n";
-    $sitemap = preg_replace('/<\/urlset>\s*$/', $reviewUrls . '</urlset>' . PHP_EOL, (string)$sitemap, 1, $sitemapCount);
-    if ($sitemapCount !== 1) throw new RuntimeException('Formato sitemap non valido.');
-    $files['sitemap.xml'] = (string)$sitemap;
+    $files['sitemap.xml'] = buildReviewSitemap($isins, rtrim((string)$config['site_url'], '/'));
 
     foreach ($existingPages as $path) {
         $name = basename($path);

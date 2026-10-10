@@ -135,6 +135,7 @@ h1, h2, h3 { color: var(--admin-text); line-height: 1.2; }
 .admin-actions,
 .row-actions { display: flex; align-items: center; gap: 10px; }
 .admin-topbar-actions { flex-wrap: wrap; justify-content: flex-end; }
+.admin-mobile-secondary-actions { display: contents; }
 .admin-topbar-actions form,
 .row-actions form { margin: 0; }
 .admin-topbar-actions .theme-toggle,
@@ -395,6 +396,18 @@ hr { height: 1px; margin: 24px 0; border: 0; background: var(--admin-border); }
 .admin-topbar-actions form:not([action="logout.php"]) .button:hover,
 .admin-topbar-actions .admin-password-link:hover,
 .admin-topbar-actions form[action="logout.php"] .button.secondary:hover { color: var(--admin-muted); }
+.admin-topbar-actions .admin-sitemap-form .admin-sitemap-button.is-success,
+.admin-topbar-actions .admin-sitemap-form .admin-sitemap-button.is-success:hover {
+  border-color: color-mix(in srgb, var(--admin-success) 45%, var(--admin-border));
+  background: var(--admin-success-soft);
+  color: var(--admin-success);
+}
+.admin-topbar-actions .admin-sitemap-form .admin-sitemap-button.is-error,
+.admin-topbar-actions .admin-sitemap-form .admin-sitemap-button.is-error:hover {
+  border-color: color-mix(in srgb, var(--admin-danger) 45%, var(--admin-border));
+  background: var(--admin-danger-soft);
+  color: var(--admin-danger);
+}
 .button:focus-visible,
 .theme-toggle:focus-visible,
 a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, transparent); outline-offset: 2px; }
@@ -475,6 +488,27 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   .admin-topbar-actions { justify-content: flex-start; }
 }
 
+@media (min-width: 1101px) {
+  .admin-topbar { gap: 14px; }
+  .admin-heading { flex: 0 0 auto; }
+  .admin-topbar-actions { flex-wrap: nowrap; gap: 6px; }
+  .admin-topbar-actions > form:not([action="logout.php"]) { flex: 0 1 auto; }
+  .admin-topbar-actions form:not([action="logout.php"]) .button,
+  .admin-topbar-actions .admin-password-link,
+  .admin-topbar-actions form[action="logout.php"] .button.secondary {
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: calc(0.78rem + 0.5pt);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .admin-topbar-actions .theme-toggle { min-height: 36px; gap: 5px; margin-top: 0; padding: 6px 8px; font-size: 0.78rem; }
+}
+
+@media (min-width: 561px) {
+  .admin-topbar-actions .theme-toggle { margin-top: 0; }
+}
+
 @media (max-width: 560px) {
   .admin-shell { width: min(100% - 22px, 1180px); margin: 11px auto 24px; }
   .admin-topbar { gap: 18px; padding: 14px; border-radius: 14px; }
@@ -487,7 +521,9 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   .admin-heading { align-items: stretch; flex-direction: column; gap: 13px; }
   .admin-heading-copy { text-align: center; }
   .admin-topbar-actions {
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
     width: 100%;
     gap: 8px;
   }
@@ -499,8 +535,8 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
     flex: 0 0 auto;
   }
   .admin-topbar-actions form:not([action="logout.php"]) {
-    flex: 0 1 calc(50% - 4px);
-    max-width: calc(50% - 4px);
+    width: 100%;
+    max-width: none;
   }
   .admin-topbar-actions form:not([action="logout.php"]) .button {
     width: 100%;
@@ -512,7 +548,16 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
     text-align: center;
     white-space: normal;
   }
-  .admin-topbar-actions form[action="logout.php"] { flex: 0 0 auto; }
+  .admin-topbar-actions .admin-sitemap-form { grid-column: 1 / -1; }
+  .admin-topbar-actions .admin-sitemap-form .button { width: 100%; }
+  .admin-topbar-actions .admin-mobile-secondary-actions {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: center;
+    justify-self: start;
+    gap: 8px;
+    width: 100%;
+  }
   .admin-topbar-actions form[action="logout.php"] .button {
     width: auto;
     min-width: 92px;
@@ -528,6 +573,13 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
     font-size: calc(0.72rem + 0.5pt);
     font-weight: 750;
     color: var(--admin-muted);
+  }
+  .admin-topbar-actions .admin-password-link,
+  .admin-topbar-actions form[action="logout.php"] .button {
+    height: 36px;
+    min-height: 36px;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
   .panel,
   .admin-auth { padding: 18px; border-radius: 14px; }

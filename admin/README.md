@@ -5,7 +5,7 @@ Dashboard autonoma in PHP 8.1+ per creare e modificare certificati, salvare bozz
 ## Installazione su Aruba
 
 1. Carica la cartella `admin/` nella stessa document root del sito, mantenendo accanto le cartelle e i file del sito (`js/`, `css/`, `recensione.html`, `index.html`, `sitemap.xml` e `recensioni/`).
-2. Copia `admin/config.example.php` in `admin/config.php` e sostituisci `setup_token` con un valore casuale personale di almeno 32 caratteri. Non caricare né condividere `config.php`.
+2. Copia `admin/config.example.php` in `admin/config.php`, imposta `site_url` sull’indirizzo HTTPS pubblico del sito e sostituisci `setup_token` con un valore casuale personale di almeno 32 caratteri. Non caricare né condividere `config.php`; configura sul server il suo valore `site_url` separatamente.
 3. Per mantenere i dati fuori dalla document root, imposta `storage_dir` in `config.php` su una cartella privata scrivibile accessibile a PHP e copia in tale cartella `certificates.json`, `review-overrides.json` e `published-review-overrides.json` dalla cartella `admin/private/`. Se non puoi usare una cartella esterna, lascia lo storage predefinito e conserva `admin/private/.htaccess`.
 4. Verifica che PHP possa scrivere nello storage, in `js/data-certificates.js`, `index.html`, `sitemap.xml` e nella cartella `recensioni/`.
 5. Apri `/admin/setup.php`, inserisci il token di installazione e crea username e password. La password deve essere lunga almeno 14 caratteri.
@@ -35,6 +35,7 @@ I badge accanto alle voci del menu indicano quanti elementi risultano modificati
 - **Segna per rimozione** conserva la pagina online finché non scegli **Rimuovi dal sito**; puoi annullare la rimozione prima di confermarla.
 - **Pubblica tutte le modifiche** nell’header applica tutte le nuove schede, le modifiche e le rimozioni in attesa, oltre alle bozze di tutte le sezioni editoriali.
 - Ogni pubblicazione sincronizza dati JavaScript, pagine statiche, schede in home, manifest e sitemap, e crea un backup dei file sostituiti.
+- Il pulsante **Rigenera sitemap** nella sezione Certificati aggiorna solo `sitemap.xml`, usando esclusivamente le schede già pubblicate e creando un backup. Richiede `site_url` configurato con il dominio pubblico HTTPS.
 - Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito pubblico e vale anche nelle altre pagine PERTEFINANZA aperte nello stesso browser.
 - **Cambia password** nell’header richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministratore vengono disconnesse.
 
