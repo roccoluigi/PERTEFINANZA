@@ -172,7 +172,7 @@ function initSidebarFeatured() {
     });
   }
 
-  const topPicks = CERTIFICATES_DATA.filter(c => c.showTopPick).slice(0, 2);
+  const topPicks = CERTIFICATES_DATA.filter(c => c.showTopPick);
   let html = '';
 
   topPicks.forEach(c => {

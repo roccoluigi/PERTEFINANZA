@@ -14,6 +14,7 @@ $sections = [
     'faq' => ['title' => 'FAQ'],
     'glossary' => ['title' => 'Glossario'],
     'contacts' => ['title' => 'Contatti & Info'],
+    'transparency' => ['title' => 'Trasparenza & Rischi'],
     'disclaimer' => ['title' => 'Disclaimer e Note Legali'],
 ];
 $section = (string)($_GET['section'] ?? 'issuers');
@@ -34,7 +35,7 @@ function cmsEditor(string $name, string $label, string $html): string
 {
     $html = cmsSafeHtml($html);
     $safeName = h($name);
-    return '<div class="cms-rich-field"><span class="cms-field-label">' . h($label) . '</span>'
+    return '<div class="cms-rich-field" data-cms-field="' . $safeName . '"><span class="cms-field-label">' . h($label) . '</span>'
         . '<div class="rich-text-editor" data-rich-editor><div class="rich-text-toolbar" role="toolbar" aria-label="Formattazione">'
         . '<button type="button" data-rich-command="bold" aria-label="Grassetto" title="Grassetto"><strong>B</strong></button>'
         . '<button type="button" data-rich-command="italic" aria-label="Corsivo" title="Corsivo"><em>I</em></button>'
@@ -82,7 +83,7 @@ try {
                     throw new InvalidArgumentException('Il contenuto da modificare non è stato trovato.');
                 }
             }
-            if (in_array($section, ['contacts', 'disclaimer'], true) && $existing === null) {
+            if (in_array($section, ['contacts', 'transparency', 'disclaimer'], true) && $existing === null) {
                 throw new InvalidArgumentException('Gli elementi di questa pagina non possono essere aggiunti.');
             }
             $updated = cmsNormalizeForm($section, $_POST, $items, $existing);
@@ -90,7 +91,7 @@ try {
                 if (($item['id'] ?? '') !== $oldId && ($item['id'] ?? '') === $updated['id']) {
                     throw new InvalidArgumentException('Esiste già un elemento con questo identificativo.');
                 }
-                $uniqueField = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'disclaimer' => 'title'][$section];
+                $uniqueField = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'transparency' => 'title', 'disclaimer' => 'title'][$section];
                 if (($item['id'] ?? '') !== $oldId && cmsComparable((string)($item[$uniqueField] ?? '')) === cmsComparable((string)$updated[$uniqueField])) {
                     throw new InvalidArgumentException('Esiste già un elemento con lo stesso nome o titolo.');
                 }
@@ -106,7 +107,7 @@ try {
             exit;
         }
         if ($action === 'delete_content_draft') {
-            if (in_array($section, ['contacts', 'disclaimer'], true)) {
+            if (in_array($section, ['contacts', 'transparency', 'disclaimer'], true)) {
                 throw new InvalidArgumentException('Gli elementi di questa pagina non possono essere eliminati.');
             }
             $deleteId = trim((string)($_POST['id'] ?? ''));
@@ -145,7 +146,7 @@ try {
             'training' => ['topic' => '', 'title' => '', 'moduleLevel' => 'Livello Base', 'sectionTitle' => 'Nuovo livello', 'content' => ''],
             'faq' => ['category' => '', 'question' => '', 'answer' => '<p></p>'],
             'glossary' => ['term' => '', 'category' => '', 'definition' => '<p></p>', 'example' => '', 'related' => ''],
-            'contacts', 'disclaimer' => throw new InvalidArgumentException('Gli elementi di questa pagina non possono essere aggiunti.'),
+            'contacts', 'transparency', 'disclaimer' => throw new InvalidArgumentException('Gli elementi di questa pagina non possono essere aggiunti.'),
         };
     }
 } catch (Throwable $exception) {
@@ -163,10 +164,10 @@ try {
 if (!isset($sections[$section])) {
     $section = 'issuers';
 }
-$labels = ['issuers' => 'Emittenti', 'training' => 'Formazione', 'faq' => 'FAQ', 'glossary' => 'Glossario', 'contacts' => 'Contatti & Info', 'disclaimer' => 'Disclaimer e Note Legali'];
-$itemLabelKey = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'disclaimer' => 'title'][$section] ?? 'name';
+$labels = ['issuers' => 'Emittenti', 'training' => 'Formazione', 'faq' => 'FAQ', 'glossary' => 'Glossario', 'contacts' => 'Contatti & Info', 'transparency' => 'Trasparenza & Rischi', 'disclaimer' => 'Disclaimer e Note Legali'];
+$itemLabelKey = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'transparency' => 'title', 'disclaimer' => 'title'][$section] ?? 'name';
 $hasDraft = isset($drafts[$section]);
-$fixedContentSection = in_array($section, ['contacts', 'disclaimer'], true);
+$fixedContentSection = in_array($section, ['contacts', 'transparency', 'disclaimer'], true);
 $sectionPendingCounts = array_fill_keys(array_keys($labels), 0);
 $certPendingCount = 0;
 $globalPendingCount = 0;
@@ -198,7 +199,7 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestione contenuti | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-18">
+  <link rel="stylesheet" href="admin.css?v=20261010-31">
 </head>
 <body>
   <main class="admin-shell">
@@ -262,6 +263,10 @@ try {
               <label>Indirizzo email<input type="email" name="email" required maxlength="254" value="<?= h(cmsFormValue($formItem, 'email')) ?>"></label>
               <label>Titolo dei dati del titolare<input name="ownerTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'ownerTitle')) ?>"></label>
               <?= cmsEditor('ownerDescription', 'Dati e descrizione del titolare', cmsFormValue($formItem, 'ownerDescription')) ?>
+            <?php elseif ($section === 'transparency'): ?>
+              <p class="cms-editor-help">Questo testo compare nel footer di tutte le pagine del sito. Il titolo e il paragrafo vengono aggiornati insieme alla pubblicazione di tutte le modifiche.</p>
+              <label>Titolo della sezione<input name="title" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
+              <label>Testo informativo<textarea name="content" required maxlength="2000" rows="6"><?= h(cmsFormValue($formItem, 'content')) ?></textarea></label>
             <?php elseif ($section === 'disclaimer' && $editingId === 'page-header'): ?>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Introduzione<textarea name="description" required maxlength="1200"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>

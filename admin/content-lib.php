@@ -10,6 +10,7 @@ function cmsSectionConfig(string $section): array
         'faq' => ['page' => 'faq.html', 'start' => '<!-- STATIC-FAQ:START -->', 'end' => '<!-- STATIC-FAQ:END -->'],
         'glossary' => ['page' => 'glossario.html', 'start' => '<!-- STATIC-GLOSSARY:START -->', 'end' => '<!-- STATIC-GLOSSARY:END -->'],
         'contacts' => ['page' => 'contatti.html'],
+        'transparency' => ['page' => 'index.html'],
         'disclaimer' => ['page' => 'disclaimer.html'],
     ];
     if (!isset($sections[$section])) {
@@ -161,6 +162,19 @@ function cmsReadSection(string $section): array
             'email' => cmsText($emailNode),
             'ownerTitle' => cmsText(cmsFindClass($columns[2], 'h3', 'contact-details-title')),
             'ownerDescription' => cmsInnerHtml($ownerText),
+        ]];
+    }
+    if ($section === 'transparency') {
+        $footer = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-TRANSPARENCY:START -->', '<!-- CMS-TRANSPARENCY:END -->'));
+        $title = cmsFindClass($footer, 'h4', 'footer-heading');
+        $content = cmsFindClass($footer, 'p', 'footer-disclaimer-text');
+        if (!$title || !$content) {
+            throw new RuntimeException('Contenuto Trasparenza & Rischi non riconosciuto.');
+        }
+        return [[
+            'id' => 'transparency',
+            'title' => cmsText($title),
+            'content' => cmsText($content),
         ]];
     }
     if ($section === 'disclaimer') {
@@ -505,6 +519,17 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
         throw new InvalidArgumentException('Identificativo interno non valido.');
     }
 
+    if ($section === 'transparency') {
+        if ($existing === null || ($existing['id'] ?? '') !== 'transparency') {
+            throw new InvalidArgumentException('La sezione Trasparenza & Rischi non può essere aggiunta o rimossa.');
+        }
+        return [
+            'id' => 'transparency',
+            'title' => cmsTextField($input['title'] ?? '', 'titolo Trasparenza & Rischi', 120),
+            'content' => cmsTextField($input['content'] ?? '', 'testo Trasparenza & Rischi', 2000),
+        ];
+    }
+
     if ($section === 'contacts') {
         $telegramUrl = trim(cmsInputString($input['telegramUrl'] ?? '', 'URL Telegram'));
         if (!filter_var($telegramUrl, FILTER_VALIDATE_URL) || strtolower((string)parse_url($telegramUrl, PHP_URL_SCHEME)) !== 'https' || strtolower((string)parse_url($telegramUrl, PHP_URL_HOST)) !== 't.me') {
@@ -714,9 +739,102 @@ function cmsReplaceMarked(string $html, string $start, string $end, string $repl
     return (string)$updated;
 }
 
+function cmsTransparencyPagePaths(): array
+{
+    $pages = [
+        'index.html',
+        'certificati.html',
+        'emittenti.html',
+        'formazione.html',
+        'faq.html',
+        'glossario.html',
+        'contatti.html',
+        'disclaimer.html',
+        'recensione.html',
+    ];
+    $reviewPages = glob(projectPath('recensioni/recensione-*.html'));
+    if ($reviewPages === false) {
+        throw new RuntimeException('Impossibile individuare le schede recensione da aggiornare.');
+    }
+    foreach ($reviewPages as $reviewPage) {
+        $pages[] = 'recensioni/' . basename($reviewPage);
+    }
+    return $pages;
+}
+
+function cmsPublishTransparency(array $item): string
+{
+    $item = cmsNormalizeForm('transparency', $item, [$item], $item);
+    $replacement = '<h4 class="footer-heading">' . h((string)$item['title']) . '</h4>'
+        . "\n" . '<p class="footer-disclaimer-text">' . h((string)$item['content']) . '</p>';
+    $prepared = [];
+    foreach (cmsTransparencyPagePaths() as $relative) {
+        $original = readProjectFile($relative);
+        $updated = cmsReplaceMarked(
+            $original,
+            '<!-- CMS-TRANSPARENCY:START -->',
+            '<!-- CMS-TRANSPARENCY:END -->',
+            $replacement
+        );
+        $prepared[$relative] = ['original' => $original, 'updated' => $updated];
+    }
+
+    $backupDirectory = storagePath('backups') . DIRECTORY_SEPARATOR . 'content-' . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
+    if (!mkdir($backupDirectory, 0750, true) && !is_dir($backupDirectory)) {
+        throw new RuntimeException('Impossibile creare il backup della sezione Trasparenza & Rischi.');
+    }
+    foreach ($prepared as $relative => $file) {
+        $backupPath = $backupDirectory . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relative);
+        if (!is_dir(dirname($backupPath)) && !mkdir(dirname($backupPath), 0750, true) && !is_dir(dirname($backupPath))) {
+            throw new RuntimeException('Impossibile creare il backup di ' . $relative . '.');
+        }
+        if (file_put_contents($backupPath, $file['original'], LOCK_EX) === false) {
+            throw new RuntimeException('Impossibile salvare il backup di ' . $relative . '.');
+        }
+    }
+
+    $published = [];
+    try {
+        foreach ($prepared as $relative => $file) {
+            $path = projectPath($relative);
+            $temporary = $path . '.' . bin2hex(random_bytes(5)) . '.tmp';
+            if (file_put_contents($temporary, $file['updated'], LOCK_EX) === false || !rename($temporary, $path)) {
+                if (is_file($temporary)) {
+                    unlink($temporary);
+                }
+                throw new RuntimeException('Impossibile pubblicare ' . $relative . '.');
+            }
+            $published[] = $relative;
+        }
+    } catch (Throwable $error) {
+        $restoreErrors = [];
+        foreach (array_reverse($published) as $relative) {
+            $path = projectPath($relative);
+            $temporary = $path . '.' . bin2hex(random_bytes(5)) . '.restore';
+            if (file_put_contents($temporary, $prepared[$relative]['original'], LOCK_EX) === false || !rename($temporary, $path)) {
+                if (is_file($temporary)) {
+                    unlink($temporary);
+                }
+                $restoreErrors[] = $relative;
+            }
+        }
+        if ($restoreErrors !== []) {
+            throw new RuntimeException('Pubblicazione incompleta; ripristino non riuscito per: ' . implode(', ', $restoreErrors) . '.', 0, $error);
+        }
+        throw new RuntimeException('Pubblicazione annullata; tutte le pagine sono state ripristinate. ' . $error->getMessage(), 0, $error);
+    }
+    return $backupDirectory;
+}
+
 function cmsPublishSection(string $section, array $items): string
 {
     $config = cmsSectionConfig($section);
+    if ($section === 'transparency') {
+        if (count($items) !== 1) {
+            throw new InvalidArgumentException('La sezione Trasparenza & Rischi non può essere aggiunta o rimossa.');
+        }
+        return cmsPublishTransparency($items[0]);
+    }
     $originalHtml = readProjectFile($config['page']);
     $html = $originalHtml;
     if ($section === 'issuers' && $items === []) {

@@ -14,18 +14,20 @@ Dashboard autonoma in PHP 8.1+ per creare e modificare certificati, salvare bozz
 
 ## Gestione contenuti
 
-Dal pannello certificati apri **Gestione contenuti** per modificare emittenti e rating, capitoli di formazione, FAQ, termini del glossario, Contatti & Info e Disclaimer e Note Legali. Le prime quattro sezioni consentono di aggiungere, modificare o rimuovere elementi; i testi formattati mantengono paragrafi e collegamenti consentiti. Gli approfondimenti non compaiono nei campi di modifica di Formazione, FAQ e Glossario: vengono conservati automaticamente e restano nelle pagine pubblicate.
+Dal pannello certificati apri **Gestione contenuti** per modificare emittenti e rating, capitoli di formazione, FAQ, termini del glossario, Contatti & Info, Trasparenza & Rischi e Disclaimer e Note Legali. Le prime quattro sezioni consentono di aggiungere, modificare o rimuovere elementi; i testi formattati mantengono paragrafi e collegamenti consentiti. Gli approfondimenti non compaiono nei campi di modifica di Formazione, FAQ e Glossario: vengono conservati automaticamente e restano nelle pagine pubblicate.
 
-Contatti & Info consente di modificare testi e recapiti, senza esporre o sostituire i campi e il comportamento del modulo email. Disclaimer e Note Legali consente di modificare titoli, testi e data di aggiornamento; le sezioni legali non possono essere aggiunte, rimosse o riordinate, così restano validi gli ancoraggi usati dai collegamenti del sito.
+Contatti & Info consente di modificare testi e recapiti, senza esporre o sostituire i campi e il comportamento del modulo email. Trasparenza & Rischi modifica il titolo e il testo mostrati nel footer di tutte le pagine del sito. Disclaimer e Note Legali consente di modificare titoli, testi e data di aggiornamento; le sezioni legali non possono essere aggiunte, rimosse o riordinate, così restano validi gli ancoraggi usati dai collegamenti del sito.
 
 I badge accanto alle voci del menu indicano quanti elementi risultano modificati, aggiunti o rimossi rispetto alla versione pubblicata. **Pubblica tutte le modifiche** resta disattivato quando non ci sono differenze in attesa.
 
-**Salva bozza** conserva le modifiche nell’archivio privato senza cambiare la pagina pubblica. I comandi globali nell’header pubblicano o annullano le modifiche di tutte le sezioni CMS e dei certificati insieme; non ci sono comandi di pubblicazione o annullamento per la singola sezione. Ogni pubblicazione crea una copia di backup della pagina HTML sostituita. Prima di eliminare elementi, verifica i collegamenti interni che li citano.
+**Salva bozza** conserva le modifiche nell’archivio privato senza cambiare la pagina pubblica. I comandi globali nell’header pubblicano o annullano le modifiche di tutte le sezioni CMS e dei certificati insieme; non ci sono comandi di pubblicazione o annullamento per la singola sezione. Ogni pubblicazione crea una copia di backup delle pagine HTML sostituite. Prima di eliminare elementi, verifica i collegamenti interni che li citano.
 
 ## Uso
 
 - **Nuovo ISIN** crea una bozza dopo la validazione del formato e della cifra di controllo ISIN.
 - **Modifica** consente di aggiornare dati del prodotto, sottostanti e visibilità in home. Mostra inoltre tutto il testo della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità.
+- I contatori accanto a **In home** e **Top Picks** mostrano quante schede sono selezionate per ciascuna area. Non c’è un limite massimo: vengono mostrate tutte le schede selezionate.
+- Ogni scheda nell’elenco indica se è inclusa in **Home** e/o in **Top Picks**.
 - Il testo principale può essere formattato selezionando le parole e usando i pulsanti grassetto, corsivo e sottolineato; non occorre scrivere marcatori o HTML. Punti di forza e criticità sono modificabili punto per punto, aggiungendo o rimuovendo singole voci.
 - I dati finanziari si modificano nei relativi campi: cambiare il testo non aggiorna i dati e occorre verificare la coerenza delle percentuali e delle condizioni riportate nella matrice.
 - **Salva bozza** non modifica il sito pubblico. Per una scheda nuova o modificata, usa **Pubblica scheda** o **Pubblica modifiche** nella sua riga: le altre bozze restano in attesa.

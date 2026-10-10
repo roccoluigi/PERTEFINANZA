@@ -14,6 +14,7 @@ $contentSectionLabels = [
     'faq' => 'FAQ',
     'glossary' => 'Glossario',
     'contacts' => 'Contatti & Info',
+    'transparency' => 'Trasparenza & Rischi',
     'disclaimer' => 'Disclaimer e Note Legali',
 ];
 $message = '';
@@ -294,6 +295,9 @@ function inputValue(array $certificate, string $key): string
     if (is_array($value)) return implode("\n", array_map('strval', $value));
     return (string)$value;
 }
+
+$homeCertificateCount = count(array_filter($certificates, static fn($certificate) => !empty($certificate['showHome'])));
+$topPickCertificateCount = count(array_filter($certificates, static fn($certificate) => !empty($certificate['showTopPick'])));
 ?>
 <!doctype html>
 <html lang="it">
@@ -302,7 +306,7 @@ function inputValue(array $certificate, string $key): string
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-18">
+  <link rel="stylesheet" href="admin.css?v=20261010-31">
 </head>
 <body>
   <main class="admin-shell">
@@ -317,7 +321,7 @@ function inputValue(array $certificate, string $key): string
       </div>
       <div class="admin-topbar-actions">
         <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="discard_all"><button class="button secondary" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Annullare tutte le modifiche non pubblicate di certificati e contenuti? Le nuove schede verranno eliminate, le modifiche scartate e le rimozioni annullate.')">Annulla tutte le modifiche</button></form>
-        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_all"><button class="button" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Pubblicare tutte le modifiche in attesa di certificati e di tutte le sezioni editoriali?')">Pubblica tutte le modifiche</button></form>
+        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_all"><button class="button cms-publish-all" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Pubblicare tutte le modifiche in attesa di certificati e di tutte le sezioni editoriali?')">Pubblica tutte le modifiche</button></form>
         <button class="theme-toggle" type="button" aria-label="Attiva tema notte" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.9 13A8.5 8.5 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg><span class="theme-toggle-label">Notte</span></button>
         <form method="post" action="logout.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><button class="button secondary" type="submit">Esci</button></form>
       </div>
@@ -332,18 +336,36 @@ function inputValue(array $certificate, string $key): string
     <?php if ($error !== ''): ?><p class="notice error"><?= h($error) ?></p><?php endif; ?>
     <div class="admin-grid">
       <section class="panel">
-        <div class="panel-heading"><div><h2>Certificati</h2><span class="panel-heading-count"><?= count($certificateRows) ?> schede · <?= $pendingCount ?> modifiche in attesa</span></div><a class="button secondary" href="index.php?new=1">+ Nuovo ISIN</a></div>
+        <div class="panel-heading">
+          <div>
+            <h2>Certificati</h2>
+            <span class="panel-heading-count"><?= count($certificateRows) ?> schede · <?= $pendingCount ?> modifiche in attesa</span>
+            <div class="certificate-visibility-counts" aria-label="Certificati per sezione">
+              <span class="certificate-visibility-count"><span>In home</span><strong><?= $homeCertificateCount ?></strong></span>
+              <span class="certificate-visibility-count"><span>Top Picks</span><strong><?= $topPickCertificateCount ?></strong></span>
+            </div>
+          </div>
+          <a class="button secondary" href="index.php?new=1">+ Nuovo ISIN</a>
+        </div>
         <div class="certificate-list">
           <?php foreach ($certificateRows as $row): $certificate = $row['certificate']; $isin = (string)$certificate['isin']; ?>
             <article class="certificate-row certificate-row-<?= h($row['status']) ?>">
               <div class="certificate-row-heading">
-                <strong><?= h((string)$certificate['name']) ?></strong>
+                <div class="certificate-row-info">
+                  <strong><?= h((string)$certificate['name']) ?></strong>
+                  <small><?= h($isin) ?> · <?= h((string)$certificate['issuer']) ?> · <?= number_format((float)$certificate['annualYield'], 2, ',', '') ?>% annuo</small>
+                </div>
                 <?php
                   $statusLabels = ['new' => 'Nuovo · non pubblicato', 'modified' => 'Modifiche in bozza', 'published' => 'Pubblicato', 'removal' => 'Rimozione in attesa'];
                 ?>
-                <span class="status-pill status-<?= h($row['status']) ?>"><?= h($statusLabels[$row['status']] ?? 'Stato non disponibile') ?></span>
+                <div class="certificate-row-status">
+                  <span class="status-pill status-<?= h($row['status']) ?>"><?= h($statusLabels[$row['status']] ?? 'Stato non disponibile') ?></span>
+                  <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
+                    <span class="status-pill status-visibility<?= !empty($certificate['showHome']) ? ' is-selected' : '' ?>">Home: <?= !empty($certificate['showHome']) ? 'sì' : 'no' ?></span>
+                    <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
+                  </div>
+                </div>
               </div>
-              <small><?= h($isin) ?> · <?= h((string)$certificate['issuer']) ?> · <?= number_format((float)$certificate['annualYield'], 2, ',', '') ?>% annuo</small>
               <div class="row-actions">
                 <?php if ($row['status'] !== 'removal'): ?>
                   <a href="index.php?isin=<?= rawurlencode($isin) ?>">Modifica</a>
