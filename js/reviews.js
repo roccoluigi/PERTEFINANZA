@@ -23,7 +23,8 @@ function buildGeneratedReviewContent(cert) {
     ? ISSUERS_DATA.find(item => item.name === cert.issuer || item.name.startsWith(`${cert.issuer} `))
     : null;
   const issuerDescription = issuerData ? issuerData.description : `L'emittente ${cert.issuer} opera nel mercato dei prodotti strutturati.`;
-  const issuerDescriptionStart = issuerDescriptionWithoutName(cert.issuer, issuerDescription);
+  const issuerDescriptionStart = issuerDescriptionWithoutName(cert.issuer, issuerDescription)
+    .replace(/^un['’]\s*/i, '');
   const lowercaseIssuerDescriptionStart = issuerDescriptionStart.charAt(0).toLowerCase() + issuerDescriptionStart.slice(1);
   const ratingEntries = issuerData && issuerData.ratings
     ? Object.entries(issuerData.ratings).filter(([, rating]) => rating && rating.toLowerCase() !== 'non rated')

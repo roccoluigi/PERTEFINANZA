@@ -1,0 +1,378 @@
+{
+    "issuers": [
+        {
+            "id": "barclays",
+            "name": "Barclays",
+            "country": "Regno Unito • Gruppo Bancario Globale",
+            "description": "Barclays è uno dei giganti bancari britannici e internazionali con oltre 300 anni di storia finanziaria. Sul mercato italiano dei certificati di investimento, la banca opera sia tramite Barclays Bank PLC sia tramite Barclays Bank Ireland PLC, confermandosi uno degli attori più innovativi nell'ingegneria finanziaria. Si distingue per un'offerta diversificata che spazia dai classici Cash Collect con opzione Airbag fino a strutture Phoenix con barriere estremamente profonde (fino al 40%) e opzioni Low Strike. La qualità del Market Making su SeDeX ed EuroTLX è riconosciuta per la costanza degli spread e l'elevata profondità del book di negoziazione.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Certificati Barclays ↗",
+            "websiteUrl": "https://certificati.barclays.com/it/"
+        },
+        {
+            "id": "bnp-paribas",
+            "name": "BNP Paribas",
+            "country": "Francia • Primo Gruppo Bancario dell'Eurozona",
+            "description": "BNP Paribas rappresenta la prima banca europea per attivo di bilancio e uno dei leader assoluti nell'emissione di prodotti strutturati in Italia. La sua offerta copre qualsiasi esigenza di portafoglio: dai certificati d'investimento tradizionali (Airbag, Cash Collect, Step-Down) agli strumenti a leva dinamica come i Turbo e Mini Futures. L'istituto transalpino vanta un profilo di solidità patrimoniale d'eccellenza e una presenza capillare tramite BNL nel mercato domestico. La trasparenza documentale, la puntualità nello stacco dei flussi cedolari e la stabilità del Market Making costituiscono benchmark per l'intero settore finanziario.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "Aa3"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "AA-"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Certificati BNP Paribas ↗",
+            "websiteUrl": "https://investimenti.bnpparibas.it/"
+        },
+        {
+            "id": "citigroup",
+            "name": "Citigroup",
+            "country": "Stati Uniti • Primary Global Investment Bank",
+            "description": "Citigroup (attraverso le entità Citigroup Global Markets Funding Luxembourg S.C.A. e Citigroup Global Markets Limited) è un colosso bancario americano che ha intensificato significativamente la propria presenza sul mercato B2C italiano. Citi è specializzata nell'offrire strutture flessibili legate sia ad azioni singole sia a panieri internazionali e tematici. La sua offerta include prodotti Cash Collect con Maxicoupon ed effetto memoria, oltre a soluzioni con barriere conservative. La banca beneficia della formidabile capacità di pricing di Wall Street, garantendo liquidity management efficiente sui segmenti SeDeX ed EuroTLX.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "Aa3"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Citicertificates ↗",
+            "websiteUrl": "https://www.citivelocity.com/citifirst/it/"
+        },
+        {
+            "id": "efg",
+            "name": "EFG International",
+            "country": "Svizzera • Gruppo di Wealth Management & Private Banking",
+            "description": "EFG International, con sede a Zurigo, è un primario gruppo di private banking e wealth management. Nel settore dei certificati di investimento opera prevalentemente mediante il veicolo societario EFG Financial Products o EFG International Finance (Guernsey). La banca si contraddistingue per la creazione di prodotti su misura e strutture Phoenix e Express ad alto rendimento, fortemente apprezzate dai consulenti finanziari e dal pubblico della gestione patrimoniale. La solidità patrimoniale del gruppo svizzero, unita a un rigoroso controllo dei coefficienti di capitale (CET1 ratio), assicura elevate garanzie di affidabilità creditizia.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale EFG International ↗",
+            "websiteUrl": "https://www.efginternational.com/"
+        },
+        {
+            "id": "goldman-sachs",
+            "name": "Goldman Sachs",
+            "country": "Stati Uniti • Investment Banking Leader",
+            "description": "Goldman Sachs è indiscutibilmente uno dei nomi più prestigiosi della finanza globale. Tramite le entità Goldman Sachs International e Goldman Sachs Finance Corp LLC, l'istituto offre in Italia una gamma selezionata ma di altissimo profilo strutturale: dai certificati Express e Phoenix Autocallable fino a soluzioni a capitale protetto o con partecipazione d'indice. La capacità dell'istituto di gestire grandi volumi e di offrire prezzi competitivi nell'attività di hedging rende i certificati firmati Goldman Sachs tra i più scambiati e apprezzati dagli investitori istituzionali e retail avanzati.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Certificati Goldman Sachs ↗",
+            "websiteUrl": "https://www.goldman-sachs.it/"
+        },
+        {
+            "id": "intesa-sanpaolo",
+            "name": "Intesa Sanpaolo",
+            "country": "Italia • Primo Gruppo Bancario Italiano",
+            "description": "Intesa Sanpaolo, attraverso la Divisione IMI Corporate & Investment Banking, è il primo emittente italiano di prodotti strutturati per quota di mercato domestica. L'offerta di Intesa Sanpaolo è orientata storicamente verso una forte tutela del risparmiatore, con un'ampia gamma di certificati a Capitale Protetto (Equity Protection) e strutture Cash Collect a barriera discreta europea. La vicinanza geografica e commerciale, unita a coefficienti di capitale superiori ai requisiti regolamentari, rende Intesa un punto di riferimento per le reti di consulenza e i risparmiatori italiani.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "BBB+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A3"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A-"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale IMI Certificati ↗",
+            "websiteUrl": "https://www.intesasanpaolo.prodottiequotazioni.com/"
+        },
+        {
+            "id": "leonteq",
+            "name": "Leonteq Securities",
+            "country": "Svizzera • Specialista Fintech in Prodotti Strutturati",
+            "description": "Leonteq è una società fintech svizzera specializzata nell'emissione e nella tecnologia per prodotti strutturati. Ha rivoluzionato il mercato italiano introducendo la flessibilità della propria piattaforma di white-labeling, che consente la cooperazione con partner bancari internazionali. Famosa per le strutture ad alto rendimento (Phoenix Memory, Low Barrier al 40-50% e Airbag), Leonteq offre una gamma vastissima di prodotti su panieri tematici di azioni globali. La qualità del Market Making è elevatissima grazie all'automatizzazione dei processi tecnologici di negoziazione.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "N.D."
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "N.D."
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "BBB"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Leonteq Italia ↗",
+            "websiteUrl": "https://it.leonteq.com/"
+        },
+        {
+            "id": "marex",
+            "name": "Marex Financial",
+            "country": "Regno Unito • Global Financial Services Platform",
+            "description": "Marex Financial (appartenente al Gruppo Marex Group plc, quotato al Nasdaq) è una piattaforma globale di servizi finanziari con leadership nel brokering e nel market-making su materie prime e derivati. Negli ultimi anni Marex si è affermata con forza sul mercato italiano dei certificati (Marex Solutions), distinguendosi per l'innovazione delle strutture proposte: Phoenix Memory con barriere extra-profonde, certificati di rendimento a scadenza breve e cedole mensili. Il dinamismo delle sue quotazioni rende Marex uno degli attori più proattivi sul mercato secondario EuroTLX.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "BBB-"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "N.D."
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "BBB"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Marex Certificati ↗",
+            "websiteUrl": "https://certificati.marex.com/it/"
+        },
+        {
+            "id": "morgan-stanley",
+            "name": "Morgan Stanley",
+            "country": "Stati Uniti • Investment Bank Globale",
+            "description": "Morgan Stanley è uno dei pilastri dell'investment banking e dell'asset management mondiale. Tramite Morgan Stanley B.V. e Morgan Stanley Finance LLC (con garanzia della capogruppo), emette sul mercato italiano una ricca offerta di certificati d'investimento, caratterizzata da coperture opzionarie sofisticate e strutture Phoenix Autocallable ad alta frequenza cedolare. L'eccezionale merito creditizio e la solidità dei bilanci rendono i prodotti strutturati Morgan Stanley una scelta privilegiata per gli investitori che mettono al primo posto la sicurezza dell'emittente.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Morgan Stanley ETP ↗",
+            "websiteUrl": "https://etp.morganstanley.com/it/"
+        },
+        {
+            "id": "socgen",
+            "name": "Société Générale",
+            "country": "Francia • Gruppo Bancario di Rilevanza Sistemica",
+            "description": "Société Générale è uno dei pionieri storici dei certificati e derivati cartolarizzati in Europa. Presente in Italia da oltre vent'anni, SocGen vanta una gamma prodotti completa che spazia dai certificati d'investimento (Cash Collect, Discount, Twin Win) agli strumenti d'effetto leva fino ai Benchmark esposti su indici ESG e mega-trend tecnologici. Rinomata per l'eccellenza nell'attività di ingegneria finanziaria quantitativa, garantisce un'elevata trasparenza operativa e la massima continuità nella quotazione dei prezzi sui mercati regolamentati.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Société Générale ↗",
+            "websiteUrl": "https://prodotti.societegenerale.it/"
+        },
+        {
+            "id": "ubs",
+            "name": "UBS",
+            "country": "Svizzera • Leader Mondiale nel Wealth Management",
+            "description": "UBS Group AG, a seguito dell'integrazione di Credit Suisse, si consolida come il colosso assoluto del wealth management elvetico e globale. Sul mercato italiano dei certificati (tramite UBS AG), l'istituto propone sia soluzioni tradizionali a capitale condizionatamente protetto, sia certificati tematici e strutturazioni su materie prime e indici complessi. Il profilo di solvibilità eccezionale, unito a parametri patrimoniali (CET1) tra i più alti della categoria, posiziona UBS come un riferimento assoluto in termini di affidabilità del credito emittente.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "Aa2"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "AA"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale UBS KeyInvest ↗",
+            "websiteUrl": "https://keyinvest-it.ubs.com/"
+        },
+        {
+            "id": "unicredit",
+            "name": "UniCredit",
+            "country": "Italia • Gruppo Bancario Pan-Europeo",
+            "description": "UniCredit Bank GmbH (già HypoVereinsbank) e UniCredit SpA costituiscono un pilastro fondamentale nel panorama italiano ed europeo dei certificati. L'offerta di UniCredit è caratterizzata dalla vastissima gamma di Cash Collect, Top Bonus, certificati con Airbag e soluzioni con Fixed Cash Collect (cedola incondizionata). L'istituto spicca anche per la leadership nell'emissione di Turbo e Benchmark. Grazie a una capillare presenza e al portale dedicato on-line, UniCredit assicura un costante flusso informativo e un'eccellente liquidità sul mercato SeDeX.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "BBB+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "Baa1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "BBB+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale UniCredit Investimenti ↗",
+            "websiteUrl": "https://www.onemarkets.it/"
+        },
+        {
+            "id": "vontobel",
+            "name": "Vontobel",
+            "country": "Svizzera • Casa di Investimento Specializzata",
+            "description": "Vontobel è un'affermata casa di investimento svizzera con sede a Zurigo, leader nell'innovazione tecnologica applicata ai prodotti finanziari. In Italia, Vontobel Financial Products è uno degli emittenti più dinamici e premiati, noto per l'introduzione di certificati Memory Cash Collect a barriere ultra-profonde (fino al 30-40%), strutture Fast Autocall e un'ampia scelta di certificati a leva (Leverage Certificates). La trasparenza, la velocità di esecuzione del Market Maker e la qualità del servizio clienti la rendono uno dei brand più popolari tra i risparmiatori italiani.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "N.D."
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A3"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "N.D."
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Certificati Vontobel ↗",
+            "websiteUrl": "https://markets.vontobel.com/it-it"
+        },
+        {
+            "id": "natixis",
+            "name": "Natixis",
+            "country": "Francia • Gruppo BPCE",
+            "description": "Natixis è la controllata di Corporate e Investment Banking del Gruppo BPCE, secondo gruppo bancario in Francia per quota di mercato. Specializzata nell'ingegneria finanziaria e nell'offrire soluzioni di investimento su misura, Natixis emette certificati (tramite Natixis Structured Issuance SA) diffusi sia tramite reti di distribuzione bancaria sia sul mercato aperto. L'istituto transalpino è apprezzato per le sue strutture di investimento sostenibile (ESG), certificati Equity Protection e Phoenix con meccanismi di autocall progressivi.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Natixis ↗",
+            "websiteUrl": "https://natixis.groupebpce.com/"
+        },
+        {
+            "id": "bbva",
+            "name": "BBVA",
+            "country": "Spagna • Gruppo Bancario Multinazionale",
+            "description": "Banco Bilbao Vizcaya Argentaria (BBVA) è uno dei principali gruppi bancari spagnoli ed europei, in forte espansione anche nel settore retail italiano. Nell'ambito dei prodotti strutturati e certificati d'investimento, BBVA (attraverso le sue entità dedicate alla strutturazione) propone emissioni Phoenix e Cash Collect legate sia al mercato azionario europeo che a quello americano. La solidità patrimoniale dell'istituto, unita a requisiti di capitale ampiamente superiori alle richieste BCE, garantisce un solido profilo di affidabilità creditizia.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A2"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A-"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale BBVA ↗",
+            "websiteUrl": "https://www.bbva.com/"
+        },
+        {
+            "id": "santander",
+            "name": "Banco Santander",
+            "country": "Spagna • Primo Gruppo Bancario Ispanico",
+            "description": "Banco Santander è una delle più grandi istituzioni finanziarie al mondo per capitalizzazione di mercato, con una presenza dominante in Europa e nelle Americhe. Nel comparto dei certificati di investimento e delle obbligazioni strutturate, opera sia sul canale di collocamento diretto sia sul mercato secondario con veicoli dedicati (Santander Financial Products). Propone tipicamente strutture difensive a capitale protetto, oltre a certificati Express e Phoenix legati ai primari indici azionari mondiali.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A+"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A1"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "A+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale Banco Santander ↗",
+            "websiteUrl": "https://www.santander.com/"
+        },
+        {
+            "id": "bil",
+            "name": "Banque Internationale à Luxembourg (BIL)",
+            "country": "Lussemburgo • Storico Istituto di Private Banking",
+            "description": "Fondata nel 1856, la Banque Internationale à Luxembourg (BIL) è la più antica banca d'affari e di gestione patrimoniale del Granducato di Lussemburgo. Riconosciuta come istituzione finanziaria sistemica a livello locale, opera nell'emissione di prodotti strutturati e note d'investimento per la clientela private e istituzionale. La banca si distingue per la rigorosa gestione dei rischi e per la creazione di soluzioni d'investimento personalizzate a capitale protetto o condizionato, caratterizzate da una struttura creditizia trasparente e protetta.",
+            "ratings": [
+                {
+                    "agency": "S&P",
+                    "value": "A-"
+                },
+                {
+                    "agency": "Moody's",
+                    "value": "A2"
+                },
+                {
+                    "agency": "Fitch",
+                    "value": "BBB+"
+                }
+            ],
+            "websiteLabel": "Sito Ufficiale BIL Luxembourg ↗",
+            "websiteUrl": "https://www.bil.com/"
+        }
+    ]
+}

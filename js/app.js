@@ -307,6 +307,7 @@ function issuerDescriptionWithoutName(issuer, description) {
     .replace(/^\([^)]*\)\s*/, '')
     .replace(/^,\s*/, '')
     .replace(/^è\s+/i, '')
+    .replace(/^un['’]\s*/i, '')
     .trim();
 }
 

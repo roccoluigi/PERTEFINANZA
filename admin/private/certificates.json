@@ -1,0 +1,156 @@
+[
+    {
+        "isin": "DE000BD54H77",
+        "name": "Cash Collect Fast Step Down su big tech USA",
+        "issuer": "Vontobel",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "AMD",
+            "Intel",
+            "Dell",
+            "Micron"
+        ],
+        "annualYield": 20.88,
+        "barrierCapital": "50%",
+        "barrierCoupon": "50%",
+        "stepDown": "4%",
+        "stepDownStartMonth": 1,
+        "strikeDate": "07/09/2026",
+        "expiryDate": "05/09/2028",
+        "price": 100,
+        "showHome": true,
+        "showTopPick": true
+    },
+    {
+        "isin": "XS3184486044",
+        "name": "Cash Collect Low Barrier su big europee",
+        "issuer": "Barclays",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "STM",
+            "Deutsche Bank",
+            "Société Générale",
+            "Commerzbank"
+        ],
+        "annualYield": 12,
+        "barrierCapital": "40%",
+        "barrierCoupon": "40%",
+        "stepDown": "0.50%",
+        "stepDownStartMonth": 2,
+        "strikeDate": "09/09/2026",
+        "expiryDate": "23/09/2030",
+        "price": 100,
+        "showHome": true,
+        "showTopPick": false
+    },
+    {
+        "isin": "XS3184486804",
+        "name": "Cash Collect Low Barrier su big italiane",
+        "issuer": "Barclays",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "Leonardo",
+            "Prysmian",
+            "MPS",
+            "STM"
+        ],
+        "annualYield": 12,
+        "barrierCapital": "40%",
+        "barrierCoupon": "40%",
+        "stepDown": "1%",
+        "stepDownStartMonth": 3,
+        "strikeDate": "10/09/2026",
+        "expiryDate": "17/09/2029",
+        "price": 100,
+        "showHome": true,
+        "showTopPick": false
+    },
+    {
+        "isin": "DE000BD6FHT4",
+        "name": "Cash Collect Fast Step Down su big tech USA",
+        "issuer": "Vontobel",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "Nvidia",
+            "AMD",
+            "Micron",
+            "Intel"
+        ],
+        "annualYield": 14.28,
+        "barrierCapital": "40%",
+        "barrierCoupon": "50%",
+        "stepDown": "2%",
+        "stepDownStartMonth": 4,
+        "strikeDate": "10/09/2026",
+        "expiryDate": "08/03/2029",
+        "price": 100,
+        "showHome": false,
+        "showTopPick": false
+    },
+    {
+        "isin": "XS3127847187",
+        "name": "Cash Collect Fast Step Down sull'AI",
+        "issuer": "Citigroup",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "Palantir",
+            "Marvell",
+            "Western Digital",
+            "Intel"
+        ],
+        "annualYield": 30,
+        "barrierCapital": "60%",
+        "barrierCoupon": "60%",
+        "stepDown": "5%",
+        "stepDownStartMonth": 5,
+        "strikeDate": "14/09/2026",
+        "expiryDate": "21/03/2028",
+        "price": 1000,
+        "showHome": false,
+        "showTopPick": false
+    },
+    {
+        "isin": "XS3127846700",
+        "name": "Cash Collect High Yield su big finanziari",
+        "issuer": "Citigroup",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "STM",
+            "Banca MPS",
+            "BPER Banca",
+            "Commerzbank"
+        ],
+        "annualYield": 18.72,
+        "barrierCapital": "60%",
+        "barrierCoupon": "60%",
+        "stepDown": "1%",
+        "stepDownStartMonth": 6,
+        "strikeDate": "14/09/2026",
+        "expiryDate": "21/03/2028",
+        "price": 1000,
+        "showHome": false,
+        "showTopPick": false
+    },
+    {
+        "isin": "XS3127851296",
+        "name": "Cash Collect High Yield su big energy europee",
+        "issuer": "Citigroup",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "British Petroleum",
+            "Siemens Energy",
+            "Engie",
+            "ENI"
+        ],
+        "annualYield": 18.32,
+        "barrierCapital": "60%",
+        "barrierCoupon": "60%",
+        "stepDown": "1%",
+        "stepDownStartMonth": 2,
+        "strikeDate": "15/09/2026",
+        "expiryDate": "22/03/2028",
+        "price": 1000,
+        "showHome": false,
+        "showTopPick": true
+    }
+]
