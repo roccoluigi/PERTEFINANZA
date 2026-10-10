@@ -323,7 +323,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-68">
+  <link rel="stylesheet" href="admin.css?v=20261010-69">
 </head>
 <body>
   <main class="admin-shell">
