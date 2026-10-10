@@ -91,24 +91,44 @@ function requireAdmin(): void
         header('Location: login.php');
         exit;
     }
+    if (!is_file(authFile())) {
+        $_SESSION = [];
+        session_destroy();
+        header('Location: login.php');
+        exit;
+    }
+    $auth = adminAuthRecord();
+    $sessionVersion = (string)($auth['session_version'] ?? '');
+    if (!hash_equals((string)($_SESSION['admin_auth_version'] ?? ''), $sessionVersion)) {
+        $_SESSION = [];
+        session_destroy();
+        header('Location: login.php');
+        exit;
+    }
+}
+
+function adminAuthRecord(): array
+{
+    $auth = loadJson('admin-auth.json', null);
+    if (!is_array($auth) || !is_string($auth['username'] ?? null) || !is_string($auth['password_hash'] ?? null)) {
+        throw new RuntimeException('Archivio credenziali admin non valido.');
+    }
+    return $auth;
 }
 
 function loginAdmin(string $username, string $password): bool
 {
-    $authPath = authFile();
-    if (!is_file($authPath)) {
+    if (!is_file(authFile())) {
         return false;
     }
-    $auth = json_decode((string)file_get_contents($authPath), true);
-    if (!is_array($auth) || !isset($auth['username'], $auth['password_hash'])) {
-        throw new RuntimeException('Archivio credenziali admin non valido.');
-    }
+    $auth = adminAuthRecord();
     if (!hash_equals((string)$auth['username'], $username) || !password_verify($password, (string)$auth['password_hash'])) {
         return false;
     }
     adminSession();
     session_regenerate_id(true);
     $_SESSION['admin_authenticated'] = true;
+    $_SESSION['admin_auth_version'] = (string)($auth['session_version'] ?? '');
     $_SESSION['csrf'] = bin2hex(random_bytes(32));
     return true;
 }

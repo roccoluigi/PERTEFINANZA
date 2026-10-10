@@ -36,6 +36,7 @@ I badge accanto alle voci del menu indicano quanti elementi risultano modificati
 - **Pubblica tutte le modifiche** nell’header applica tutte le nuove schede, le modifiche e le rimozioni in attesa, oltre alle bozze di tutte le sezioni editoriali.
 - Ogni pubblicazione sincronizza dati JavaScript, pagine statiche, schede in home, manifest e sitemap, e crea un backup dei file sostituiti.
 - Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito pubblico e vale anche nelle altre pagine PERTEFINANZA aperte nello stesso browser.
+- **Cambia password** nell’header richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministratore vengono disconnesse.
 
 Il pannello deve essere usato con HTTPS sul sito pubblico. La cartella `/admin/` è esclusa dalla scansione tramite `robots.txt`; questa impostazione non sostituisce autenticazione e protezione dei dati.
 
