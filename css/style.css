@@ -3558,7 +3558,7 @@ button, input, select, textarea {
   }
 
   .review-isin-copy.is-copied {
-    font-size: calc(0.64rem + 0.5pt);
+    font-size: 0.64rem;
   }
 
   .review-section-links {
