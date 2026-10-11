@@ -35,7 +35,7 @@
         "annualYield": 12,
         "barrierCapital": "40%",
         "barrierCoupon": "40%",
-        "stepDown": "0.50%",
+        "stepDown": "0.5%",
         "stepDownStartMonth": 2,
         "strikeDate": "09/09/2026",
         "expiryDate": "23/09/2030",
@@ -63,7 +63,7 @@
         "expiryDate": "17/09/2029",
         "price": 100,
         "showHome": true,
-        "showTopPick": false
+        "showTopPick": true
     },
     {
         "isin": "DE000BD6FHT4",

@@ -208,7 +208,7 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestione contenuti | PERTEFINANZA</title>
   <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-69">
+  <link rel="stylesheet" href="admin.css?v=20261010-70">
 </head>
 <body>
   <main class="admin-shell">
@@ -222,8 +222,8 @@ try {
         </a>
       </div>
       <div class="admin-topbar-actions">
-        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="discard_all"><button class="button secondary" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Annullare tutte le modifiche non pubblicate di certificati e contenuti? Le nuove schede verranno eliminate, le modifiche scartate e le rimozioni annullate.')">Annulla tutte le modifiche</button></form>
-        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_all"><button class="button" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Pubblicare tutte le modifiche in attesa di certificati e di tutte le sezioni editoriali?')">Pubblica tutte le modifiche</button></form>
+        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="discard_all"><button class="button secondary cms-discard-all" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Annullare tutte le modifiche non pubblicate di certificati e contenuti? Le nuove schede verranno eliminate, le modifiche scartate e le rimozioni annullate.')">Annulla tutte le modifiche</button></form>
+        <form method="post" action="index.php"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_all"><button class="button cms-publish-all" type="submit" <?= $globalPendingCount === 0 ? 'disabled' : '' ?> onclick="return confirm('Pubblicare tutte le modifiche in attesa di certificati e di tutte le sezioni editoriali?')">Pubblica tutte le modifiche</button></form>
         <form class="admin-sitemap-form" method="post" action="index.php">
           <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>">
           <input type="hidden" name="action" value="regenerate_sitemap">

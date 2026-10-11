@@ -308,7 +308,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     <div class="review-sticky-header"><div class="review-isin-row">
       <button type="button" class="review-isin-copy" data-copy-isin="<?= $base ?>" title="Copia ISIN"><span class="cert-isin-copy-label">ISIN</span><span><?= $base ?></span></button>
       <nav class="review-section-links" aria-label="Sezioni della scheda tecnica"><a href="#review-overview">Riepilogo<br>certificato</a><a href="#review-scenarios">Matrice<br>scenari</a><a href="#review-pros-cons">Punti di forza<br>e criticità</a></nav>
-      <details class="content-share"><summary class="share-button share-trigger" title="Condividi: <?= $name ?>" aria-label="Condividi: <?= $name ?>">Condividi</summary><div class="share-menu-options"><a class="share-menu-item share-whatsapp" href="https://wa.me/?text=<?= $shareText ?>%20<?= $encodedUrl ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="share-menu-item share-telegram" href="https://t.me/share/url?url=<?= $encodedUrl ?>&amp;text=<?= $shareText ?>" target="_blank" rel="noopener noreferrer">Telegram</a><button type="button" class="share-menu-item share-copy" data-copy-share-url="<?= h($pageUrl) ?>">Copia link</button></div></details>
+      <details class="content-share"><summary class="share-button share-trigger" title="Condividi: <?= $name ?>" aria-label="Condividi: <?= $name ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path></svg></summary><div class="share-menu-options"><a class="share-menu-item share-whatsapp" href="https://wa.me/?text=<?= $shareText ?>%20<?= $encodedUrl ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="share-menu-item share-telegram" href="https://t.me/share/url?url=<?= $encodedUrl ?>&amp;text=<?= $shareText ?>" target="_blank" rel="noopener noreferrer">Telegram</a><button type="button" class="share-menu-item share-copy" data-copy-share-url="<?= h($pageUrl) ?>">Copia link</button></div></details>
     </div></div>
     <div class="review-hero">
       <h1 class="review-title">Analisi del certificato <?= $name ?></h1>
@@ -368,8 +368,8 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $canonicalTag = '<link rel="canonical" href="' . h($canonical) . '">';
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
-    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261009-5', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261009-3', (string)$html);
+    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261011-11', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261011-1', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-certificates|data-issuers|data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
         $value = $match[3];

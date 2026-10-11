@@ -163,7 +163,11 @@ function initMobileMenu() {
    ========================================================================== */
 function initSidebarFeatured() {
   const containers = document.querySelectorAll('#sidebar-featured-certs');
-  if (containers.length === 0 || typeof CERTIFICATES_DATA === 'undefined') return;
+  if (containers.length === 0) return;
+  if (typeof CERTIFICATES_DATA === 'undefined') {
+    containers.forEach(container => container.closest('.sidebar-widget')?.remove());
+    return;
+  }
 
   const formazioneSidebar = document.querySelector('.formazione-sidebar');
   if (formazioneSidebar) {

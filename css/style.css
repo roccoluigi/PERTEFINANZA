@@ -3304,6 +3304,15 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
+  .review-page-layout {
+    row-gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .review-page-layout .review-hero {
+    margin-bottom: 0;
+  }
+
   .header-inner {
     column-gap: 0.5rem;
   }
@@ -3535,11 +3544,11 @@ button, input, select, textarea {
   }
 
   .review-isin-copy {
-    flex: 0 0 6.48rem;
-    width: 6.48rem;
+    flex: 0 0 5.5rem;
+    width: 5.5rem;
     min-width: 0;
     height: 2.35rem;
-    padding: 0.15rem 0.1rem;
+    padding: 0.15rem 0.03rem;
     font-size: calc(0.64rem + 1pt);
     line-height: 1.1;
   }
@@ -3566,6 +3575,13 @@ button, input, select, textarea {
     font-size: calc(0.45rem + 0.5pt);
   }
 }
+
+@media (min-width: 375px) and (max-width: 480px) {
+  .review-section-links a {
+    font-size: calc(0.45rem + 1pt);
+  }
+}
+
 
 /* Tema scuro */
 html[data-theme="dark"] .site-header {
