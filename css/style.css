@@ -3549,16 +3549,16 @@ button, input, select, textarea {
     min-width: 0;
     height: 2.35rem;
     padding: 0.15rem 0.03rem;
-    font-size: calc(0.64rem + 1pt);
+    font-size: calc(0.64rem + 0.5pt);
     line-height: 1.1;
   }
 
   .review-isin-copy .cert-isin-copy-label {
-    font-size: calc(0.55rem + 1pt);
+    font-size: calc(0.55rem + 0.5pt);
   }
 
   .review-isin-copy.is-copied {
-    font-size: calc(0.64rem + 1pt);
+    font-size: calc(0.64rem + 0.5pt);
   }
 
   .review-section-links {
