@@ -3279,6 +3279,11 @@ button, input, select, textarea {
   .page-layout {
     grid-template-columns: 1fr;
   }
+
+  .page-layout .main-content > :last-child,
+  .page-layout .main-content > section:last-child > .issuer-card:last-child {
+    margin-bottom: 0;
+  }
   
   .sticky-sidebar {
     position: static;
@@ -3286,7 +3291,7 @@ button, input, select, textarea {
   }
 
   .review-page-layout .sticky-sidebar {
-    margin-top: 0;
+    margin-top: 2rem;
   }
 
   .footer-grid {
@@ -3305,7 +3310,7 @@ button, input, select, textarea {
 
 @media (max-width: 768px) {
   .review-page-layout {
-    row-gap: 1.5rem;
+    row-gap: 2rem;
     margin-bottom: 1.5rem;
   }
 

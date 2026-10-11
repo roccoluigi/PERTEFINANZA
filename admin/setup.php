@@ -48,7 +48,7 @@ try {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Configura il pannello | PERTEFINANZA</title>
   <script src="admin.js?v=20261009-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-70">
+  <link rel="stylesheet" href="admin.css?v=20261010-71">
 </head>
 <body>
   <main class="admin-shell admin-auth">
