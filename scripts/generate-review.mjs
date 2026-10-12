@@ -252,7 +252,7 @@ async function renderHomeFeaturedMarkup(issuerData) {
     if (error !== homeRenderStop) throw error;
   }
   if (!markup) throw new Error('Impossibile generare le schede statiche in evidenza.');
-  return markup;
+  return markup.replace(/^[ \t]+$/gm, '').trim();
 }
 
 async function updateStaticHomeFeatured(issuerData) {

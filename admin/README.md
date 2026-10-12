@@ -5,12 +5,14 @@ Dashboard autonoma in PHP 8.1+ per creare e modificare certificati, salvare bozz
 ## Installazione su Aruba
 
 1. Carica la cartella `admin/` nella stessa document root del sito, mantenendo accanto le cartelle e i file del sito (`js/`, `css/`, `recensione.html`, `index.html`, `sitemap.xml` e `recensioni/`).
-2. Copia `admin/config.example.php` in `admin/config.php`, imposta `site_url` sull’indirizzo HTTPS pubblico del sito e sostituisci `setup_token` con un valore casuale personale di almeno 32 caratteri. Non caricare né condividere `config.php`; configura sul server il suo valore `site_url` separatamente.
+2. Crea `admin/config.php` direttamente sul server con `site_url` impostato sull’indirizzo HTTPS pubblico e `storage_dir` impostato su una cartella privata scrivibile accessibile a PHP. Se l’area admin non è ancora stata inizializzata, aggiungi un `setup_token` casuale di almeno 32 caratteri; rimuovilo dopo la prima configurazione. Non caricare né condividere `config.php`.
 3. Per mantenere i dati fuori dalla document root, imposta `storage_dir` in `config.php` su una cartella privata scrivibile accessibile a PHP e copia in tale cartella `certificates.json`, `review-overrides.json` e `published-review-overrides.json` dalla cartella `admin/private/`. Se non puoi usare una cartella esterna, lascia lo storage predefinito e conserva `admin/private/.htaccess`.
 4. Verifica che PHP possa scrivere nello storage, in `js/data-certificates.js`, `index.html`, `sitemap.xml` e nella cartella `recensioni/`.
-5. Apri `/admin/setup.php`, inserisci il token di installazione e crea username e password. La password deve essere lunga almeno 14 caratteri.
-6. A installazione conclusa, elimina `setup_token` da `config.php` e conserva una copia di backup sicura della configurazione.
-7. Accedi da `/admin/`.
+5. Per una casella Aruba, configura in `config.php` l’SMTP `smtps.aruba.it`, porta `465`, cifratura `ssl`, username con l’indirizzo email completo e password della casella. Usa `info@pertefinanza.it` come mittente e destinatario, se richiesto dal provider. Per caselle ospitate altrove, usa i parametri del relativo provider. Non inserire credenziali nei file pubblici o nel repository.
+6. Installa le dipendenze PHP con `composer install --no-dev` dalla cartella radice del sito e carica anche la cartella `vendor/` sul server.
+7. Apri `/admin/setup.php`, inserisci il token di installazione e crea username e password. La password deve essere lunga almeno 14 caratteri.
+8. A installazione conclusa, elimina `setup_token` da `config.php` e conserva una copia di backup sicura della configurazione.
+9. Accedi da `/admin/`.
 
 ## Gestione contenuti
 
@@ -39,20 +41,26 @@ I badge accanto alle voci del menu indicano quanti elementi risultano modificati
 - Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito pubblico e vale anche nelle altre pagine PERTEFINANZA aperte nello stesso browser.
 - **Cambia password** nell’header richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministratore vengono disconnesse.
 
-Il pannello deve essere usato con HTTPS sul sito pubblico. La cartella `/admin/` è esclusa dalla scansione tramite `robots.txt`; questa impostazione non sostituisce autenticazione e protezione dei dati.
+Il pannello e il modulo di contatto devono essere usati con HTTPS sul sito pubblico. Il login limita a cinque i tentativi errati per indirizzo IP in una finestra di 15 minuti; il conteggio è condiviso tra sessioni e salvato nello `storage_dir`, che deve quindi essere scrivibile da PHP. L’indirizzo viene letto da `REMOTE_ADDR`: se il sito passa da un proxy, configura il server perché fornisca l’indirizzo client attendibile e non fidarti di intestazioni inoltrate non validate. La cartella `/admin/` è esclusa dalla scansione tramite `robots.txt`; questa impostazione non sostituisce autenticazione e protezione dei dati. Il modulo di contatto spedisce via SMTP senza salvare i messaggi sul server. Il server non può confermare che il messaggio sia stato letto o recapitato alla casella finale.
 
 ## Test locale
 
 Per provare il pannello senza pubblicare sul sito online:
 
 1. Configura `admin/config.php` come sopra e usa una copia separata del sito come area di staging.
-2. Avvia PHP dalla cartella radice della copia:
+2. Installa le dipendenze dalla cartella radice:
+
+   ```powershell
+   composer install
+   ```
+
+3. Avvia PHP dalla cartella radice della copia:
 
    ```powershell
    php -S 127.0.0.1:8080
    ```
 
-3. Apri `http://127.0.0.1:8080/admin/setup.php`, completa l’installazione e poi verifica login, salvataggio bozze e pubblicazione.
-4. Dopo il login, usa **Gestione contenuti** o apri `http://127.0.0.1:8080/admin/content.php` per provare le sezioni editoriali.
+4. Apri `http://127.0.0.1:8080/admin/setup.php`, completa l’installazione e poi verifica login, salvataggio bozze e pubblicazione.
+5. Dopo il login, usa **Gestione contenuti** o apri `http://127.0.0.1:8080/admin/content.php` per provare le sezioni editoriali.
 
 Una pubblicazione aggiorna i file dello staging: non effettuare il test sulla copia di produzione.

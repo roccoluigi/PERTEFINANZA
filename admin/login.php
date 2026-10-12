@@ -14,17 +14,18 @@ try {
     }
     if ($installed && $_SERVER['REQUEST_METHOD'] === 'POST') {
         verifyCsrf($_POST['csrf'] ?? null);
-        $attempts = (int)($_SESSION['login_attempts'] ?? 0);
-        if ($attempts >= 8) {
-            throw new RuntimeException('Troppi tentativi. Chiudi e riapri il browser prima di riprovare.');
-        }
-        if (loginAdmin((string)($_POST['username'] ?? ''), (string)($_POST['password'] ?? ''))) {
-            unset($_SESSION['login_attempts']);
+        $retryAfter = adminLoginRateLimitRetryAfter();
+        if ($retryAfter > 0) {
+            http_response_code(429);
+            header('Retry-After: ' . $retryAfter);
+            $error = 'Troppi tentativi. Riprova tra ' . max(1, (int)ceil($retryAfter / 60)) . ' minuti.';
+        } elseif (loginAdmin((string)($_POST['username'] ?? ''), (string)($_POST['password'] ?? ''))) {
             header('Location: index.php');
             exit;
+        } else {
+            adminLoginRecordFailure();
+            $error = 'Credenziali non valide.';
         }
-        $_SESSION['login_attempts'] = $attempts + 1;
-        $error = 'Credenziali non valide.';
     }
 } catch (Throwable $exception) {
     $error = $exception->getMessage();

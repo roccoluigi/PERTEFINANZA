@@ -2923,6 +2923,14 @@ button, input, select, textarea {
   margin-top: 1.5rem;
 }
 
+.contact-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .contact-intro,
 .contact-details-text {
   font-size: 0.875rem;
@@ -2964,6 +2972,12 @@ button, input, select, textarea {
   border-radius: var(--radius-sm);
   color: #065f46;
   font-size: 0.9375rem;
+}
+
+.contact-response-msg[data-state="error"] {
+  background: var(--error-bg, #fef2f2);
+  border-color: var(--error-border, #fecaca);
+  color: #991b1b;
 }
 
 .contact-details-card {

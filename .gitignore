@@ -1,3 +1,4 @@
 admin/config.php
 admin/private/admin-auth.json
 admin/private/backups/
+/vendor/

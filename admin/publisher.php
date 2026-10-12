@@ -122,6 +122,14 @@ function issuerDescriptionStart(string $issuer, ?array $profile): string
     return $description === '' ? $description : strtolower(substr($description, 0, 1)) . substr($description, 1);
 }
 
+function conciseIssuerDescriptionStart(string $issuer, ?array $profile): string
+{
+    $description = issuerDescriptionStart($issuer, $profile);
+    $firstSentence = preg_split('/(?<=[.!?])\s+/u', $description, 2)[0] ?? $description;
+    $firstClause = preg_split('/,\s*/u', $firstSentence, 2)[0] ?? $firstSentence;
+    return rtrim(trim($firstClause), '.!?');
+}
+
 function issuerRatings(?array $profile): array
 {
     if (!$profile || !is_array($profile['ratings'] ?? null)) {
@@ -394,19 +402,19 @@ function renderHomeCards(array $certificates): string
         $anchor = strtolower((string)preg_replace('/[^a-z0-9]+/i', '-', $issuerSlug));
         $anchor = trim($anchor, '-');
         if (!empty($profile['id'])) $anchor = (string)$profile['id'];
-        $preview = 'Il presente certificato di investimento è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, ' . h(rtrim(issuerDescriptionStart((string)$certificate['issuer'], $profile), '.!?'));
+        $preview = 'Il presente certificato di investimento è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, ' . h(conciseIssuerDescriptionStart((string)$certificate['issuer'], $profile)) . '.';
         $ratings = issuerRatings($profile);
         if (count($ratings) === 1) {
             $agency = (string)array_key_first($ratings);
-            $preview .= '. ' . h($agency . " assegna all’emittente un rating di credito pari ad " . reset($ratings) . '.');
+            $preview .= ' ' . h($agency . " assegna all’emittente un rating di credito pari ad " . reset($ratings) . '.');
         } elseif (count($ratings) > 1) {
             $ratingParts = [];
-            foreach ($ratings as $agency => $rating) $ratingParts[] = (string)$rating . ' da parte di ' . $agency;
+            foreach ($ratings as $agency => $rating) $ratingParts[] = (string)$rating . ' per ' . $agency;
             $last = array_pop($ratingParts);
             $ratingSummary = $ratingParts === [] ? $last : implode(', ', $ratingParts) . ' e ' . $last;
-            $preview .= '. Le agenzie assegnano all’emittente i seguenti rating di credito: ' . h($ratingSummary) . '.';
+            $preview .= ' Le agenzie valutano il merito creditizio dell’emittente rispettivamente ' . h($ratingSummary) . '.';
         }
-        $preview .= '. La struttura investe su:<span class="certificate-preview-underlyings" aria-label="Sottostanti">';
+        $preview .= ' La struttura investe su:<span class="certificate-preview-underlyings" aria-label="Sottostanti">';
         foreach ($certificate['underlyings'] as $index => $underlying) {
             if ($index > 0) $preview .= ' <span class="certificate-preview-separator" aria-hidden="true">·</span> ';
             $preview .= '<span class="certificate-preview-underlying"><strong>' . h((string)$underlying) . '</strong></span>';

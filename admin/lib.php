@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+const ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS = 900;
+const ADMIN_LOGIN_RATE_LIMIT_MAX_ATTEMPTS = 5;
+
 function adminConfig(): array
 {
     $path = __DIR__ . '/config.php';
@@ -79,6 +82,116 @@ function authFile(): string
     return storagePath('admin-auth.json');
 }
 
+function withAdminLoginRateLimitData(callable $callback): mixed
+{
+    $clientAddress = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+    if (filter_var($clientAddress, FILTER_VALIDATE_IP) === false || ($packedAddress = inet_pton($clientAddress)) === false) {
+        throw new RuntimeException('Impossibile determinare l’indirizzo IP del client.');
+    }
+    $clientKey = hash('sha256', $packedAddress);
+    $path = storagePath('login-rate-limit.json');
+    $handle = fopen($path, 'c+');
+    if ($handle === false) {
+        throw new RuntimeException('Impossibile aprire l’archivio dei tentativi di accesso.');
+    }
+    if (!flock($handle, LOCK_EX)) {
+        fclose($handle);
+        throw new RuntimeException('Impossibile bloccare l’archivio dei tentativi di accesso.');
+    }
+
+    try {
+        rewind($handle);
+        $contents = stream_get_contents($handle);
+        if ($contents === false) {
+            throw new RuntimeException('Impossibile leggere l’archivio dei tentativi di accesso.');
+        }
+        $attemptsByClient = $contents === ''
+            ? []
+            : json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
+        if (!is_array($attemptsByClient)) {
+            throw new RuntimeException('Archivio dei tentativi di accesso non valido.');
+        }
+
+        $now = time();
+        $cutoff = $now - ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS;
+        foreach ($attemptsByClient as $key => $timestamps) {
+            if (!is_string($key) || preg_match('/\A[a-f0-9]{64}\z/', $key) !== 1 || !is_array($timestamps) || !array_is_list($timestamps)) {
+                throw new RuntimeException('Archivio dei tentativi di accesso non valido.');
+            }
+            $recentTimestamps = [];
+            foreach ($timestamps as $timestamp) {
+                if (!is_int($timestamp)) {
+                    throw new RuntimeException('Archivio dei tentativi di accesso non valido.');
+                }
+                if ($timestamp > $cutoff && $timestamp <= $now) {
+                    $recentTimestamps[] = $timestamp;
+                }
+            }
+            if ($recentTimestamps === []) {
+                unset($attemptsByClient[$key]);
+            } else {
+                $attemptsByClient[$key] = $recentTimestamps;
+            }
+        }
+
+        $result = $callback($attemptsByClient, $now, $clientKey);
+        $json = json_encode($attemptsByClient, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        rewind($handle);
+        if (!ftruncate($handle, 0)) {
+            throw new RuntimeException('Impossibile aggiornare l’archivio dei tentativi di accesso.');
+        }
+        $offset = 0;
+        while ($offset < strlen($json)) {
+            $written = fwrite($handle, substr($json, $offset));
+            if ($written === false || $written === 0) {
+                throw new RuntimeException('Impossibile aggiornare l’archivio dei tentativi di accesso.');
+            }
+            $offset += $written;
+        }
+        if (!fflush($handle)) {
+            throw new RuntimeException('Impossibile salvare l’archivio dei tentativi di accesso.');
+        }
+        chmod($path, 0640);
+
+        return $result;
+    } finally {
+        flock($handle, LOCK_UN);
+        fclose($handle);
+    }
+}
+
+function adminLoginRateLimitRetryAfter(): int
+{
+    return withAdminLoginRateLimitData(
+        static function (array &$attemptsByClient, int $now, string $clientKey): int {
+            $timestamps = $attemptsByClient[$clientKey] ?? [];
+            if (count($timestamps) < ADMIN_LOGIN_RATE_LIMIT_MAX_ATTEMPTS) {
+                return 0;
+            }
+            return max(1, $timestamps[0] + ADMIN_LOGIN_RATE_LIMIT_WINDOW_SECONDS - $now);
+        }
+    );
+}
+
+function adminLoginRecordFailure(): void
+{
+    withAdminLoginRateLimitData(
+        static function (array &$attemptsByClient, int $now, string $clientKey): void {
+            $attemptsByClient[$clientKey] ??= [];
+            $attemptsByClient[$clientKey][] = $now;
+        }
+    );
+}
+
+function adminLoginClearFailures(): void
+{
+    withAdminLoginRateLimitData(
+        static function (array &$attemptsByClient, int $now, string $clientKey): void {
+            unset($attemptsByClient[$clientKey]);
+        }
+    );
+}
+
 function isAdminInstalled(): bool
 {
     return is_file(authFile());
@@ -125,6 +238,7 @@ function loginAdmin(string $username, string $password): bool
     if (!hash_equals((string)$auth['username'], $username) || !password_verify($password, (string)$auth['password_hash'])) {
         return false;
     }
+    adminLoginClearFailures();
     adminSession();
     session_regenerate_id(true);
     $_SESSION['admin_authenticated'] = true;
