@@ -926,6 +926,10 @@ button, input, select, textarea {
   color: var(--text-body);
   font-size: 0.875rem;
   line-height: 1.55;
+  overflow-wrap: break-word;
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .home-method-card {
@@ -968,6 +972,10 @@ button, input, select, textarea {
   color: var(--text-body);
   font-size: 0.875rem;
   line-height: 1.55;
+  overflow-wrap: break-word;
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .home-method-actions {
@@ -1289,6 +1297,10 @@ button, input, select, textarea {
   color: var(--text-body);
   font-size: 14px;
   line-height: 1.6;
+  overflow-wrap: break-word;
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .review-disclaimer p {
@@ -2843,6 +2855,10 @@ button, input, select, textarea {
   border: 1px solid var(--border);
   font-size: 0.875rem;
   vertical-align: top;
+  overflow-wrap: break-word;
+  word-break: normal;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .scenario-table th {
