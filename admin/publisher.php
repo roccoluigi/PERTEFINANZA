@@ -376,7 +376,7 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $canonicalTag = '<link rel="canonical" href="' . h($canonical) . '">';
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
-    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261011-16', (string)$html);
+    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261013-1', (string)$html);
     $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261011-1', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-issuers|data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
