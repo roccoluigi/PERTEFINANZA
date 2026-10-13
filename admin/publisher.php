@@ -279,7 +279,7 @@ function reviewEditorialFormValues(array $certificate, array $override = []): ar
     ];
 }
 
-function renderReviewContent(array $certificate, array $certificates, array $issuerProfiles, array $underlyingProfiles, array $overrides): string
+function renderReviewContent(array $certificate, array $certificates, array $issuerProfiles, array $underlyingProfiles, array $overrides, string $reviewDisclaimer): string
 {
     $issuerProfile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
     $data = generateReviewData($certificate, $issuerProfile, $underlyingProfiles, $overrides[$certificate['isin']] ?? []);
@@ -336,7 +336,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
       </div></div>
       <div class="card scenario-card review-scenarios-card" id="review-scenarios"><div class="scenario-card-heading"><h2>Matrice Scenari di Rimborso a Scadenza</h2></div><p class="scenario-description"><?= $scenarioDescription ?></p><div class="table-responsive scenario-table-wrap"><table class="scenario-table"><thead><tr><th>Scenario di Mercato</th><th>Stato Sottostanti</th><th>Cedole Spettanti</th><th>Rimborso Capitale</th><th>Esito Finanziario</th></tr></thead><tbody><?= $scenarioRows ?></tbody></table></div></div>
       <div class="pros-cons-grid" id="review-pros-cons"><div class="pros-box"><h3 class="pros-title">Punti di Forza</h3><ul><?= $pros ?></ul></div><div class="cons-box"><h3 class="cons-title">Criticità e Rischi</h3><ul><?= $cons ?></ul></div></div>
-      <div class="review-disclaimer"><p><strong>Avvertenza importante:</strong> le informazioni riportate hanno finalità esclusivamente informative e non costituiscono consulenza finanziaria, raccomandazione personalizzata o invito all’investimento. I certificati sono strumenti complessi e comportano rischi, inclusa la possibile perdita del capitale e il rischio emittente. Prima di assumere qualsiasi decisione, leggi il KID e la documentazione ufficiale del prodotto e valuta attentamente la tua situazione finanziaria.</p><a href="../disclaimer.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali</a></div>
+      <div class="review-disclaimer"><?= $reviewDisclaimer ?><a href="../disclaimer.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali</a></div>
     </div>
     <?php
     return (string)ob_get_clean();
@@ -644,12 +644,22 @@ function publishSite(?string $onlyIsin = null): array
     $template = readProjectFile('recensione.html');
     $files = [];
     $existingPages = glob(projectPath('recensioni/recensione-*.html')) ?: [];
+    $reviewDisclaimer = '';
+    foreach (cmsReadSection('transparency') as $transparencyItem) {
+        if (($transparencyItem['id'] ?? '') === 'product-warning') {
+            $reviewDisclaimer = cmsSafeHtml((string)$transparencyItem['content']);
+            break;
+        }
+    }
+    if ($reviewDisclaimer === '') {
+        throw new RuntimeException('Avvertenza breve delle schede prodotto non disponibile.');
+    }
     $wanted = [];
     foreach ($publishedCertificates as $certificate) {
         $isin = $certificate['isin'];
         if (isset($wanted[$isin])) throw new RuntimeException('ISIN duplicato: ' . $isin);
         $wanted[$isin] = true;
-        $markup = renderReviewContent($certificate, $publishedCertificates, $issuerProfiles, $underlyingProfiles, $publishedOverrides);
+        $markup = renderReviewContent($certificate, $publishedCertificates, $issuerProfiles, $underlyingProfiles, $publishedOverrides, $reviewDisclaimer);
         $files['recensioni/recensione-' . $isin . '.html'] = buildReviewPage($template, $certificate, $markup);
     }
     $dataJson = json_encode($publishedCertificates, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);

@@ -114,7 +114,26 @@ function cmsMigrateSectionItems(string $section, array $items): array
         }
     }
     unset($item);
+    if ($section === 'transparency') {
+        $itemIds = array_column($items, 'id');
+        foreach (cmsReadSection($section) as $publishedItem) {
+            if (!in_array($publishedItem['id'], $itemIds, true)) {
+                $items[] = $publishedItem;
+            }
+        }
+    }
     return $items;
+}
+
+function cmsReadPublishedReviewDisclaimer(): string
+{
+    $template = readProjectFile('recensione.html');
+    $content = cmsMarkedContent(
+        $template,
+        '<!-- CMS-PRODUCT-WARNING:START -->',
+        '<!-- CMS-PRODUCT-WARNING:END -->'
+    );
+    return cmsRequiredHtml(trim($content), 'l’avvertenza breve pubblicata');
 }
 
 function cmsReadSection(string $section): array
@@ -171,11 +190,18 @@ function cmsReadSection(string $section): array
         if (!$title || !$content) {
             throw new RuntimeException('Contenuto Trasparenza & Rischi non riconosciuto.');
         }
-        return [[
-            'id' => 'transparency',
-            'title' => cmsText($title),
-            'content' => cmsText($content),
-        ]];
+        return [
+            [
+                'id' => 'transparency',
+                'title' => cmsText($title),
+                'content' => cmsText($content),
+            ],
+            [
+                'id' => 'product-warning',
+                'title' => 'Avvertenza breve — schede prodotto',
+                'content' => cmsReadPublishedReviewDisclaimer(),
+            ],
+        ];
     }
     if ($section === 'disclaimer') {
         $header = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-DISCLAIMER-HEADER:START -->', '<!-- CMS-DISCLAIMER-HEADER:END -->'));
@@ -520,8 +546,15 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
     }
 
     if ($section === 'transparency') {
-        if ($existing === null || ($existing['id'] ?? '') !== 'transparency') {
-            throw new InvalidArgumentException('La sezione Trasparenza & Rischi non può essere aggiunta o rimossa.');
+        if ($existing === null || !in_array(($existing['id'] ?? ''), ['transparency', 'product-warning'], true)) {
+            throw new InvalidArgumentException('Gli elementi di Trasparenza, rischi e avvertenze non possono essere aggiunti o rimossi.');
+        }
+        if ($existing['id'] === 'product-warning') {
+            return [
+                'id' => 'product-warning',
+                'title' => (string)$existing['title'],
+                'content' => cmsRequiredHtml($input['content'] ?? '', 'l’avvertenza breve'),
+            ];
         }
         return [
             'id' => 'transparency',
@@ -762,11 +795,41 @@ function cmsTransparencyPagePaths(): array
     return $pages;
 }
 
-function cmsPublishTransparency(array $item): string
+function cmsReplaceReviewDisclaimer(string $html, string $content): string
 {
-    $item = cmsNormalizeForm('transparency', $item, [$item], $item);
-    $replacement = '<h4 class="footer-heading">' . h((string)$item['title']) . '</h4>'
-        . "\n" . '<p class="footer-disclaimer-text">' . h((string)$item['content']) . '</p>';
+    $pattern = '/<div class="review-disclaimer">[\s\S]*?(<a href="(?:\.\.\/)?disclaimer\.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali<\/a>\s*<\/div>)/';
+    $updated = preg_replace_callback(
+        $pattern,
+        static fn(array $match): string => '<div class="review-disclaimer">' . $content . $match[1],
+        $html,
+        1,
+        $count
+    );
+    if ($count !== 1) {
+        throw new RuntimeException('Avvertenza breve non riconosciuta nella scheda prodotto.');
+    }
+    return (string)$updated;
+}
+
+function cmsPublishTransparency(array $items): string
+{
+    $expectedIds = ['transparency', 'product-warning'];
+    if (array_column($items, 'id') !== $expectedIds) {
+        throw new InvalidArgumentException('Gli elementi di Trasparenza, rischi e avvertenze non possono essere aggiunti, rimossi o riordinati.');
+    }
+    $currentById = [];
+    foreach (cmsReadSection('transparency') as $currentItem) {
+        $currentById[$currentItem['id']] = $currentItem;
+    }
+    $itemsById = [];
+    foreach ($items as $item) {
+        $id = (string)$item['id'];
+        $itemsById[$id] = cmsNormalizeForm('transparency', $item, $items, $currentById[$id] ?? null);
+    }
+    $footerItem = $itemsById['transparency'];
+    $warningContent = (string)$itemsById['product-warning']['content'];
+    $replacement = '<h4 class="footer-heading">' . h((string)$footerItem['title']) . '</h4>'
+        . "\n" . '<p class="footer-disclaimer-text">' . h((string)$footerItem['content']) . '</p>';
     $prepared = [];
     foreach (cmsTransparencyPagePaths() as $relative) {
         $original = readProjectFile($relative);
@@ -776,12 +839,22 @@ function cmsPublishTransparency(array $item): string
             '<!-- CMS-TRANSPARENCY:END -->',
             $replacement
         );
+        if ($relative === 'recensione.html') {
+            $updated = cmsReplaceMarked(
+                $updated,
+                '<!-- CMS-PRODUCT-WARNING:START -->',
+                '<!-- CMS-PRODUCT-WARNING:END -->',
+                $warningContent
+            );
+        } elseif (str_starts_with($relative, 'recensioni/')) {
+            $updated = cmsReplaceReviewDisclaimer($updated, $warningContent);
+        }
         $prepared[$relative] = ['original' => $original, 'updated' => $updated];
     }
 
     $backupDirectory = storagePath('backups') . DIRECTORY_SEPARATOR . 'content-' . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
     if (!mkdir($backupDirectory, 0750, true) && !is_dir($backupDirectory)) {
-        throw new RuntimeException('Impossibile creare il backup della sezione Trasparenza & Rischi.');
+        throw new RuntimeException('Impossibile creare il backup di Trasparenza, rischi e avvertenze.');
     }
     foreach ($prepared as $relative => $file) {
         $backupPath = $backupDirectory . DIRECTORY_SEPARATOR . str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $relative);
@@ -830,10 +903,10 @@ function cmsPublishSection(string $section, array $items): string
 {
     $config = cmsSectionConfig($section);
     if ($section === 'transparency') {
-        if (count($items) !== 1) {
-            throw new InvalidArgumentException('La sezione Trasparenza & Rischi non può essere aggiunta o rimossa.');
+        if (count($items) !== 2) {
+            throw new InvalidArgumentException('Gli elementi di Trasparenza, rischi e avvertenze non possono essere aggiunti o rimossi.');
         }
-        return cmsPublishTransparency($items[0]);
+        return cmsPublishTransparency($items);
     }
     $originalHtml = readProjectFile($config['page']);
     $html = $originalHtml;

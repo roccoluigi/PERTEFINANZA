@@ -1,66 +1,84 @@
-# Pannello admin PERTEFINANZA
+# Pannello di amministrazione PERTEFINANZA
 
-Dashboard autonoma in PHP 8.1+ per creare e modificare certificati, salvare bozze e pubblicare le relative schede statiche. Sul server non servono Node.js o dipendenze esterne.
+Il pannello, realizzato in PHP 8.1 o versioni successive, permette di gestire i certificati, le relative schede e i contenuti del sito. Sul server non serve Node.js; è necessario installare le dipendenze PHP indicate nel file `composer.json`.
 
-## Installazione su Aruba
+## Installazione sul server Aruba
 
-1. Carica la cartella `admin/` nella stessa document root del sito, mantenendo accanto le cartelle e i file del sito (`js/`, `css/`, `recensione.html`, `index.html`, `sitemap.xml` e `recensioni/`).
-2. Crea `admin/config.php` direttamente sul server con `site_url` impostato sull’indirizzo HTTPS pubblico e `storage_dir` impostato su una cartella privata scrivibile accessibile a PHP. Se l’area admin non è ancora stata inizializzata, aggiungi un `setup_token` casuale di almeno 32 caratteri; rimuovilo dopo la prima configurazione. Non caricare né condividere `config.php`.
-3. Per mantenere i dati fuori dalla document root, imposta `storage_dir` in `config.php` su una cartella privata scrivibile accessibile a PHP e copia in tale cartella `certificates.json`, `review-overrides.json` e `published-review-overrides.json` dalla cartella `admin/private/`. Se non puoi usare una cartella esterna, lascia lo storage predefinito e conserva `admin/private/.htaccess`.
-4. Verifica che PHP possa scrivere nello storage, in `js/data-certificates.js`, `index.html`, `sitemap.xml` e nella cartella `recensioni/`.
-5. Per una casella Aruba, configura in `config.php` l’SMTP `smtps.aruba.it`, porta `465`, cifratura `ssl`, username con l’indirizzo email completo e password della casella. Usa `info@pertefinanza.it` come mittente e destinatario, se richiesto dal provider. Per caselle ospitate altrove, usa i parametri del relativo provider. Non inserire credenziali nei file pubblici o nel repository.
-6. Installa le dipendenze PHP con `composer install --no-dev` dalla cartella radice del sito e carica anche la cartella `vendor/` sul server.
-7. Apri `/admin/setup.php`, inserisci il token di installazione e crea username e password. La password deve essere lunga almeno 14 caratteri.
-8. A installazione conclusa, elimina `setup_token` da `config.php` e conserva una copia di backup sicura della configurazione.
-9. Accedi da `/admin/`.
+1. Carica la cartella `admin/` nella stessa cartella pubblica del sito. Mantieni accanto anche le cartelle e i file del sito, tra cui `js/`, `css/`, `recensione.html`, `index.html`, `sitemap.xml` e `recensioni/`.
+2. Crea `admin/config.php` direttamente sul server. Imposta `site_url` con l’indirizzo HTTPS pubblico del sito e `storage_dir` con il percorso di una cartella privata scrivibile da PHP. Se il pannello non è ancora stato configurato, aggiungi un `setup_token` casuale di almeno 32 caratteri. Dopo la prima configurazione, rimuovi il token. Non caricare né condividere `config.php`.
+3. Se vuoi conservare i dati fuori dalla cartella pubblica, imposta `storage_dir` su una cartella privata e copiali al suo interno: `certificates.json`, `review-overrides.json` e `published-review-overrides.json`, che si trovano in `admin/private/`. Se usi invece la cartella predefinita, conserva `admin/private/.htaccess` per impedirne l’accesso pubblico.
+4. Consenti a PHP di scrivere nell’archivio privato, nei file JavaScript dei dati, in `sitemap.xml`, nelle pagine HTML del sito e nella cartella `recensioni/`. Il pannello aggiorna questi file quando pubblica le modifiche.
+5. Per la posta elettronica Aruba, imposta in `config.php` il server SMTP `smtps.aruba.it`, la porta `465`, la cifratura `ssl`, l’indirizzo completo come nome utente e la password della casella. Se richiesto dal gestore, usa `info@pertefinanza.it` come mittente e destinatario. Per caselle di altri gestori, inserisci i relativi parametri SMTP. Non salvare credenziali nei file pubblici o nel repository.
+6. Dalla cartella principale del sito, installa le dipendenze PHP con:
 
-## Gestione contenuti
+   ```powershell
+   composer install --no-dev
+   ```
 
-Dal pannello certificati apri **Gestione contenuti** per modificare emittenti e rating, capitoli di formazione, FAQ, termini del glossario, Contatti & Info, Trasparenza & Rischi e Disclaimer e Note Legali. Le prime quattro sezioni consentono di aggiungere, modificare o rimuovere elementi; i testi formattati mantengono paragrafi e collegamenti consentiti. Gli approfondimenti non compaiono nei campi di modifica di Formazione, FAQ e Glossario: vengono conservati automaticamente e restano nelle pagine pubblicate.
+   Carica sul server anche la cartella `vendor/` generata da Composer.
+7. Apri `/admin/setup.php`, inserisci il token e crea il nome utente e la password. La password deve contenere almeno 14 caratteri.
+8. Dopo la configurazione, rimuovi `setup_token` da `config.php` e conserva una copia sicura del file di configurazione.
+9. Accedi al pannello da `/admin/`.
 
-Contatti & Info consente di modificare testi e recapiti, senza esporre o sostituire i campi e il comportamento del modulo email. Trasparenza & Rischi modifica il titolo e il testo mostrati nel footer di tutte le pagine del sito. Disclaimer e Note Legali consente di modificare titoli, testi e data di aggiornamento; le sezioni legali non possono essere aggiunte, rimosse o riordinate, così restano validi gli ancoraggi usati dai collegamenti del sito.
+## Gestione dei contenuti
 
-I badge accanto alle voci del menu indicano quanti elementi risultano modificati, aggiunti o rimossi rispetto alla versione pubblicata. **Pubblica tutte le modifiche** resta disattivato quando non ci sono differenze in attesa.
+Dal pannello dei certificati apri **Gestione contenuti** per modificare emittenti, formazione, FAQ, glossario, Contatti & Info, Trasparenza, rischi e avvertenze, e Disclaimer e Note Legali.
 
-**Salva bozza** conserva le modifiche nell’archivio privato senza cambiare la pagina pubblica. I comandi globali nell’header pubblicano o annullano le modifiche di tutte le sezioni CMS e dei certificati insieme; non ci sono comandi di pubblicazione o annullamento per la singola sezione. Ogni pubblicazione crea una copia di backup delle pagine HTML sostituite. Prima di eliminare elementi, verifica i collegamenti interni che li citano.
+Le sezioni **Emittenti**, **Formazione**, **FAQ** e **Glossario** permettono di aggiungere, modificare e rimuovere elementi. I contenuti formattati conservano paragrafi e collegamenti consentiti. Gli approfondimenti e i relativi collegamenti non compaiono nei campi di modifica di Formazione, FAQ e Glossario: vengono mantenuti automaticamente nelle pagine pubblicate.
 
-## Uso
+**Contatti & Info** permette di modificare testi e recapiti, senza sostituire i campi o il funzionamento del modulo di contatto. **Trasparenza, rischi e avvertenze** contiene due elementi distinti:
 
-- **Nuovo ISIN** crea una bozza dopo la validazione del formato e della cifra di controllo ISIN.
-- **Modifica** consente di aggiornare dati del prodotto, sottostanti e visibilità in home. Mostra inoltre tutto il testo della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità.
-- I contatori accanto a **In home** e **Top Picks** mostrano quante schede sono selezionate per ciascuna area. Non c’è un limite massimo: vengono mostrate tutte le schede selezionate.
-- Ogni scheda nell’elenco indica se è inclusa in **Home** e/o in **Top Picks**.
-- Il testo principale può essere formattato selezionando le parole e usando i pulsanti grassetto, corsivo e sottolineato; non occorre scrivere marcatori o HTML. Punti di forza e criticità sono modificabili punto per punto, aggiungendo o rimuovendo singole voci.
-- I dati finanziari si modificano nei relativi campi: cambiare il testo non aggiorna i dati e occorre verificare la coerenza delle percentuali e delle condizioni riportate nella matrice.
-- **Salva bozza** non modifica il sito pubblico. Per una scheda nuova o modificata, usa **Pubblica scheda** o **Pubblica modifiche** nella sua riga: le altre bozze restano in attesa.
-- **Annulla tutte le modifiche** nell’header ripristina i certificati e i contenuti pubblicati di tutte le sezioni, elimina le nuove schede non pubblicate e annulla le rimozioni in attesa. Le bozze editoriali vengono scartate.
-- **Segna per rimozione** conserva la pagina online finché non scegli **Rimuovi dal sito**; puoi annullare la rimozione prima di confermarla.
-- **Pubblica tutte le modifiche** nell’header applica tutte le nuove schede, le modifiche e le rimozioni in attesa, oltre alle bozze di tutte le sezioni editoriali.
-- Ogni pubblicazione sincronizza dati JavaScript, pagine statiche, schede in home, manifest e sitemap, e crea un backup dei file sostituiti.
-- Il pulsante **Rigenera sitemap** nella sezione Certificati aggiorna solo `sitemap.xml`, usando esclusivamente le schede già pubblicate e creando un backup. Richiede `site_url` configurato con il dominio pubblico HTTPS.
-- Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito pubblico e vale anche nelle altre pagine PERTEFINANZA aperte nello stesso browser.
-- **Cambia password** nell’header richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministratore vengono disconnesse.
+- il titolo e il testo informativo mostrati nel piè di pagina di tutte le pagine;
+- l’avvertenza breve mostrata sotto ogni scheda prodotto.
 
-Il pannello e il modulo di contatto devono essere usati con HTTPS sul sito pubblico. Il login limita a cinque i tentativi errati per indirizzo IP in una finestra di 15 minuti; il conteggio è condiviso tra sessioni e salvato nello `storage_dir`, che deve quindi essere scrivibile da PHP. L’indirizzo viene letto da `REMOTE_ADDR`: se il sito passa da un proxy, configura il server perché fornisca l’indirizzo client attendibile e non fidarti di intestazioni inoltrate non validate. La cartella `/admin/` è esclusa dalla scansione tramite `robots.txt`; questa impostazione non sostituisce autenticazione e protezione dei dati. Il modulo di contatto spedisce via SMTP senza salvare i messaggi sul server. Il server non può confermare che il messaggio sia stato letto o recapitato alla casella finale.
+**Disclaimer e Note Legali** permette di modificare i titoli, i testi e la data di aggiornamento. Le sezioni legali non possono essere aggiunte, rimosse o riordinate, così gli ancoraggi usati dai collegamenti interni restano validi.
 
-## Test locale
+I numeri accanto alle voci del menu indicano quanti elementi sono diversi dalla versione pubblicata. **Pubblica tutte le modifiche** è disattivato quando non ci sono modifiche in attesa.
 
-Per provare il pannello senza pubblicare sul sito online:
+**Salva bozza** conserva le modifiche nell’archivio privato senza aggiornare il sito pubblico. I comandi nell’intestazione pubblicano o annullano insieme le modifiche di tutte le sezioni e dei certificati: non è possibile pubblicare o annullare una singola sezione. Ogni pubblicazione crea una copia di sicurezza delle pagine HTML aggiornate. Prima di rimuovere un elemento, controlla i collegamenti interni che lo citano.
 
-1. Configura `admin/config.php` come sopra e usa una copia separata del sito come area di staging.
-2. Installa le dipendenze dalla cartella radice:
+## Gestione dei certificati
+
+- **Nuovo ISIN** crea una bozza dopo aver verificato il formato e la cifra di controllo dell’ISIN.
+- **Modifica** permette di aggiornare i dati del prodotto, i sottostanti e la visibilità nella home. Mostra anche tutti i testi della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità.
+- I contatori accanto a **In home** e **Top Picks** indicano quanti certificati sono selezionati per ciascuna area. Non c’è un limite massimo: vengono mostrati tutti quelli selezionati.
+- Ogni scheda dell’elenco indica se il certificato è incluso in **Home** e/o in **Top Picks**.
+- Per formattare il testo principale, seleziona le parole e usa i pulsanti per il grassetto, il corsivo e la sottolineatura. Non occorre inserire marcatori o codice HTML. I punti di forza e le criticità si modificano uno alla volta: puoi aggiungere o rimuovere singole voci.
+- I dati finanziari hanno campi dedicati. Una modifica al testo descrittivo non aggiorna quei dati: verifica che percentuali e condizioni della matrice siano coerenti.
+- **Salva bozza** non aggiorna il sito pubblico. Per pubblicare una scheda nuova o modificata, usa **Pubblica scheda** o **Pubblica modifiche** nella relativa riga; le altre bozze restano in attesa.
+- **Segna per rimozione** mantiene la pagina online finché non confermi con **Rimuovi dal sito**. Puoi annullare la rimozione prima di confermarla.
+- **Pubblica tutte le modifiche** nell’intestazione applica tutte le nuove schede, le modifiche e le rimozioni in attesa, oltre alle bozze dei contenuti.
+- Ogni pubblicazione aggiorna i dati JavaScript, le pagine statiche, le schede in home, l’elenco delle recensioni statiche e la mappa del sito; crea inoltre una copia di sicurezza dei file aggiornati.
+- **Rigenera sitemap**, nella sezione Certificati, aggiorna soltanto `sitemap.xml` usando le schede già pubblicate. Il comando crea una copia di sicurezza e richiede che `site_url` contenga il dominio pubblico HTTPS.
+- Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito e la applica anche alle altre pagine PERTEFINANZA aperte nello stesso browser.
+- **Cambia password**, nell’intestazione, richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministrative vengono disconnesse.
+
+## Sicurezza e modulo di contatto
+
+Usa il pannello e il modulo di contatto tramite HTTPS. L’accesso viene bloccato dopo cinque tentativi errati dallo stesso indirizzo IP nell’arco di 15 minuti; il conteggio è condiviso tra le sessioni e salvato nell’archivio privato, che deve quindi essere scrivibile da PHP.
+
+Il pannello legge l’indirizzo del visitatore da `REMOTE_ADDR`. Se il sito usa un proxy, configura il server per fornire l’indirizzo del visitatore in modo attendibile: non fidarti di intestazioni inoltrate che non siano state verificate. La cartella `/admin/` è esclusa dalla scansione tramite `robots.txt`, ma questa impostazione non sostituisce l’autenticazione né la protezione dei dati.
+
+Il modulo di contatto invia i messaggi tramite SMTP senza salvarli sul server. Il server non può confermare che il messaggio sia stato letto o recapitato alla casella finale.
+
+## Prova in un ambiente separato
+
+Per provare il pannello senza modificare il sito pubblico, usa una copia separata del sito.
+
+1. Configura `admin/config.php` come descritto sopra e prepara la copia come ambiente di prova.
+2. Dalla cartella principale della copia, installa le dipendenze:
 
    ```powershell
    composer install
    ```
 
-3. Avvia PHP dalla cartella radice della copia:
+3. Avvia il server PHP dalla stessa cartella:
 
    ```powershell
    php -S 127.0.0.1:8080
    ```
 
-4. Apri `http://127.0.0.1:8080/admin/setup.php`, completa l’installazione e poi verifica login, salvataggio bozze e pubblicazione.
-5. Dopo il login, usa **Gestione contenuti** o apri `http://127.0.0.1:8080/admin/content.php` per provare le sezioni editoriali.
+4. Apri `http://127.0.0.1:8080/admin/setup.php`, completa la configurazione e verifica l’accesso, il salvataggio delle bozze e la pubblicazione.
+5. Dopo aver effettuato l’accesso, apri **Gestione contenuti** oppure visita `http://127.0.0.1:8080/admin/content.php` per provare le sezioni editoriali.
 
-Una pubblicazione aggiorna i file dello staging: non effettuare il test sulla copia di produzione.
+La pubblicazione aggiorna i file della copia di prova. Non effettuare questi test sulla copia di produzione.

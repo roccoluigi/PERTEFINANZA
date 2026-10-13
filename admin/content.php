@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 require __DIR__ . '/lib.php';
-require __DIR__ . '/publisher.php';
 require __DIR__ . '/content-lib.php';
+require __DIR__ . '/publisher.php';
 adminSession();
 requireAdmin();
 
@@ -14,7 +14,7 @@ $sections = [
     'faq' => ['title' => 'FAQ'],
     'glossary' => ['title' => 'Glossario'],
     'contacts' => ['title' => 'Contatti & Info'],
-    'transparency' => ['title' => 'Trasparenza & Rischi'],
+    'transparency' => ['title' => 'Trasparenza, rischi e avvertenze'],
     'disclaimer' => ['title' => 'Disclaimer e Note Legali'],
 ];
 $section = (string)($_GET['section'] ?? 'issuers');
@@ -66,7 +66,7 @@ try {
     if (
         !$isNew
         && $editingId === ''
-        && in_array($section, ['contacts', 'transparency'], true)
+        && $section === 'contacts'
         && isset($items[0]['id'])
         && is_string($items[0]['id'])
     ) {
@@ -173,7 +173,7 @@ try {
 if (!isset($sections[$section])) {
     $section = 'issuers';
 }
-$labels = ['issuers' => 'Emittenti', 'training' => 'Formazione', 'faq' => 'FAQ', 'glossary' => 'Glossario', 'contacts' => 'Contatti & Info', 'transparency' => 'Trasparenza & Rischi', 'disclaimer' => 'Disclaimer e Note Legali'];
+$labels = ['issuers' => 'Emittenti', 'training' => 'Formazione', 'faq' => 'FAQ', 'glossary' => 'Glossario', 'contacts' => 'Contatti & Info', 'transparency' => 'Trasparenza, rischi e avvertenze', 'disclaimer' => 'Disclaimer e Note Legali'];
 $itemLabelKey = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'transparency' => 'title', 'disclaimer' => 'title'][$section] ?? 'name';
 $hasDraft = isset($drafts[$section]);
 $fixedContentSection = in_array($section, ['contacts', 'transparency', 'disclaimer'], true);
@@ -280,10 +280,13 @@ try {
               <label>Indirizzo email<input type="email" name="email" required maxlength="254" value="<?= h(cmsFormValue($formItem, 'email')) ?>"></label>
               <label>Titolo dei dati del titolare<input name="ownerTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'ownerTitle')) ?>"></label>
               <?= cmsEditor('ownerDescription', 'Dati e descrizione del titolare', cmsFormValue($formItem, 'ownerDescription')) ?>
-            <?php elseif ($section === 'transparency'): ?>
-              <p class="cms-editor-help cms-mobile-guide">Questo testo compare nel footer di tutte le pagine del sito. Il titolo e il paragrafo vengono aggiornati insieme alla pubblicazione di tutte le modifiche.</p>
-              <label>Titolo della sezione<input name="title" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
+            <?php elseif ($section === 'transparency' && $editingId === 'transparency'): ?>
+              <p class="cms-editor-help">Il titolo e il testo compaiono nel footer di tutte le pagine del sito e vengono pubblicati insieme.</p>
+              <label>Titolo nel footer<input name="title" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Testo informativo<textarea name="content" required maxlength="2000" rows="6"><?= h(cmsFormValue($formItem, 'content')) ?></textarea></label>
+            <?php elseif ($section === 'transparency' && $editingId === 'product-warning'): ?>
+              <p class="cms-editor-help">Questo testo compare sotto ogni scheda prodotto. Puoi usare la formattazione; il contenuto HTML viene filtrato per rimuovere codice attivo non sicuro.</p>
+              <?= cmsEditor('content', 'Avvertenza breve — schede prodotto', cmsFormValue($formItem, 'content')) ?>
             <?php elseif ($section === 'disclaimer' && $editingId === 'page-header'): ?>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Introduzione<textarea name="description" required maxlength="1200"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>
@@ -326,9 +329,15 @@ try {
             <form id="cms-delete-form" method="post" class="cms-hidden-form"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete_content_draft"><input type="hidden" name="id" value="<?= h($editingId) ?>"></form>
           <?php endif; ?>
         <?php else: ?>
-          <?php if (in_array($section, ['contacts', 'transparency'], true)): ?>
+          <?php if ($section === 'contacts'): ?>
             <h2>Elemento non disponibile</h2>
             <p class="cms-editor-help">Ricarica la sezione o controlla che l’elemento esistente sia disponibile.</p>
+          <?php elseif ($section === 'transparency'): ?>
+            <h2>Seleziona un elemento</h2>
+            <div class="cms-editor-help">
+              <p>Scegli dall’elenco il contenuto da modificare. Il salvataggio crea una bozza; per pubblicare o annullare le modifiche usa i comandi globali nell’header.</p>
+              <p>Per l’avvertenza breve puoi usare i pulsanti di formattazione. Il contenuto HTML viene filtrato per rimuovere codice attivo non sicuro.</p>
+            </div>
           <?php else: ?>
             <h2 class="cms-mobile-guide-title">Seleziona un elemento</h2>
             <div class="cms-editor-help cms-mobile-guide">

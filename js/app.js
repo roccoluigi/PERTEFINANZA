@@ -1426,14 +1426,45 @@ function initContactForm() {
   const responseMsg = document.getElementById('contact-response-msg');
 
   if (form && responseMsg) {
+    const requiredFields = Array.from(form.querySelectorAll('[required]'));
+    const missingMessages = {
+      name: 'Inserisci nome e cognome.',
+      email: 'Inserisci il tuo indirizzo e-mail.',
+      subject: 'Seleziona l’oggetto della richiesta.',
+      message: 'Inserisci il messaggio.',
+      consent: 'Per inviare il messaggio, accetta l’informativa sulla privacy.'
+    };
+    const updateFieldValidity = (field) => {
+      field.setCustomValidity('');
+      const isEmpty = field.type === 'checkbox'
+        ? !field.checked
+        : field.value.trim() === '';
+      if (isEmpty) {
+        field.setCustomValidity(missingMessages[field.name] || 'Compila questo campo obbligatorio.');
+      } else if (field.type === 'email' && field.validity.typeMismatch) {
+        field.setCustomValidity('Inserisci un indirizzo e-mail valido.');
+      }
+    };
+
+    form.noValidate = true;
+    requiredFields.forEach((field) => {
+      const refreshValidity = () => updateFieldValidity(field);
+      field.addEventListener('input', refreshValidity);
+      field.addEventListener('change', refreshValidity);
+    });
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      responseMsg.style.display = 'none';
+      requiredFields.forEach(updateFieldValidity);
+      if (!form.reportValidity()) {
+        return;
+      }
 
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) {
         submitBtn.disabled = true;
       }
-      responseMsg.style.display = 'none';
 
       try {
         const response = await fetch(form.action, {

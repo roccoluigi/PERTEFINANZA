@@ -1,47 +1,55 @@
-RECENSIONI STATICHE
+# Recensioni statiche
 
-In questa cartella trovi le pagine HTML delle recensioni. Ogni file ha il nome:
+Questa cartella contiene le pagine HTML delle recensioni statiche. Il nome di ogni file segue il formato `recensione-<ISIN>.html`.
 
-recensione-ISIN.html
+## Generare una recensione
 
-GENERARE UNA RECENSIONE
+Per creare o aggiornare la pagina di un solo certificato, sostituisci `<ISIN>` con il suo codice:
 
-Per creare o rigenerare la pagina di un solo certificato:
-
+```powershell
 node scripts/generate-review.mjs <ISIN>
+```
 
-L'ISIN deve essere presente in js/data-certificates.js. Il comando crea la pagina, oppure sovrascrive quella esistente, e aggiorna automaticamente l'indice dei link.
+L’ISIN deve essere presente in `js/data-certificates.js`. Il comando crea la pagina oppure sovrascrive quella già esistente, quindi aggiorna l’elenco delle recensioni statiche e i collegamenti della home.
 
 Esempio:
 
+```powershell
 node scripts/generate-review.mjs DE000BD54H77
+```
 
-GENERARE TUTTE LE RECENSIONI
+## Generare tutte le recensioni
 
-Per creare o rigenerare una pagina per ogni certificato presente in js/data-certificates.js:
+Per creare o aggiornare una pagina per ciascun certificato presente in `js/data-certificates.js`, esegui:
 
+```powershell
 node scripts/generate-review.mjs --all
+```
 
-Le pagine già esistenti vengono sovrascritte; quelle mancanti vengono create. Le eventuali modifiche manuali alle pagine rigenerate vengono perse. Il comando non elimina i file relativi a certificati che non sono più nei dati.
+Le pagine esistenti vengono sovrascritte e quelle mancanti vengono create. Le modifiche manuali alle pagine sovrascritte vanno perse. Il comando non elimina le pagine dei certificati che non sono più presenti nei dati.
 
-GENERARE SOLO LE RECENSIONI MANCANTI
+## Generare solo le recensioni mancanti
 
-Per creare solo le pagine non ancora presenti, confrontando gli ISIN in js/data-certificates.js con i file nella cartella recensioni:
+Per creare soltanto le pagine che non esistono ancora, confrontando gli ISIN in `js/data-certificates.js` con i file di questa cartella, esegui:
 
+```powershell
 node scripts/generate-review.mjs --missing
+```
 
-Le pagine già esistenti vengono saltate e non sovrascritte. Al termine, l'indice delle recensioni statiche e i collegamenti in home vengono sincronizzati. Per aggiornare anche le pagine esistenti usa --all.
+Le pagine già presenti vengono mantenute senza sovrascriverle. Al termine, il comando aggiorna l’elenco delle recensioni statiche e i collegamenti della home. Per aggiornare anche le pagine esistenti, usa `--all`.
 
-DA DOVE ARRIVANO I DATI
+## Origine dei dati
 
-Le caratteristiche dei certificati provengono da js/data-certificates.js. Rating e descrizioni degli emittenti vengono letti dalle schede HTML in emittenti.html.
+Le caratteristiche dei certificati provengono da `js/data-certificates.js`. Le valutazioni e le descrizioni degli emittenti vengono lette dalle relative schede HTML in `emittenti.html`.
 
-AGGIUNGERE O ELIMINARE PAGINE A MANO
+## Aggiungere o rimuovere pagine manualmente
 
-Se crei o elimini manualmente un file HTML in questa cartella, aggiorna l'indice e i collegamenti della home con:
+Se crei o elimini manualmente una pagina HTML in questa cartella, aggiorna l’elenco delle recensioni statiche e i collegamenti della home:
 
+```powershell
 node scripts/generate-review.mjs --sync
+```
 
-Se modifichi solo il contenuto di una pagina già esistente, non serve eseguire il sync.
+Se modifichi soltanto il contenuto di una pagina già esistente, non è necessario eseguire la sincronizzazione.
 
-Dopo aver eliminato una pagina, i link per quell'ISIN tornano alla recensione dinamica; il comando non ricrea la pagina statica.
+Dopo aver eliminato una pagina statica, i collegamenti per quell’ISIN rimandano alla recensione dinamica. Il comando `--sync` aggiorna l’elenco e i collegamenti, ma non ricrea la pagina eliminata.

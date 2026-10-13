@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 require __DIR__ . '/lib.php';
-require __DIR__ . '/publisher.php';
 require __DIR__ . '/content-lib.php';
+require __DIR__ . '/publisher.php';
 adminSession();
 requireAdmin();
 
@@ -14,7 +14,7 @@ $contentSectionLabels = [
     'faq' => 'FAQ',
     'glossary' => 'Glossario',
     'contacts' => 'Contatti & Info',
-    'transparency' => 'Trasparenza & Rischi',
+    'transparency' => 'Trasparenza, rischi e avvertenze',
     'disclaimer' => 'Disclaimer e Note Legali',
 ];
 $message = '';
