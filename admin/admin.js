@@ -50,21 +50,102 @@
     document.querySelectorAll('[data-rich-editor]').forEach((editor) => {
       const content = editor.querySelector('[data-rich-content]');
       const value = editor.querySelector('[data-rich-input]');
+      const fontSizeInput = editor.querySelector('[data-rich-font-size]');
+      const lineHeightInput = editor.querySelector('[data-rich-line-height]');
       const syncValue = () => {
         if (content && value) value.value = content.innerHTML;
       };
+      let selectedRange = null;
+      const saveSelection = () => {
+        const selection = window.getSelection();
+        if (
+          selection
+          && selection.rangeCount > 0
+          && content.contains(selection.anchorNode)
+          && content.contains(selection.focusNode)
+        ) {
+          selectedRange = selection.getRangeAt(0).cloneRange();
+        }
+      };
+      const restoreSelection = () => {
+        if (!selectedRange) return;
+        const selection = window.getSelection();
+        if (!selection) return;
+        selection.removeAllRanges();
+        selection.addRange(selectedRange);
+      };
+      const formatContent = () => {
+        let wrapper = Array.from(content.children).find((child) => child.classList.contains('cms-rich-format'));
+        if (wrapper) return wrapper;
+        wrapper = document.createElement('div');
+        wrapper.className = 'cms-rich-format';
+        while (content.firstChild) wrapper.append(content.firstChild);
+        content.append(wrapper);
+        return wrapper;
+      };
+      const applyContentFormat = () => {
+        const previousHtml = content.innerHTML;
+        const fontSize = Number(fontSizeInput?.value);
+        const lineHeight = Number(lineHeightInput?.value);
+        if (
+          !Number.isFinite(fontSize)
+          || !Number.isInteger(fontSize * 2)
+          || fontSize < 8
+          || fontSize > 72
+          || !Number.isFinite(lineHeight)
+          || !Number.isInteger(lineHeight * 10)
+          || lineHeight < 1
+          || lineHeight > 2.5
+        ) return;
+        const wrapper = formatContent();
+        wrapper.style.fontSize = `${fontSize}px`;
+        wrapper.style.lineHeight = String(lineHeight);
+        syncValue();
+        if (content.innerHTML !== previousHtml) markEditorialChanged();
+      };
       if (!content || !value) return;
       content.addEventListener('input', syncValue);
+      content.addEventListener('keyup', saveSelection);
+      content.addEventListener('mouseup', saveSelection);
+      const existingFormat = Array.from(content.children).find((child) => child.classList.contains('cms-rich-format'));
+      if (existingFormat) {
+        if (fontSizeInput && existingFormat.style.fontSize.endsWith('px')) fontSizeInput.value = existingFormat.style.fontSize.slice(0, -2);
+        if (lineHeightInput && existingFormat.style.lineHeight) lineHeightInput.value = existingFormat.style.lineHeight;
+      }
       editor.closest('form')?.addEventListener('submit', syncValue);
       editor.querySelectorAll('[data-rich-command]').forEach((button) => {
-        button.addEventListener('mousedown', (event) => event.preventDefault());
+        button.addEventListener('mousedown', (event) => {
+          saveSelection();
+          event.preventDefault();
+        });
         button.addEventListener('click', () => {
           const previousHtml = content.innerHTML;
           content.focus();
+          restoreSelection();
           document.execCommand(button.dataset.richCommand, false);
           syncValue();
           if (content.innerHTML !== previousHtml) markEditorialChanged();
         });
+      });
+      editor.querySelectorAll('[data-rich-font-size]').forEach((input) => {
+        input.addEventListener('mousedown', saveSelection);
+        input.addEventListener('change', applyContentFormat);
+        editor.querySelectorAll('[data-rich-font-size-step]').forEach((button) => {
+          button.addEventListener('mousedown', (event) => {
+            saveSelection();
+            event.preventDefault();
+          });
+          button.addEventListener('click', () => {
+            const currentValue = Number(input.value);
+            const direction = button.dataset.richFontSizeStep === 'up' ? 1 : -1;
+            const nextValue = Math.min(72, Math.max(8, (Number.isFinite(currentValue) ? currentValue : 14) + (direction * 0.5)));
+            input.value = Number.isInteger(nextValue) ? String(nextValue) : nextValue.toFixed(1);
+            applyContentFormat();
+          });
+        });
+      });
+      editor.querySelectorAll('[data-rich-line-height]').forEach((input) => {
+        input.addEventListener('change', applyContentFormat);
       });
     });
 

@@ -1295,6 +1295,18 @@ button, input, select, textarea {
   margin: 0 0 1rem;
 }
 
+.cms-font-size-small {
+  font-size: 0.875em;
+}
+
+.cms-font-size-normal {
+  font-size: 1em;
+}
+
+.cms-font-size-large {
+  font-size: 1.25em;
+}
+
 .home-certificate-foot {
   display: flex;
   justify-content: flex-start;

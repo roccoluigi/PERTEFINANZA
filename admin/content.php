@@ -31,7 +31,7 @@ function cmsRatingText(array $ratings): string
     return implode("\n", array_map(static fn($rating) => (string)$rating['agency'] . ' | ' . (string)$rating['value'], $ratings));
 }
 
-function cmsEditor(string $name, string $label, string $html): string
+function cmsEditor(string $name, string $label, string $html, string $defaultFontSize = '16', string $defaultLineHeight = '1.6'): string
 {
     $html = cmsSafeHtml($html);
     $safeName = h($name);
@@ -40,6 +40,18 @@ function cmsEditor(string $name, string $label, string $html): string
         . '<button type="button" data-rich-command="bold" aria-label="Grassetto" title="Grassetto"><strong>B</strong></button>'
         . '<button type="button" data-rich-command="italic" aria-label="Corsivo" title="Corsivo"><em>I</em></button>'
         . '<button type="button" data-rich-command="underline" aria-label="Sottolineato" title="Sottolineato"><u>U</u></button>'
+        . '<span class="rich-text-size-controls">'
+        . '<label for="rich-font-size-' . $safeName . '">Px</label>'
+        . '<input id="rich-font-size-' . $safeName . '" type="number" min="8" max="72" step="0.5" inputmode="decimal" value="' . h($defaultFontSize) . '" data-rich-font-size aria-label="Dimensione del carattere in pixel" title="Dimensione del carattere in pixel">'
+        . '<span class="rich-text-font-stepper" role="group" aria-label="Regola dimensione del carattere">'
+        . '<button type="button" data-rich-font-size-step="up" aria-label="Aumenta di 0,5 pixel" title="Aumenta di 0,5 pixel">&#9650;</button>'
+        . '<button type="button" data-rich-font-size-step="down" aria-label="Riduci di 0,5 pixel" title="Riduci di 0,5 pixel">&#9660;</button>'
+        . '</span>'
+        . '</span>'
+        . '<span class="rich-text-line-height-controls">'
+        . '<label for="rich-line-height-' . $safeName . '">Interlinea</label>'
+        . '<input id="rich-line-height-' . $safeName . '" type="number" min="1" max="2.5" step="0.1" inputmode="decimal" value="' . h($defaultLineHeight) . '" data-rich-line-height aria-label="Interlinea" title="Interlinea">'
+        . '</span>'
         . '</div><div class="rich-text-content cms-rich-content" contenteditable="true" role="textbox" aria-label="' . h($label) . '" aria-multiline="true" data-rich-content data-placeholder="Scrivi il contenuto">' . $html . '</div>'
         . '<input type="hidden" name="' . $safeName . '" value="' . h($html) . '" data-rich-input></div></div>';
 }
@@ -286,7 +298,7 @@ try {
               <label>Testo informativo<textarea name="content" required maxlength="2000" rows="6"><?= h(cmsFormValue($formItem, 'content')) ?></textarea></label>
             <?php elseif ($section === 'transparency' && $editingId === 'product-warning'): ?>
               <p class="cms-editor-help">Questo testo compare sotto ogni scheda prodotto. Puoi usare la formattazione; il contenuto HTML viene filtrato per rimuovere codice attivo non sicuro.</p>
-              <?= cmsEditor('content', 'Avvertenza breve — schede prodotto', cmsFormValue($formItem, 'content')) ?>
+              <?= cmsEditor('content', 'Avvertenza breve — schede prodotto', cmsFormValue($formItem, 'content'), '14', '1.6') ?>
             <?php elseif ($section === 'disclaimer' && $editingId === 'page-header'): ?>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
               <label>Introduzione<textarea name="description" required maxlength="1200"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>

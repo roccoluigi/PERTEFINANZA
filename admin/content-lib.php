@@ -433,7 +433,7 @@ function cmsSanitizeNode(DOMNode $parent): void
             }
             continue;
         }
-        $allowedAttributes = ['class', 'id', 'title', 'href', 'target', 'rel', 'colspan', 'rowspan', 'scope', 'src', 'alt', 'width', 'height'];
+        $allowedAttributes = ['class', 'id', 'title', 'href', 'target', 'rel', 'colspan', 'rowspan', 'scope', 'src', 'alt', 'width', 'height', 'style'];
         $attributes = [];
         foreach ($child->attributes as $attribute) {
             $attributes[] = $attribute->name;
@@ -449,6 +449,19 @@ function cmsSanitizeNode(DOMNode $parent): void
             } elseif ($name === 'class') {
                 $classes = preg_split('/\s+/', trim($value)) ?: [];
                 $child->setAttribute('class', implode(' ', array_filter($classes, static fn($class) => preg_match('/^[A-Za-z0-9_-]+$/', $class) === 1)));
+            } elseif ($name === 'style') {
+                if (
+                    ($tag === 'span' && preg_match('/^\s*font-size\s*:\s*((?:[8-9]|[1-6]\d|7[0-2])(?:\.5)?)px\s*;?\s*$/i', $value, $fontSizeMatch) === 1)
+                    || ($tag === 'div' && cmsHasClass($child, 'cms-rich-format') && preg_match('/^\s*font-size\s*:\s*((?:[8-9]|[1-6]\d|7[0-2])(?:\.5)?)px\s*;\s*line-height\s*:\s*(1(?:\.\d)?|2(?:\.[0-5])?)\s*;?\s*$/i', $value, $formatMatch) === 1)
+                ) {
+                    if ($tag === 'span') {
+                        $child->setAttribute('style', 'font-size: ' . $fontSizeMatch[1] . 'px');
+                    } else {
+                        $child->setAttribute('style', 'font-size: ' . $formatMatch[1] . 'px; line-height: ' . $formatMatch[2]);
+                    }
+                } else {
+                    $child->removeAttribute($name);
+                }
             } elseif ($name === 'id' && preg_match('/^[A-Za-z][A-Za-z0-9_-]{0,99}$/', $value) !== 1) {
                 $child->removeAttribute($name);
             } elseif (in_array($name, ['width', 'height', 'colspan', 'rowspan'], true) && preg_match('/^\d{1,4}$/', $value) !== 1) {
