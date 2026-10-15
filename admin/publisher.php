@@ -305,7 +305,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     $base = h((string)$certificate['isin']);
     $underlyings = h(implode(', ', $certificate['underlyings']));
     $shareText = rawurlencode($certificate['name'] . "\nRendimento potenziale annuo " . number_format((float)$certificate['annualYield'], 2, ',', '') . '% · barriera capitale ' . $certificate['barrierCapital']);
-    $pageUrl = 'https://pertefinanza.it/recensioni/recensione-' . rawurlencode($certificate['isin']) . '.html#review-overview';
+    $pageUrl = 'https://www.pertefinanza.it/recensioni/recensione-' . rawurlencode($certificate['isin']) . '.html#review-overview';
     $encodedUrl = rawurlencode($pageUrl);
     ob_start();
     ?>
@@ -506,7 +506,7 @@ function publicSitemapBaseUrl(string $siteUrl): string
         || isset($parts['query']) || isset($parts['fragment'])
         || !in_array($parts['path'] ?? '', ['', '/'], true)
         || (isset($parts['port']) && $parts['port'] !== 443)) {
-        throw new RuntimeException('Per rigenerare la sitemap, imposta site_url in config.php su un indirizzo HTTPS pubblico, ad esempio https://pertefinanza.it.');
+        throw new RuntimeException('Per rigenerare la sitemap, imposta site_url in config.php su un indirizzo HTTPS pubblico, ad esempio https://www.pertefinanza.it.');
     }
 
     $host = strtolower(rtrim((string)$parts['host'], '.'));

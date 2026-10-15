@@ -102,7 +102,7 @@ async function renderReviewMarkup(isin, issuerData) {
     ISSUERS_DATA: issuerData,
     window: {
       location: {
-        href: 'https://pertefinanza.it/recensione.html',
+        href: 'https://www.pertefinanza.it/recensione.html',
         search: `?isin=${encodeURIComponent(isin)}`
       }
     },
@@ -232,7 +232,7 @@ async function renderHomeFeaturedMarkup(issuerData) {
     ISSUERS_DATA: issuerData,
     window: {
       location: {
-        href: 'https://pertefinanza.it/index.html',
+        href: 'https://www.pertefinanza.it/index.html',
         pathname: '/PERTEFINANZA/index.html'
       }
     },
