@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordion();
   initIssuersList();
   initReviewPage();
+  initReviewDisclaimer();
   initContactForm();
   window.addEventListener('resize', () => alignCertificateMetrics());
 });
@@ -156,6 +157,37 @@ function initMobileMenu() {
       });
     });
   }
+}
+
+function initReviewDisclaimer() {
+  const mobileViewport = window.matchMedia('(max-width: 768px)');
+  document.querySelectorAll('.review-disclaimer').forEach(disclaimer => {
+    const fullText = disclaimer.querySelector(':scope > .cms-rich-format, :scope > p');
+    if (!fullText) return;
+
+    const isPromotional = fullText.textContent.toLowerCase().includes('scopo promozionale');
+    const preview = document.createElement('p');
+    preview.className = 'review-disclaimer-preview';
+    const heading = document.createElement('strong');
+    heading.textContent = 'Avvertenza importante: ';
+    preview.append(heading, document.createTextNode(isPromotional
+      ? 'Questo contenuto è promozionale, non ricerca, consulenza o raccomandazione. Chi lo diffonde può trovarsi in un potenziale conflitto di interessi. I certificati sono complessi, soggetti al rischio emittente e possono comportare perdite anche totali. Prima di investire, consulta il KID e i documenti ufficiali.'
+      : 'Queste informazioni sono solo a scopo informativo: non sono consulenza o raccomandazione personalizzata. I certificati sono complessi, soggetti al rischio emittente e possono comportare perdite di capitale. Prima di investire, leggi il KID e la documentazione ufficiale.'));
+
+    const details = document.createElement('details');
+    details.className = 'review-disclaimer-details';
+    const summary = document.createElement('summary');
+    summary.textContent = 'Leggi tutte le avvertenze';
+    details.append(summary, fullText);
+    disclaimer.insertBefore(preview, disclaimer.firstChild);
+    disclaimer.insertBefore(details, disclaimer.querySelector(':scope > .btn'));
+
+    const syncDisclosure = () => {
+      details.open = !mobileViewport.matches;
+    };
+    syncDisclosure();
+    mobileViewport.addEventListener('change', syncDisclosure);
+  });
 }
 
 /* ==========================================================================

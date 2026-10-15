@@ -865,6 +865,12 @@ button, input, select, textarea {
   font-size: calc(1.2rem + 2px);
 }
 
+@media (max-width: 480px) {
+  .home-selected-certificates-title {
+    line-height: 0.9;
+  }
+}
+
 .card-subtitle {
   font-size: 0.875rem;
   color: var(--text-muted);
@@ -1324,6 +1330,48 @@ button, input, select, textarea {
 
 .review-disclaimer p {
   margin: 0 0 1rem;
+}
+
+.review-disclaimer-preview {
+  display: none;
+}
+
+.review-disclaimer-details > summary {
+  display: none;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.review-disclaimer-details > summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.review-disclaimer-details[open] > summary {
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .review-disclaimer {
+    padding: 0.9rem 1rem;
+  }
+
+  .review-disclaimer-preview {
+    display: block;
+    margin-bottom: 0.65rem;
+  }
+
+  .review-disclaimer-details > summary {
+    display: list-item;
+  }
+
+  .review-disclaimer-details:not([open]) > summary {
+    position: relative;
+    top: -0.8rem;
+  }
 }
 
 .cms-font-size-small {
@@ -3453,6 +3501,10 @@ button, input, select, textarea {
   .home-benefit-text {
     font-size: 0.75rem;
     margin-top: 0.375rem;
+  }
+
+  .home-benefit-text-large-mobile {
+    font-size: 0.85rem;
   }
 
   .home-method-avatar {
