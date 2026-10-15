@@ -139,10 +139,10 @@
       <div class="pf-cookie-copy">
         <h2 id="pf-cookie-title">Le tue preferenze cookie</h2>
         <p>
-          Usiamo strumenti tecnici necessari al sito. Solo con il tuo consenso attiviamo Meta Pixel,
-          che comunica a Meta informazioni sulla visita per misurare il traffico e l’efficacia delle
-          campagne. La scelta viene salvata per 6 mesi. Puoi modificarla in qualsiasi momento dal
-          link “Gestisci cookie” nel footer. <a href="${policyPath}">Leggi la Cookie Policy</a>.
+          Usiamo strumenti tecnici necessari al sito. Con il tuo consenso, Meta Pixel invia a Meta
+          dati sulla visita per misurare il traffico e l’efficacia delle campagne. Conserviamo la
+          scelta per 6 mesi; puoi modificarla in qualsiasi momento da “Gestisci cookie” nel footer.
+          <a href="${policyPath}">Leggi la Cookie Policy</a>.
         </p>
       </div>
       <div class="pf-cookie-actions">
