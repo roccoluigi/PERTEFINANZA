@@ -867,7 +867,7 @@ button, input, select, textarea {
 
 @media (max-width: 480px) {
   .home-selected-certificates-title {
-    line-height: 0.9;
+    line-height: 1;
   }
 }
 
@@ -1361,16 +1361,15 @@ button, input, select, textarea {
 
   .review-disclaimer-preview {
     display: block;
+    margin-bottom: 0;
+  }
+
+  .review-disclaimer-details {
     margin-bottom: 0.65rem;
   }
 
   .review-disclaimer-details > summary {
     display: list-item;
-  }
-
-  .review-disclaimer-details:not([open]) > summary {
-    position: relative;
-    top: -0.8rem;
   }
 }
 

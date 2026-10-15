@@ -165,7 +165,7 @@ function initReviewDisclaimer() {
     const fullText = disclaimer.querySelector(':scope > .cms-rich-format, :scope > p');
     if (!fullText) return;
 
-    const isPromotional = fullText.textContent.toLowerCase().includes('scopo promozionale');
+    const isPromotional = fullText.classList.contains('cms-rich-format');
     const preview = document.createElement('p');
     preview.className = 'review-disclaimer-preview';
     const heading = document.createElement('strong');
