@@ -1361,11 +1361,14 @@ button, input, select, textarea {
 
   .review-disclaimer-preview {
     display: block;
-    margin-bottom: 0;
+  }
+
+  .review-disclaimer p.review-disclaimer-preview {
+    margin-bottom: 0.2rem;
   }
 
   .review-disclaimer-details {
-    margin-bottom: 0.65rem;
+    margin-bottom: 0.8rem;
   }
 
   .review-disclaimer-details > summary {
