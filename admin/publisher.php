@@ -689,7 +689,7 @@ function publishSite(?string $onlyIsin = null): array
             ? strtoupper($match[1])
             : '';
         $updated = updateReviewPicker((string)$updated, $publishedCertificates, $selectedIsin);
-        $files[$relative] = $updated;
+        $files[$relative] = cmsEnsureConsentAssets((string)$updated, $relative);
     }
     $index = $files['index.html'] ?? readProjectFile('index.html');
     $indexUpdated = preg_replace_callback('/(<!-- STATIC-HOME-CERTIFICATES:START -->)[\s\S]*?(<!-- STATIC-HOME-CERTIFICATES:END -->)/', static fn($m) => $m[1] . "\n" . renderHomeCards($publishedCertificates) . "\n" . $m[2], $index, 1, $markerCount);

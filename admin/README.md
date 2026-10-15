@@ -49,6 +49,7 @@ I numeri accanto alle voci del menu indicano quanti elementi sono diversi dalla 
 - **Segna per rimozione** mantiene la pagina online finché non confermi con **Rimuovi dal sito**. Puoi annullare la rimozione prima di confermarla.
 - **Pubblica tutte le modifiche** nell’intestazione applica tutte le nuove schede, le modifiche e le rimozioni in attesa, oltre alle bozze dei contenuti.
 - Ogni pubblicazione aggiorna i dati JavaScript, le pagine statiche, le schede in home, l’elenco delle recensioni statiche e la mappa del sito; crea inoltre una copia di sicurezza dei file aggiornati.
+- Ogni pubblicazione mantiene aggiornati gli asset per il consenso e Meta Pixel su tutte le pagine pubbliche interessate. Le nuove recensioni ereditano l’inclusione dal modello `recensione.html`; le nuove pagine create al di fuori del CMS devono includere gli asset di consenso nel proprio `<head>`.
 - **Rigenera sitemap**, nella sezione Certificati, aggiorna soltanto `sitemap.xml` usando le schede già pubblicate. Il comando crea una copia di sicurezza e richiede che `site_url` contenga il dominio pubblico HTTPS.
 - Il comando **Notte/Giorno** usa la stessa preferenza salvata dal sito e la applica anche alle altre pagine PERTEFINANZA aperte nello stesso browser.
 - **Cambia password**, nell’intestazione, richiede la password attuale e una nuova password confermata di almeno 14 caratteri. Dopo il cambio, le altre sessioni amministrative vengono disconnesse.

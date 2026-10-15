@@ -785,6 +785,42 @@ function cmsReplaceMarked(string $html, string $start, string $end, string $repl
     return (string)$updated;
 }
 
+function cmsEnsureConsentAssets(string $html, string $relative): string
+{
+    $prefix = str_starts_with($relative, 'recensioni/') ? '../' : '';
+    $scriptVersion = hash_file('sha256', projectPath('js/meta-pixel-consent.js'));
+    $styleVersion = hash_file('sha256', projectPath('css/meta-pixel-consent.css'));
+    if (!is_string($scriptVersion) || !is_string($styleVersion)) {
+        throw new RuntimeException('Impossibile calcolare la versione degli strumenti di consenso.');
+    }
+
+    $start = '<!-- SITE-CONSENT-ASSETS:START -->';
+    $end = '<!-- SITE-CONSENT-ASSETS:END -->';
+    $newline = str_contains($html, "\r\n") ? "\r\n" : "\n";
+    $assets = $start . $newline
+        . '  <link rel="stylesheet" href="' . $prefix . 'css/meta-pixel-consent.css?v=' . substr($styleVersion, 0, 12) . '">' . $newline
+        . '  <script src="' . $prefix . 'js/meta-pixel-consent.js?v=' . substr($scriptVersion, 0, 12) . '" defer></script>' . $newline
+        . '  ' . $end;
+    $pattern = '/' . preg_quote($start, '/') . '[\s\S]*?' . preg_quote($end, '/') . '/';
+    $matches = preg_match_all($pattern, $html);
+    if ($matches === false || $matches > 1) {
+        throw new RuntimeException('Blocco degli strumenti di consenso non valido in ' . $relative . '.');
+    }
+    if ($matches === 1) {
+        $updated = preg_replace($pattern, $assets, $html, 1, $count);
+        if ($count !== 1) {
+            throw new RuntimeException('Impossibile aggiornare gli strumenti di consenso in ' . $relative . '.');
+        }
+        return (string)$updated;
+    }
+
+    $updated = preg_replace('/<\/head\s*>/i', $assets . $newline . '</head>', $html, 1, $count);
+    if ($count !== 1) {
+        throw new RuntimeException('Tag head non trovato in ' . $relative . '.');
+    }
+    return (string)$updated;
+}
+
 function cmsTransparencyPagePaths(): array
 {
     $pages = [
@@ -862,6 +898,7 @@ function cmsPublishTransparency(array $items): string
         } elseif (str_starts_with($relative, 'recensioni/')) {
             $updated = cmsReplaceReviewDisclaimer($updated, $warningContent);
         }
+        $updated = cmsEnsureConsentAssets($updated, $relative);
         $prepared[$relative] = ['original' => $original, 'updated' => $updated];
     }
 
@@ -984,6 +1021,7 @@ function cmsPublishSection(string $section, array $items): string
         }
     }
 
+    $html = cmsEnsureConsentAssets($html, $config['page']);
     $path = projectPath($config['page']);
     $backupDirectory = storagePath('backups') . DIRECTORY_SEPARATOR . 'content-' . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
     if (!mkdir($backupDirectory, 0750, true) && !is_dir($backupDirectory)) {
