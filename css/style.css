@@ -1166,6 +1166,12 @@ button, input, select, textarea {
   position: static;
 }
 
+@media (min-width: 901px) {
+  .home-certificate-metrics > .home-certificate-below-par {
+    transform: translateY(0.45rem);
+  }
+}
+
 .home-certificate-type-placeholder {
   display: none;
 }
