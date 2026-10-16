@@ -320,7 +320,10 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     </div></div>
     <div class="review-hero">
       <h1 class="review-title">Analisi del certificato <?= $name ?></h1>
-      <p class="review-title-isin">ISIN: <strong><?= $base ?></strong></p>
+      <div class="review-title-meta">
+        <p class="review-title-isin">ISIN: <strong><?= $base ?></strong></p>
+        <?php if (!empty($certificate['belowPar'])): ?><span class="badge badge-below-par">Sotto la pari</span><?php endif; ?>
+      </div>
       <div class="review-summary-text"><?= $summary ?></div>
       <div class="review-overview" id="review-overview"><div class="review-overview-heading"><h2>Riepilogo certificato</h2></div><div class="review-overview-grid">
         <div class="meta-box review-overview-item review-overview-item-wide"><span class="meta-box-label">Emittente e rating</span><span class="meta-box-value meta-box-value-small review-issuer-value"><?= $issuer ?></span><small class="meta-box-detail"><?= h($data['ratings']) ?></small></div>
@@ -376,8 +379,8 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $canonicalTag = '<link rel="canonical" href="' . h($canonical) . '">';
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
-    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261013-1', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261011-1', (string)$html);
+    $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261016-6', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261016-6', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-issuers|data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
         $value = $match[3];
@@ -389,7 +392,12 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
 function renderHomeCards(array $certificates): string
 {
     $visible = array_values(array_filter($certificates, static fn($certificate) => !empty($certificate['showHome'])));
-    usort($visible, static fn($a, $b) => (!empty($b['showTopPick']) <=> !empty($a['showTopPick'])));
+    usort($visible, static function ($a, $b): int {
+        $belowParPriority = !empty($b['belowPar']) <=> !empty($a['belowPar']);
+        return $belowParPriority !== 0
+            ? $belowParPriority
+            : (!empty($b['showTopPick']) <=> !empty($a['showTopPick']));
+    });
     $issuerProfiles = loadIssuerProfiles();
     $html = '';
     foreach ($visible as $certificate) {
@@ -422,8 +430,9 @@ function renderHomeCards(array $certificates): string
         $monthly = number_format((float)$certificate['annualYield'] / 12, 2, '.', '');
         $preview .= '</span> e prevede un rendimento potenziale mensile del <strong>' . $monthly . '%</strong> (con effetto memoria), con scadenza il ' . h((string)$certificate['expiryDate']) . '. La barriera capitale è posta al <strong>' . h((string)$certificate['barrierCapital']) . '</strong> (europea, con valutazione a scadenza).';
         $placeholder = $certificate['type'] === 'Phoenix Memory Step Down' ? ' home-certificate-type-placeholder' : '';
+        $belowParBadge = !empty($certificate['belowPar']) ? '<span class="badge badge-below-par home-certificate-below-par">Sotto la pari</span>' : '';
         $annual = number_format((float)$certificate['annualYield'], 2, '.', '');
-        $html .= '<article class="card card-hover home-certificate-card"><div class="home-certificate-head"><div><span class="badge badge-primary' . $placeholder . '">' . h((string)$certificate['type']) . '</span><h3>' . h((string)$certificate['name']) . '</h3><div class="home-certificate-isin"><button type="button" class="cert-isin-copy" data-copy-isin="' . h((string)$certificate['isin']) . '" title="Copia ISIN">ISIN: <strong>' . h((string)$certificate['isin']) . '</strong></button><a href="' . h($href) . '" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a></div><div class="home-certificate-summary"><div class="certificate-preview">' . $preview . '</div></div></div><div class="home-certificate-metrics"><div class="home-certificate-metric"><span>REND. POT. ANNUO</span><strong>' . $annual . '%</strong></div><div class="home-certificate-metric home-certificate-stepdown"><span>Step-down</span><strong>' . h((string)$certificate['stepDown']) . '</strong></div><div class="home-certificate-metric home-certificate-barrier"><span>Barriera capitale</span><strong>' . h((string)$certificate['barrierCapital']) . '</strong></div><div class="home-certificate-metric home-certificate-barrier"><span>Barriera coupon</span><strong>' . h((string)$certificate['barrierCoupon']) . '</strong></div><div class="home-certificate-metric home-certificate-date"><span>Emissione</span><strong>' . h((string)$certificate['strikeDate']) . '</strong></div><div class="home-certificate-metric home-certificate-date"><span>Scadenza</span><strong>' . h((string)$certificate['expiryDate']) . '</strong></div></div></div></article>';
+        $html .= '<article class="card card-hover home-certificate-card"><div class="home-certificate-head"><div><span class="badge badge-primary' . $placeholder . '">' . h((string)$certificate['type']) . '</span><div class="home-certificate-title-row"><h3>' . h((string)$certificate['name']) . '</h3></div><div class="home-certificate-isin"><button type="button" class="cert-isin-copy" data-copy-isin="' . h((string)$certificate['isin']) . '" title="Copia ISIN">ISIN: <strong>' . h((string)$certificate['isin']) . '</strong></button><a href="' . h($href) . '" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a></div><div class="home-certificate-summary"><div class="certificate-preview">' . $preview . '</div></div></div><div class="home-certificate-metrics">' . $belowParBadge . '<div class="home-certificate-metric"><span>REND. POT. ANNUO</span><strong>' . $annual . '%</strong></div><div class="home-certificate-metric home-certificate-stepdown"><span>Step-down</span><strong>' . h((string)$certificate['stepDown']) . '</strong></div><div class="home-certificate-metric home-certificate-barrier"><span>Barriera capitale</span><strong>' . h((string)$certificate['barrierCapital']) . '</strong></div><div class="home-certificate-metric home-certificate-barrier"><span>Barriera coupon</span><strong>' . h((string)$certificate['barrierCoupon']) . '</strong></div><div class="home-certificate-metric home-certificate-date"><span>Emissione</span><strong>' . h((string)$certificate['strikeDate']) . '</strong></div><div class="home-certificate-metric home-certificate-date"><span>Scadenza</span><strong>' . h((string)$certificate['expiryDate']) . '</strong></div></div></div></article>';
     }
     return $html;
 }
@@ -681,6 +690,12 @@ function publishSite(?string $onlyIsin = null): array
         $relative = str_replace(DIRECTORY_SEPARATOR, '/', $relative);
         $content = isset($files[$relative]) ? $files[$relative] : file_get_contents($path);
         if (!is_string($content)) throw new RuntimeException('Impossibile leggere ' . $relative . '.');
+        if (
+            preg_match('/^google[a-f0-9]+\.html$/i', basename($path))
+            && trim($content) === 'google-site-verification: ' . basename($path)
+        ) {
+            continue;
+        }
         $manifestPath = str_starts_with($relative, 'recensioni/') ? '../js/data-review-pages.js' : 'js/data-review-pages.js';
         $pattern = '/(<script\s+src=["\'])' . preg_quote($manifestPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
         $updated = preg_replace($pattern, '$1' . $manifestPath . '?v=' . $manifestVersion . '$2', $content, 1, $scriptCount);

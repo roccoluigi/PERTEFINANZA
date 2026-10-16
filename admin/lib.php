@@ -378,6 +378,7 @@ function normalizeCertificateInput(array $input, ?array $existing = null): array
         'price' => (float)$price,
         'showHome' => !empty($input['showHome']),
         'showTopPick' => !empty($input['showTopPick']),
+        'belowPar' => !empty($input['belowPar']),
     ];
 }
 

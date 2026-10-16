@@ -58,7 +58,7 @@ try {
             'isin' => '', 'name' => '', 'issuer' => '', 'type' => 'Phoenix Memory Step Down',
             'underlyings' => [], 'annualYield' => '', 'barrierCapital' => '', 'barrierCoupon' => '',
             'stepDown' => '', 'stepDownStartMonth' => 1, 'strikeDate' => '', 'expiryDate' => '',
-            'price' => 100, 'showHome' => false, 'showTopPick' => false,
+            'price' => 100, 'showHome' => false, 'showTopPick' => false, 'belowPar' => false,
         ];
     }
 
@@ -393,6 +393,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                   <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
                     <span class="status-pill status-visibility<?= !empty($certificate['showHome']) ? ' is-selected' : '' ?>">Home: <?= !empty($certificate['showHome']) ? 'sì' : 'no' ?></span>
                     <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
+                    <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
                   </div>
                 </div>
                 <?php if ($row['status'] !== 'removal'): ?>
@@ -445,7 +446,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
             <label>Data scadenza<input name="expiryDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
           </div>
           <label>Sottostanti (uno per riga)<textarea name="underlyings" required><?= h(inputValue($formCertificate, 'underlyings')) ?></textarea></label>
-          <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Mostra in home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Evidenzia come selezione</label></div>
+          <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Mostra in home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Evidenzia come selezione</label><label><input type="checkbox" name="belowPar" value="1" <?= !empty($formCertificate['belowPar']) ? 'checked' : '' ?>> Mostra badge “Sotto la pari”</label></div>
           <?php if ($editingIsin !== ''): ?>
           <hr>
           <h3>Testo completo della scheda</h3>

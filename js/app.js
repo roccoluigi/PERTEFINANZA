@@ -193,6 +193,19 @@ function initReviewDisclaimer() {
 /* ==========================================================================
    2. Sidebar: Certificati in Evidenza
    ========================================================================== */
+function sortCertificatesBelowParFirst(certificates) {
+  return [...certificates].sort((first, second) => (
+    Number(Boolean(second.belowPar)) - Number(Boolean(first.belowPar))
+  ));
+}
+
+function sortHomeCertificates(certificates) {
+  return [...certificates].sort((first, second) => (
+    Number(Boolean(second.belowPar)) - Number(Boolean(first.belowPar))
+    || Number(Boolean(second.showTopPick)) - Number(Boolean(first.showTopPick))
+  ));
+}
+
 function initSidebarFeatured() {
   const containers = document.querySelectorAll('#sidebar-featured-certs');
   if (containers.length === 0) return;
@@ -208,7 +221,7 @@ function initSidebarFeatured() {
     });
   }
 
-  const topPicks = CERTIFICATES_DATA.filter(c => c.showTopPick);
+  const topPicks = sortCertificatesBelowParFirst(CERTIFICATES_DATA.filter(c => c.showTopPick));
   let html = '';
 
   topPicks.forEach(c => {
@@ -220,6 +233,7 @@ function initSidebarFeatured() {
             <span class="widget-cert-isin-label">ISIN:</span>${c.isin}
           </button>
           ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewUrl)}
+          ${c.belowPar ? '<span class="badge badge-below-par">Sotto la pari</span>' : ''}
         </div>
         <a href="${reviewUrl}" class="widget-cert-link">
         <div class="widget-cert-name">${c.name}</div>
@@ -260,7 +274,9 @@ function certificateCardMarkup(c, conciseIssuer = false) {
       <div class="home-certificate-head">
         <div>
           <span class="badge badge-primary${c.type === 'Phoenix Memory Step Down' ? ' home-certificate-type-placeholder' : ''}">${c.type}</span>
-          <h3>${c.name}</h3>
+          <div class="home-certificate-title-row">
+            <h3>${c.name}</h3>
+          </div>
           <div class="home-certificate-isin">
             <button type="button" class="cert-isin-copy" data-copy-isin="${c.isin}" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></button>
             <a href="${reviewTemplateUrl(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
@@ -268,6 +284,7 @@ function certificateCardMarkup(c, conciseIssuer = false) {
           <div class="home-certificate-summary">${conciseIssuer ? homeCertificatePreviewMarkup(c) : reviewPreviewMarkup(c)}</div>
         </div>
         <div class="home-certificate-metrics">
+          ${c.belowPar ? '<span class="badge badge-below-par home-certificate-below-par">Sotto la pari</span>' : ''}
           <div class="home-certificate-metric">
             <span>REND. POT. ANNUO</span>
             <strong>${c.annualYield.toFixed(2)}%</strong>
@@ -305,18 +322,42 @@ function alignCertificateMetrics(container = document) {
   container.querySelectorAll('.home-certificate-head').forEach(head => {
     const metrics = head.querySelector('.home-certificate-metrics');
     const techButton = head.querySelector('.home-certificate-tech-button');
-    if (!metrics || !techButton) return;
+    const titleRow = head.querySelector('.home-certificate-title-row');
+    const title = titleRow?.querySelector('h3');
+    const badge = metrics?.querySelector('.home-certificate-below-par')
+      || titleRow?.querySelector('.home-certificate-below-par');
+    if (!metrics || !techButton || !titleRow || !title) return;
 
     if (getComputedStyle(head).flexDirection === 'column') {
       metrics.style.marginTop = '0';
+      if (badge && badge.parentElement !== titleRow) {
+        titleRow.insertBefore(badge, titleRow.firstChild);
+        badge.style.top = '';
+        badge.style.left = '';
+      }
       return;
     }
 
+    if (badge && badge.parentElement !== metrics) metrics.prepend(badge);
     const headTop = head.getBoundingClientRect().top;
     const techButtonTop = techButton.getBoundingClientRect().top;
     metrics.style.marginTop = `${Math.max(0, techButtonTop - headTop)}px`;
+    if (badge) {
+      const titleTop = title.getBoundingClientRect().top;
+      const metricsTop = metrics.getBoundingClientRect().top;
+      badge.style.top = `${titleTop - metricsTop}px`;
+    }
   });
 }
+
+let certificateMetricsResizeFrame = null;
+window.addEventListener('resize', () => {
+  if (certificateMetricsResizeFrame !== null) cancelAnimationFrame(certificateMetricsResizeFrame);
+  certificateMetricsResizeFrame = requestAnimationFrame(() => {
+    certificateMetricsResizeFrame = null;
+    alignCertificateMetrics();
+  });
+});
 
 function initHomeFeaturedCertificates() {
   const container = document.getElementById('home-featured-certificates');
@@ -329,7 +370,7 @@ function initHomeFeaturedCertificates() {
   }
   if (typeof CERTIFICATES_DATA === 'undefined') return;
 
-  container.innerHTML = CERTIFICATES_DATA.filter(c => c.showHome).map(c => certificateCardMarkup(c, true)).join('');
+  container.innerHTML = sortHomeCertificates(CERTIFICATES_DATA.filter(c => c.showHome)).map(c => certificateCardMarkup(c, true)).join('');
   initCopyableIsins(container);
   alignCertificateMetrics(container);
 }
@@ -740,6 +781,7 @@ function initCertificatesCatalog() {
   let currentPage = 1;
 
   if (!cardsContainer || typeof CERTIFICATES_DATA === 'undefined') return;
+  const orderedCertificates = sortCertificatesBelowParFirst(CERTIFICATES_DATA);
 
   // Genera le opzioni emittente a partire dai dati, evitando duplicati.
   if (issuerSelect && issuerSelect.options.length <= 1) {
@@ -828,7 +870,7 @@ function initCertificatesCatalog() {
     const selectedType = typeSelect ? typeSelect.value : '';
     if (resetPage) currentPage = 1;
 
-    const filtered = CERTIFICATES_DATA.filter(c => {
+    const filtered = orderedCertificates.filter(c => {
       const matchQuery = !query || 
         c.isin.toLowerCase().includes(query) || 
         c.underlyings.join(', ').toLowerCase().includes(query) ||
@@ -855,7 +897,7 @@ function initCertificatesCatalog() {
     });
   }
 
-  renderCertificateCards(CERTIFICATES_DATA);
+  renderCertificateCards(orderedCertificates);
 }
 
 /* ==========================================================================
@@ -1336,7 +1378,10 @@ function initReviewPage() {
       <h1 class="review-title">
         Analisi del certificato ${cert.name}
       </h1>
-      <p class="review-title-isin">ISIN: <strong>${cert.isin}</strong></p>
+      <div class="review-title-meta">
+        <p class="review-title-isin">ISIN: <strong>${cert.isin}</strong></p>
+        ${cert.belowPar ? '<span class="badge badge-below-par">Sotto la pari</span>' : ''}
+      </div>
 
       <div class="review-summary-text">
         ${review.summary}
