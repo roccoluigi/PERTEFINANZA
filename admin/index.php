@@ -17,6 +17,11 @@ $contentSectionLabels = [
     'transparency' => 'Trasparenza, rischi e avvertenze',
     'disclaimer' => 'Disclaimer e Note Legali',
 ];
+$contentSectionMenuLabels = [
+    'contacts' => 'Contatti',
+    'transparency' => 'Trasparenza e Avvertenze',
+    'disclaimer' => 'Note Legali',
+];
 $message = '';
 $error = '';
 $sitemapFeedback = '';
@@ -354,7 +359,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
     <nav class="cms-tabs" aria-label="Sezioni del pannello">
       <a class="active" href="index.php" aria-current="page">Certificati<?php if ($pendingCount > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($pendingCount)) ?>" title="<?= h(adminChangeCountLabel($pendingCount)) ?>"><?= $pendingCount ?></span><?php endif; ?></a>
       <?php foreach ($contentSectionLabels as $key => $label): ?>
-        <a href="content.php?section=<?= h($key) ?>"><?= h($label) ?><?php if ($contentPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>"><?= $contentPendingCounts[$key] ?></span><?php endif; ?></a>
+        <a href="content.php?section=<?= h($key) ?>"><?= h($contentSectionMenuLabels[$key] ?? $label) ?><?php if ($contentPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>"><?= $contentPendingCounts[$key] ?></span><?php endif; ?></a>
       <?php endforeach; ?>
     </nav>
     <?php if ($message !== ''): ?><p class="notice success"><?= h($message) ?></p><?php endif; ?>

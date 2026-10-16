@@ -186,6 +186,7 @@ if (!isset($sections[$section])) {
     $section = 'issuers';
 }
 $labels = ['issuers' => 'Emittenti', 'training' => 'Formazione', 'faq' => 'FAQ', 'glossary' => 'Glossario', 'contacts' => 'Contatti & Info', 'transparency' => 'Trasparenza, rischi e avvertenze', 'disclaimer' => 'Disclaimer e Note Legali'];
+$menuLabels = ['contacts' => 'Contatti', 'transparency' => 'Trasparenza e Avvertenze', 'disclaimer' => 'Note Legali'];
 $itemLabelKey = ['issuers' => 'name', 'training' => 'title', 'faq' => 'question', 'glossary' => 'term', 'contacts' => 'title', 'transparency' => 'title', 'disclaimer' => 'title'][$section] ?? 'name';
 $hasDraft = isset($drafts[$section]);
 $fixedContentSection = in_array($section, ['contacts', 'transparency', 'disclaimer'], true);
@@ -251,7 +252,7 @@ try {
     <nav class="cms-tabs" aria-label="Sezioni del pannello">
       <a href="index.php">Certificati<?php if ($certPendingCount > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($certPendingCount)) ?>" title="<?= h(adminChangeCountLabel($certPendingCount)) ?>"><?= $certPendingCount ?></span><?php endif; ?></a>
       <?php foreach ($labels as $key => $label): ?>
-        <a class="<?= $section === $key ? 'active' : '' ?>" href="content.php?section=<?= h($key) ?>"<?= $section === $key ? ' aria-current="page"' : '' ?>><?= h($label) ?><?php if ($sectionPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>"><?= $sectionPendingCounts[$key] ?></span><?php endif; ?></a>
+        <a class="<?= $section === $key ? 'active' : '' ?>" href="content.php?section=<?= h($key) ?>"<?= $section === $key ? ' aria-current="page"' : '' ?>><?= h($menuLabels[$key] ?? $label) ?><?php if ($sectionPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>"><?= $sectionPendingCounts[$key] ?></span><?php endif; ?></a>
       <?php endforeach; ?>
     </nav>
     <?php if ($message !== ''): ?><p class="notice success"><?= h($message) ?></p><?php endif; ?>
