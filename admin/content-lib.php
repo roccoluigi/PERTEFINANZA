@@ -487,6 +487,11 @@ function cmsSafeHtml(string $html): string
     return cmsInnerHtml($root);
 }
 
+function cmsTrimTrailingEmptyParagraphs(string $html): string
+{
+    return (string)preg_replace('/(?:\s*<p(?:\s[^>]*)?>\s*(?:(?:&nbsp;|&#160;|<br\s*\/?>)\s*)*<\/p>\s*)+$/i', '', $html);
+}
+
 function cmsSlug(string $value): string
 {
     $ascii = function_exists('iconv') ? iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value) : $value;
@@ -675,7 +680,7 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
             'id' => $id,
             'category' => cmsTextField($input['category'] ?? '', 'categoria FAQ', 100),
             'question' => cmsTextField($input['question'] ?? '', 'domanda', 400),
-            'answer' => cmsRequiredHtml($input['answer'] ?? '', 'la risposta'),
+            'answer' => cmsTrimTrailingEmptyParagraphs(cmsRequiredHtml($input['answer'] ?? '', 'la risposta')),
             'related' => cmsSafeHtml((string)($existing['related'] ?? '')),
         ];
     }

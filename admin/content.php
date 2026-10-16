@@ -146,7 +146,7 @@ try {
     }
 
     if (isset($_GET['saved'])) {
-        $message = 'Bozza salvata. Le modifiche diventano pubbliche solo quando pubblichi questa sezione.';
+        $message = 'Bozza salvata. Le modifiche diventano pubbliche solo quando usi “Pubblica tutte le modifiche” nell’intestazione del pannello.';
     } elseif (isset($_GET['deleted'])) {
         $message = 'Elemento rimosso dalla bozza. La versione online non cambia finché non pubblichi.';
     }
@@ -249,9 +249,9 @@ try {
       </div>
     </header>
     <nav class="cms-tabs" aria-label="Sezioni del pannello">
-      <a href="index.php">Certificati<?php if ($certPendingCount > 0): ?><span class="cms-change-count" aria-label="<?= $certPendingCount ?> modifiche in attesa" title="<?= $certPendingCount ?> modifiche in attesa"><?= $certPendingCount ?></span><?php endif; ?></a>
+      <a href="index.php">Certificati<?php if ($certPendingCount > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($certPendingCount)) ?>" title="<?= h(adminChangeCountLabel($certPendingCount)) ?>"><?= $certPendingCount ?></span><?php endif; ?></a>
       <?php foreach ($labels as $key => $label): ?>
-        <a class="<?= $section === $key ? 'active' : '' ?>" href="content.php?section=<?= h($key) ?>"<?= $section === $key ? ' aria-current="page"' : '' ?>><?= h($label) ?><?php if ($sectionPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= $sectionPendingCounts[$key] ?> modifiche in attesa" title="<?= $sectionPendingCounts[$key] ?> modifiche in attesa"><?= $sectionPendingCounts[$key] ?></span><?php endif; ?></a>
+        <a class="<?= $section === $key ? 'active' : '' ?>" href="content.php?section=<?= h($key) ?>"<?= $section === $key ? ' aria-current="page"' : '' ?>><?= h($label) ?><?php if ($sectionPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($sectionPendingCounts[$key])) ?>"><?= $sectionPendingCounts[$key] ?></span><?php endif; ?></a>
       <?php endforeach; ?>
     </nav>
     <?php if ($message !== ''): ?><p class="notice success"><?= h($message) ?></p><?php endif; ?>

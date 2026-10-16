@@ -358,6 +358,11 @@ function normalizeCertificateInput(array $input, ?array $existing = null): array
     if (!validItalianDate($strikeDate) || !validItalianDate($expiryDate)) {
         throw new InvalidArgumentException('Le date devono essere nel formato GG/MM/AAAA.');
     }
+    $strikeDateValue = DateTimeImmutable::createFromFormat('!d/m/Y', $strikeDate);
+    $expiryDateValue = DateTimeImmutable::createFromFormat('!d/m/Y', $expiryDate);
+    if ($strikeDateValue === false || $expiryDateValue === false || $expiryDateValue <= $strikeDateValue) {
+        throw new InvalidArgumentException('La data di scadenza deve essere successiva alla data strike.');
+    }
     if ($price === false || $price <= 0) {
         throw new InvalidArgumentException('Il prezzo deve essere un numero positivo.');
     }
@@ -426,6 +431,11 @@ function validItalianDate(string $date): bool
         return false;
     }
     return checkdate((int)$matches[2], (int)$matches[1], (int)$matches[3]);
+}
+
+function adminChangeCountLabel(int $count): string
+{
+    return $count . ' ' . ($count === 1 ? 'modifica in attesa' : 'modifiche in attesa');
 }
 
 function sanitizeEditorialInlineHtml(string $html): string

@@ -132,10 +132,10 @@ try {
                 }
                 $publishedSummary = [];
                 if ($hasCertificateChanges) {
-                    $publishedSummary[] = $publishedCertificateCount . ' certificati online';
+                    $publishedSummary[] = $publishedCertificateCount . ' ' . ($publishedCertificateCount === 1 ? 'certificato online' : 'certificati online');
                 }
                 if ($publishedSections > 0) {
-                    $publishedSummary[] = $publishedSections . ' sezioni editoriali aggiornate';
+                    $publishedSummary[] = $publishedSections . ' ' . ($publishedSections === 1 ? 'sezione editoriale aggiornata' : 'sezioni editoriali aggiornate');
                 }
                 $message = 'Pubblicate tutte le modifiche: ' . implode(' e ', $publishedSummary) . '.';
             }
@@ -352,9 +352,9 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
       </div>
     </header>
     <nav class="cms-tabs" aria-label="Sezioni del pannello">
-      <a class="active" href="index.php" aria-current="page">Certificati<?php if ($pendingCount > 0): ?><span class="cms-change-count" aria-label="<?= $pendingCount ?> modifiche in attesa" title="<?= $pendingCount ?> modifiche in attesa"><?= $pendingCount ?></span><?php endif; ?></a>
+      <a class="active" href="index.php" aria-current="page">Certificati<?php if ($pendingCount > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($pendingCount)) ?>" title="<?= h(adminChangeCountLabel($pendingCount)) ?>"><?= $pendingCount ?></span><?php endif; ?></a>
       <?php foreach ($contentSectionLabels as $key => $label): ?>
-        <a href="content.php?section=<?= h($key) ?>"><?= h($label) ?><?php if ($contentPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= $contentPendingCounts[$key] ?> modifiche in attesa" title="<?= $contentPendingCounts[$key] ?> modifiche in attesa"><?= $contentPendingCounts[$key] ?></span><?php endif; ?></a>
+        <a href="content.php?section=<?= h($key) ?>"><?= h($label) ?><?php if ($contentPendingCounts[$key] > 0): ?><span class="cms-change-count" aria-label="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>" title="<?= h(adminChangeCountLabel($contentPendingCounts[$key])) ?>"><?= $contentPendingCounts[$key] ?></span><?php endif; ?></a>
       <?php endforeach; ?>
     </nav>
     <?php if ($message !== ''): ?><p class="notice success"><?= h($message) ?></p><?php endif; ?>
@@ -364,7 +364,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
         <div class="panel-heading">
           <div>
             <h2>Certificati</h2>
-            <span class="panel-heading-count"><?= count($certificateRows) ?> schede · <?= $pendingCount ?> modifiche in attesa</span>
+            <span class="panel-heading-count"><?= count($certificateRows) ?> schede · <?= h(adminChangeCountLabel($pendingCount)) ?></span>
             <div class="certificate-visibility-counts" aria-label="Certificati per sezione">
               <span class="certificate-visibility-count"><span>In home</span><strong><?= $homeCertificateCount ?></strong></span>
               <span class="certificate-visibility-count"><span>Top Picks</span><strong><?= $topPickCertificateCount ?></strong></span>
