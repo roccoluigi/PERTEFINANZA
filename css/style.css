@@ -1656,6 +1656,11 @@ button, input, select, textarea {
     flex-direction: column;
   }
 
+  .home-certificate-title-row .home-certificate-below-par {
+    order: 1;
+    margin-top: 0.5rem;
+  }
+
   .home-certificate-metrics {
     width: 100%;
     margin-top: 0;
@@ -3179,6 +3184,10 @@ button, input, select, textarea {
 
 .legal-section {
   margin-bottom: 2rem;
+}
+
+.legal-section[id] {
+  scroll-margin-top: 5.5rem;
 }
 
 .legal-content {
