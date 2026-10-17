@@ -1168,7 +1168,7 @@ button, input, select, textarea {
 
 @media (min-width: 901px) {
   .home-certificate-metrics > .home-certificate-below-par {
-    transform: translateY(0.45rem);
+    transform: translateY(2.8px);
   }
 }
 
@@ -3816,7 +3816,10 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) and (pointer: coarse) {
-  .brand-name,
+  .brand-name {
+    font-size: 1.45rem;
+  }
+
   .footer-logo {
     font-size: 1.2rem;
   }

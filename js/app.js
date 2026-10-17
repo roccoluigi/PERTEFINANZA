@@ -74,6 +74,8 @@ function initBrandTaglineAlignment() {
       if (taglineWidth === 0 || brandNameWidth === 0) return;
 
       const letterSpacing = (brandNameWidth - taglineWidth) / (characterCount - 1);
+      if (letterSpacing < 0) return;
+
       tag.style.letterSpacing = `${letterSpacing}px`;
 
       const wordGapCount = tag.textContent.trim().split(/\s+/).length - 1;
