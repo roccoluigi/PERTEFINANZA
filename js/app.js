@@ -6,6 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initSiteNavigation();
+  initBrandTaglineAlignment();
   initFormationRelatedLinks();
   initThemeToggle();
   initMobileMenu();
@@ -49,6 +50,45 @@ function initSiteNavigation() {
   if (headerActions && !headerActions.querySelector('.theme-toggle')) {
     headerActions.insertAdjacentHTML('afterbegin', themeToggleMarkup('header-theme-toggle'));
   }
+}
+
+function initBrandTaglineAlignment() {
+  const brandTags = document.querySelectorAll('.brand-logo .brand-tag');
+  if (brandTags.length === 0) return;
+
+  const alignTaglines = () => {
+    brandTags.forEach(tag => {
+      const brandName = tag.closest('.brand-logo')?.querySelector('.brand-name');
+      const characterCount = Array.from(tag.textContent.trim()).length;
+      if (!brandName || characterCount < 2) return;
+
+      tag.style.whiteSpace = 'nowrap';
+      tag.style.letterSpacing = '0px';
+      tag.style.wordSpacing = '0px';
+
+      const range = document.createRange();
+      range.selectNodeContents(tag);
+      const taglineWidth = range.getBoundingClientRect().width;
+      range.selectNodeContents(brandName);
+      const brandNameWidth = range.getBoundingClientRect().width;
+      if (taglineWidth === 0 || brandNameWidth === 0) return;
+
+      const letterSpacing = (brandNameWidth - taglineWidth) / (characterCount - 1);
+      tag.style.letterSpacing = `${letterSpacing}px`;
+
+      const wordGapCount = tag.textContent.trim().split(/\s+/).length - 1;
+      if (wordGapCount > 0) {
+        range.selectNodeContents(tag);
+        const alignedTaglineWidth = range.getBoundingClientRect().width;
+        const wordSpacing = (brandNameWidth - alignedTaglineWidth) / wordGapCount;
+        tag.style.wordSpacing = `${wordSpacing}px`;
+      }
+    });
+  };
+
+  alignTaglines();
+  window.addEventListener('resize', alignTaglines);
+  document.fonts?.ready.then(alignTaglines);
 }
 
 function reviewTemplateUrl(isin) {
