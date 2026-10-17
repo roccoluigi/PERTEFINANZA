@@ -3606,6 +3606,31 @@ button, input, select, textarea {
     font-size: 1.1988rem;
   }
 
+  .glossary-card-title {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "term share"
+      "category share";
+    column-gap: 0.65rem;
+    row-gap: 0.4rem;
+    align-items: start;
+  }
+
+  .glossary-card-title > span:first-child {
+    grid-area: term;
+  }
+
+  .glossary-card-title > .badge {
+    grid-area: category;
+    justify-self: start;
+  }
+
+  .glossary-card-title > .content-share {
+    grid-area: share;
+    margin-left: 0;
+  }
+
   .review-meta-grid {
     grid-template-columns: 1fr 1fr;
   }
