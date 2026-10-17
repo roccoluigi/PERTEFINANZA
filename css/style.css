@@ -2828,6 +2828,13 @@ button, input, select, textarea {
   box-shadow: var(--shadow-sm);
 }
 
+@media (max-width: 900px) {
+  .review-page-layout .review-hero {
+    padding-right: 1.25rem;
+    padding-left: 1.25rem;
+  }
+}
+
 .review-loading-state {
   padding: 3rem;
   color: var(--text-muted);
