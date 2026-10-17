@@ -2847,6 +2847,21 @@ button, input, select, textarea {
   margin-top: 3rem;
 }
 
+.review-scenarios-card {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.review-scenarios-card .scenario-card-heading {
+  margin: 0 0 1rem;
+  padding: 0 0 0.65rem;
+  border-radius: 0;
+  background: transparent;
+}
+
 .scenario-card-heading h2 {
   margin: 0;
   color: var(--secondary);
@@ -2864,18 +2879,14 @@ button, input, select, textarea {
 
 .review-overview {
   margin-top: 1.5rem;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: #ffffff;
+  background: transparent;
 }
 
 .review-overview-heading {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.85rem 1.25rem;
-  background: var(--bg-subtle);
+  padding: 0 0 0.65rem;
   color: var(--secondary);
   border-bottom: 1px solid var(--border);
 }
@@ -2890,7 +2901,7 @@ button, input, select, textarea {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.6rem;
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 0 0;
 }
 
 .review-overview-item {
@@ -3668,7 +3679,7 @@ button, input, select, textarea {
 
   .review-overview-grid {
     grid-template-columns: 1fr 1fr;
-    padding-right: 1.5rem;
+    padding-right: 0;
   }
 
   .review-overview-item-wide {
@@ -3814,7 +3825,6 @@ html[data-theme="dark"] .widget-cert-isin,
 html[data-theme="dark"] .share-button,
 html[data-theme="dark"] .share-menu-options,
 html[data-theme="dark"] .review-hero,
-html[data-theme="dark"] .review-overview,
 html[data-theme="dark"] .review-sticky-header,
 html[data-theme="dark"] .contact-card,
 html[data-theme="dark"] .filter-bar,
@@ -3844,6 +3854,10 @@ html[data-theme="dark"] .scenario-table th,
 html[data-theme="dark"] .scenario-table tbody tr:hover,
 html[data-theme="dark"] .scenario-card-heading {
   background-color: var(--bg-subtle);
+}
+
+html[data-theme="dark"] .review-scenarios-card .scenario-card-heading {
+  background-color: transparent;
 }
 
 html[data-theme="dark"] .review-section-links a:hover,
