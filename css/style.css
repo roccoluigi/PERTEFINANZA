@@ -601,7 +601,7 @@ button, input, select, textarea {
   color: #b45309;
   border: 2px solid #d97706;
   border-radius: var(--radius-sm);
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem;
   font-size: 0.7rem;
   font-weight: 800;
 }
@@ -1994,6 +1994,10 @@ button, input, select, textarea {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 0.35rem;
+}
+
+.sidebar-featured-widget .widget-cert-top > .badge-below-par {
+  margin-left: 0.5rem;
 }
 
 .widget-cert-isin {
