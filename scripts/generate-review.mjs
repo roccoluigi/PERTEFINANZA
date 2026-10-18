@@ -67,7 +67,10 @@ function parseIssuers(html) {
     }
 
     const fullDescription = htmlText(bodyMatch[1]);
-    const description = fullDescription.match(/^[\s\S]*?[.!?](?=\s+[A-ZÀ-ÖØ-Þ]|$)/u)?.[0] || fullDescription;
+    const firstSentence = fullDescription.match(/^[\s\S]*?[.!?](?=\s+[A-ZÀ-ÖØ-Þ]|$)/u)?.[0] || fullDescription;
+    const description = ['Barclays', 'Marex Financial', 'Vontobel'].includes(name)
+      ? fullDescription
+      : firstSentence;
     return {
       name: htmlText(nameMatch[1]),
       ratings,
@@ -101,6 +104,7 @@ async function renderReviewMarkup(isin, issuerData) {
     document,
     ISSUERS_DATA: issuerData,
     window: {
+      addEventListener() {},
       location: {
         href: 'https://www.pertefinanza.it/recensione.html',
         search: `?isin=${encodeURIComponent(isin)}`
@@ -199,7 +203,7 @@ function buildPage(template, certificate, reviewMarkup) {
   html = updateMetaContent(html, 'name', 'twitter:description', description);
   html = setCanonicalLink(html, canonicalUrl);
   html = html.replace(/css\/style\.css\?v=[^"']+/g, 'css/style.css?v=20261018-3');
-  html = html.replace(/js\/app\.js\?v=[^"']+/g, 'js/app.js?v=20261015-2');
+  html = html.replace(/js\/app\.js\?v=[^"']+/g, 'js/app.js?v=20261018-2');
   html = html.replace(
     /^\s*<script\s+src=["']js\/(?:data-issuers|data-underlyings|reviews)\.js(?:\?[^"']*)?["']><\/script>\s*$/gim,
     ''
@@ -211,7 +215,7 @@ function buildPage(template, certificate, reviewMarkup) {
   });
 }
 
-async function renderHomeFeaturedMarkup(issuerData) {
+async function renderHomeFeaturedMarkup() {
   let markup = '';
   const homeContainer = {
     querySelector() {
@@ -229,8 +233,8 @@ async function renderHomeFeaturedMarkup(issuerData) {
         return id === 'home-featured-certificates' ? homeContainer : null;
       }
     },
-    ISSUERS_DATA: issuerData,
     window: {
+      addEventListener() {},
       location: {
         href: 'https://www.pertefinanza.it/index.html',
         pathname: '/PERTEFINANZA/index.html'
@@ -255,7 +259,7 @@ async function renderHomeFeaturedMarkup(issuerData) {
   return markup.replace(/^[ \t]+$/gm, '').trim();
 }
 
-async function updateStaticHomeFeatured(issuerData) {
+async function updateStaticHomeFeatured() {
   const indexPath = path.join(projectRoot, 'index.html');
   const html = await readFile(indexPath, 'utf8');
   const startMarker = '<!-- STATIC-HOME-CERTIFICATES:START -->';
@@ -266,7 +270,7 @@ async function updateStaticHomeFeatured(issuerData) {
     throw new Error('Marcatori STATIC-HOME-CERTIFICATES non trovati in index.html.');
   }
 
-  const markup = await renderHomeFeaturedMarkup(issuerData);
+  const markup = await renderHomeFeaturedMarkup();
   const contentStart = startIndex + startMarker.length;
   const updatedHtml = `${html.slice(0, contentStart)}\n${markup}\n${html.slice(endIndex)}`;
   if (updatedHtml !== html) await writeFile(indexPath, updatedHtml, 'utf8');
@@ -311,6 +315,7 @@ async function syncStaticReviewIndex() {
   for (const pagePath of pages) {
     const relativeManifestPath = path.relative(path.dirname(pagePath), manifestPath).split(path.sep).join('/');
     const html = await readFile(pagePath, 'utf8');
+    if (!/<script\s+src=["'][^"']*js\/app\.js(?:\?[^"']*)?["']/i.test(html)) continue;
     const updatedHtml = updateManifestScript(html, relativeManifestPath, version);
     if (updatedHtml !== html) await writeFile(pagePath, updatedHtml, 'utf8');
   }
@@ -348,7 +353,7 @@ async function main() {
   }
 
   const { isins } = await syncStaticReviewIndex();
-  await updateStaticHomeFeatured(issuerData);
+  await updateStaticHomeFeatured();
   console.log(`Indice recensioni statiche sincronizzato (${isins.length} ISIN).`);
 }
 

@@ -310,7 +310,7 @@ function initSidebarFeatured() {
   });
 }
 
-function certificateCardMarkup(c, conciseIssuer = false) {
+function certificateCardMarkup(c) {
   return `
     <article class="card card-hover home-certificate-card">
       <div class="home-certificate-head">
@@ -323,7 +323,7 @@ function certificateCardMarkup(c, conciseIssuer = false) {
             <button type="button" class="cert-isin-copy" data-copy-isin="${c.isin}" title="Copia ISIN">ISIN: <strong>${c.isin}</strong></button>
             <a href="${reviewTemplateUrl(c.isin)}" class="btn btn-sm btn-primary home-certificate-tech-button">SCHEDA TECNICA →</a>
           </div>
-          <div class="home-certificate-summary">${conciseIssuer ? homeCertificatePreviewMarkup(c) : reviewPreviewMarkup(c)}</div>
+          <div class="home-certificate-summary">${reviewPreviewMarkup(c)}</div>
         </div>
         <div class="home-certificate-metrics">
           ${c.belowPar ? '<span class="badge badge-below-par home-certificate-below-par">Sotto la pari</span>' : ''}
@@ -412,7 +412,7 @@ function initHomeFeaturedCertificates() {
   }
   if (typeof CERTIFICATES_DATA === 'undefined') return;
 
-  container.innerHTML = sortHomeCertificates(CERTIFICATES_DATA.filter(c => c.showHome)).map(c => certificateCardMarkup(c, true)).join('');
+  container.innerHTML = sortHomeCertificates(CERTIFICATES_DATA.filter(c => c.showHome)).map(certificateCardMarkup).join('');
   initCopyableIsins(container);
   alignCertificateMetrics(container);
 }
@@ -428,35 +428,6 @@ function issuerDescriptionWithoutName(issuer, description) {
     .replace(/^è\s+/i, '')
     .replace(/^un['’]\s*/i, '')
     .trim();
-}
-
-function conciseIssuerDescription(issuer, description) {
-  const text = issuerDescriptionWithoutName(issuer, description);
-  const firstSentence = text.match(/^[\s\S]*?[.!?](?=\s|$)/u)?.[0] || text;
-  const firstClause = firstSentence.split(/,\s*/, 1)[0].trim();
-  const concise = firstClause.replace(/[.!?]+$/, '');
-  return concise.charAt(0).toLowerCase() + concise.slice(1);
-}
-
-function homeCertificatePreviewMarkup(cert) {
-  const monthlyYield = cert.annualYield / 12;
-  const issuer = typeof ISSUERS_DATA !== 'undefined'
-    ? ISSUERS_DATA.find(item => item.name === cert.issuer)
-    : null;
-  const issuerDescription = issuer
-    ? conciseIssuerDescription(cert.issuer, issuer.marketShare || issuer.description)
-    : 'emittente attivo nel mercato dei prodotti strutturati';
-  const ratings = issuer && issuer.ratings
-    ? Object.entries(issuer.ratings).filter(([, rating]) => rating && !['n.d.', 'non rated'].includes(rating.toLowerCase()))
-    : [];
-  const ratingSentence = ratings.length === 1
-    ? ` ${ratings[0][0]} assegna all’emittente un rating di credito pari ad ${ratings[0][1]}.`
-    : ratings.length > 1
-      ? ` Le agenzie valutano il merito creditizio dell’emittente rispettivamente ${ratings.map(([agency, rating]) => `${rating} per ${agency}`).slice(0, -1).join(', ')} e ${ratings[ratings.length - 1][1]} per ${ratings[ratings.length - 1][0]}.`
-      : '';
-  const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
-  const underlyingList = `<span class="certificate-preview-underlyings" aria-label="Sottostanti">${cert.underlyings.map(name => `<span class="certificate-preview-underlying"><strong>${name}</strong></span>`).join(' <span class="certificate-preview-separator" aria-hidden="true">·</span> ')}</span>`;
-  return `<div class="certificate-preview">Il presente certificato di investimento è emesso da <strong>${issuerLink}</strong>, ${issuerDescription}.${ratingSentence} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong> (con effetto memoria), con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
 }
 
 function reviewPreviewMarkup(cert) {
@@ -1354,7 +1325,7 @@ function initReviewPage() {
       : [];
   const ratingText = ratingEntries.length > 0
     ? ratingEntries.map(([agency, rating]) => `${agency}: ${rating}`).join(' · ')
-    : 'Rating non disponibile nel database';
+    : 'Rating non rilevato dal sistema automatico';
 
   const generatedReview = buildGeneratedReviewContent(cert);
   const generatedScenarios = generatedReview.scenarios;

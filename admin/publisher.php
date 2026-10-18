@@ -122,14 +122,6 @@ function issuerDescriptionStart(string $issuer, ?array $profile): string
     return $description === '' ? $description : strtolower(substr($description, 0, 1)) . substr($description, 1);
 }
 
-function conciseIssuerDescriptionStart(string $issuer, ?array $profile): string
-{
-    $description = issuerDescriptionStart($issuer, $profile);
-    $firstSentence = preg_split('/(?<=[.!?])\s+/u', $description, 2)[0] ?? $description;
-    $firstClause = preg_split('/,\s*/u', $firstSentence, 2)[0] ?? $firstSentence;
-    return rtrim(trim($firstClause), '.!?');
-}
-
 function issuerRatings(?array $profile): array
 {
     if (!$profile || !is_array($profile['ratings'] ?? null)) {
@@ -161,7 +153,7 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
     $ratingNames = array_keys($ratings);
     $ratingValues = array_values($ratings);
     $ratingText = $ratings === []
-        ? 'Rating non disponibile nel database'
+        ? 'non disponibile tra le fonti consultate'
         : implode(' · ', array_map(static fn($agency, $rating) => $agency . ': ' . $rating, $ratingNames, $ratingValues));
     if (count($ratings) === 1) {
         $agency = $ratingNames[0];
@@ -211,24 +203,32 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
     ];
     $pros = [];
     $cons = [];
-    if ($capital <= 50) $pros[] = "Barriera capitale al {$certificate['barrierCapital']}: buffer condizionato del " . (100 - $capital) . '% rispetto ai livelli iniziali, con osservazione a scadenza.';
+    if ($capital <= 50) $pros[] = "Barriera capitale al {$certificate['barrierCapital']}: protezione a scadenza fino a un ribasso del " . (100 - $capital) . '% per ogni sottostante.';
     else $cons[] = "Barriera capitale al {$certificate['barrierCapital']}: offre un buffer condizionato del " . (100 - $capital) . '%, ma non è particolarmente difensiva e non limita la perdita in caso di violazione a scadenza.';
     $cons[] = 'Rischio di perdita del capitale: se alla data finale il Worst-of è sotto la barriera capitale, il rimborso può ridursi in funzione della sua performance, secondo i termini del prodotto.';
     if ($coupon <= 50) $pros[] = "Barriera coupon al {$certificate['barrierCoupon']}: la soglia consente il pagamento della cedola anche con il Worst-of in ribasso, se resta sopra barriera alle date di osservazione.";
-    else $cons[] = "Barriera coupon al {$certificate['barrierCoupon']}: la cedola richiede che il Worst-of rispetti la soglia a ogni data di osservazione; sotto barriera può non essere pagata.";
     if ($monthly >= 1) $pros[] = 'Cedola potenziale mensile lorda del ' . number_format($monthly, 2, '.', '') . '%, pari al ' . number_format($annual, 2, '.', '') . '% annuo lordo, subordinata alle condizioni del prodotto.';
     else $cons[] = 'Cedola potenziale mensile lorda contenuta (' . number_format($monthly, 2, '.', '') . '%); il pagamento resta subordinato alle condizioni del prodotto.';
-    if ($annual > 15) $cons[] = 'Rendimento potenziale lordo elevato (' . number_format($annual, 2, '.', '') . '% annuo): non è garantito e va valutato insieme ai rischi di barriera, sottostanti ed emittente.';
-    $strongRating = false;
-    foreach ($ratings as $rating) if (preg_match('/^A/i', (string)$rating)) $strongRating = true;
-    if ($strongRating) $pros[] = "Tra i rating riportati nel database figura almeno un giudizio in fascia A ({$ratingText}); i rating possono variare e non eliminano il rischio di credito.";
-    else $cons[] = "Rating dell’emittente: {$ratingText}; verifica gli aggiornamenti più recenti e considera il rischio di credito.";
+    $strongRating = null;
+    foreach ($ratings as $agency => $rating) {
+        if (preg_match('/^A/i', (string)$rating)) {
+            $strongRating = [$agency, $rating];
+            break;
+        }
+    }
+    if ($strongRating !== null) {
+        [$strongAgency, $strongRatingValue] = $strongRating;
+        $ratingBand = preg_match('/^Aa/i', (string)$strongRatingValue) ? 'Aa' : 'A';
+        $pros[] = 'Rating elevato dell’emittente: ' . $strongAgency . ' ' . $strongRatingValue . ' (fascia ' . $ratingBand . ').';
+    } else {
+        $cons[] = "Rating dell’emittente: {$ratingText}; verifica gli aggiornamenti più recenti e considera il rischio di credito.";
+    }
     if ($step > 0) {
-        $pros[] = "Step-down di {$stepLabel} {$stepUnit} per osservazione: può aumentare la probabilità di rimborso anticipato, senza garantirlo.";
+        $pros[] = "Step-down di {$stepLabel} {$stepUnit} per osservazione: può aumentare la probabilità di rimborso anticipato e contribuire a sostenere il prezzo del prodotto.";
         $cons[] = 'Il rimborso anticipato interrompe le cedole future e può comportare il rischio di reinvestire il capitale a condizioni meno favorevoli.';
     }
-    $pros[] = 'Effetto memoria: possibilità di recuperare le cedole non pagate solo se si verificano le condizioni contrattuali previste.';
-    $pros[] = 'Struttura Quanto: copertura dell’effetto diretto del cambio sulle componenti previste dal contratto, senza eliminare gli altri rischi del prodotto.';
+    $pros[] = 'Effetto memoria: le cedole non pagate possono essere recuperate se, a una successiva data di osservazione, il Worst-of raggiunge nuovamente la barriera coupon.';
+    $pros[] = 'Struttura Quanto: protegge dall’effetto diretto del cambio sia il capitale sia le cedole.';
     $cons[] = 'Struttura Worst-of: il risultato dipende dal sottostante con la performance peggiore; gli altri sottostanti non compensano automaticamente un suo forte ribasso.';
     $cons[] = 'Rischio di liquidità: in fasi di mercato tese la vendita anticipata può avvenire a prezzi sfavorevoli o con spread più ampi.';
     if ($capital !== $coupon) $cons[] = "Barriera coupon ({$certificate['barrierCoupon']}) e barriera capitale ({$certificate['barrierCapital']}) sono diverse: la cedola può saltare prima della protezione del capitale.";
@@ -380,7 +380,7 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
     $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261018-3', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261017-8', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261018-2', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-issuers|data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
         $value = $match[3];
@@ -410,18 +410,7 @@ function renderHomeCards(array $certificates): string
         $anchor = strtolower((string)preg_replace('/[^a-z0-9]+/i', '-', $issuerSlug));
         $anchor = trim($anchor, '-');
         if (!empty($profile['id'])) $anchor = (string)$profile['id'];
-        $preview = 'Il presente certificato di investimento è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, ' . h(conciseIssuerDescriptionStart((string)$certificate['issuer'], $profile)) . '.';
-        $ratings = issuerRatings($profile);
-        if (count($ratings) === 1) {
-            $agency = (string)array_key_first($ratings);
-            $preview .= ' ' . h($agency . " assegna all’emittente un rating di credito pari ad " . reset($ratings) . '.');
-        } elseif (count($ratings) > 1) {
-            $ratingParts = [];
-            foreach ($ratings as $agency => $rating) $ratingParts[] = (string)$rating . ' per ' . $agency;
-            $last = array_pop($ratingParts);
-            $ratingSummary = $ratingParts === [] ? $last : implode(', ', $ratingParts) . ' e ' . $last;
-            $preview .= ' Le agenzie valutano il merito creditizio dell’emittente rispettivamente ' . h($ratingSummary) . '.';
-        }
+        $preview = 'Il presente certificato di investimento è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, emittente attivo nel mercato dei prodotti strutturati.';
         $preview .= ' La struttura investe su:<span class="certificate-preview-underlyings" aria-label="Sottostanti">';
         foreach ($certificate['underlyings'] as $index => $underlying) {
             if ($index > 0) $preview .= ' <span class="certificate-preview-separator" aria-hidden="true">·</span> ';

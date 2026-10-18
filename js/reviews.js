@@ -35,10 +35,10 @@ function buildGeneratedReviewContent(cert) {
           ['Fitch', issuerData.ratingFitch]
         ].filter(([, rating]) => rating && rating.toLowerCase() !== 'non rated')
       : [];
-  const hasStrongRating = ratingEntries.some(([, rating]) => /^A/i.test(rating));
+  const strongRatingEntry = ratingEntries.find(([, rating]) => /^A/i.test(rating));
   const ratingText = ratingEntries.length > 0
     ? ratingEntries.map(([agency, rating]) => `${agency}: ${rating}`).join(' · ')
-    : 'Rating non disponibile nel database';
+    : 'non disponibile tra le fonti consultate';
   const ratingDescriptions = ratingEntries.map(([agency, rating], index) => `${rating} ${index === 0 ? 'da parte di' : 'da'} ${agency}`);
   const ratingSummary = ratingDescriptions.length > 1
     ? `${ratingDescriptions.slice(0, -1).join(', ')} e ${ratingDescriptions[ratingDescriptions.length - 1]}`
@@ -79,22 +79,23 @@ function buildGeneratedReviewContent(cert) {
 
   const pros = [];
   const cons = [];
-  if (capitalBarrier <= 50) pros.push(`Barriera capitale al ${cert.barrierCapital}: buffer condizionato del ${100 - capitalBarrier}% rispetto ai livelli iniziali, con osservazione a scadenza.`);
+  if (capitalBarrier <= 50) pros.push(`Barriera capitale al ${cert.barrierCapital}: protezione a scadenza fino a un ribasso del ${100 - capitalBarrier}% per ogni sottostante.`);
   else cons.push(`Barriera capitale al ${cert.barrierCapital}: offre un buffer condizionato del ${100 - capitalBarrier}%, ma non è particolarmente difensiva e non limita la perdita in caso di violazione a scadenza.`);
   cons.push(`Rischio di perdita del capitale: se alla data finale il Worst-of è sotto la barriera capitale, il rimborso può ridursi in funzione della sua performance, secondo i termini del prodotto.`);
   if (couponBarrier <= 50) pros.push(`Barriera coupon al ${cert.barrierCoupon}: la soglia consente il pagamento della cedola anche con il Worst-of in ribasso, se resta sopra barriera alle date di osservazione.`);
-  else cons.push(`Barriera coupon al ${cert.barrierCoupon}: la cedola richiede che il Worst-of rispetti la soglia a ogni data di osservazione; sotto barriera può non essere pagata.`);
   if (monthlyYield >= 1) pros.push(`Cedola potenziale mensile lorda del ${monthlyYield.toFixed(2)}%, pari al ${annualYield.toFixed(2)}% annuo lordo, subordinata alle condizioni del prodotto.`);
   else cons.push(`Cedola potenziale mensile lorda contenuta (${monthlyYield.toFixed(2)}%); il pagamento resta subordinato alle condizioni del prodotto.`);
-  if (annualYield > 15) cons.push(`Rendimento potenziale lordo elevato (${annualYield.toFixed(2)}% annuo): non è garantito e va valutato insieme ai rischi di barriera, sottostanti ed emittente.`);
-  if (hasStrongRating) pros.push(`Tra i rating riportati nel database figura almeno un giudizio in fascia A (${ratingText}); i rating possono variare e non eliminano il rischio di credito.`);
-  else cons.push(`Rating dell'emittente: ${ratingText}; verifica gli aggiornamenti più recenti e considera il rischio di credito.`);
+  if (strongRatingEntry) {
+    const [agency, rating] = strongRatingEntry;
+    const ratingBand = /^Aa/i.test(rating) ? 'Aa' : 'A';
+    pros.push(`Rating elevato dell’emittente: ${agency} ${rating} (fascia ${ratingBand}).`);
+  } else cons.push(`Rating dell'emittente: ${ratingText}; verifica gli aggiornamenti più recenti e considera il rischio di credito.`);
   if (stepDownValue > 0) {
-    pros.push(`Step-down di ${stepDownAmount} ${stepDownUnit} per osservazione: può aumentare la probabilità di rimborso anticipato, senza garantirlo.`);
+    pros.push(`Step-down di ${stepDownAmount} ${stepDownUnit} per osservazione: può aumentare la probabilità di rimborso anticipato e contribuire a sostenere il prezzo del prodotto.`);
     cons.push('Il rimborso anticipato interrompe le cedole future e può comportare il rischio di reinvestire il capitale a condizioni meno favorevoli.');
   }
-  pros.push('Effetto memoria: possibilità di recuperare le cedole non pagate solo se si verificano le condizioni contrattuali previste.');
-  pros.push("Struttura Quanto: copertura dell'effetto diretto del cambio sulle componenti previste dal contratto, senza eliminare gli altri rischi del prodotto.");
+  pros.push('Effetto memoria: le cedole non pagate possono essere recuperate se, a una successiva data di osservazione, il Worst-of raggiunge nuovamente la barriera coupon.');
+  pros.push('Struttura Quanto: protegge dall’effetto diretto del cambio sia il capitale sia le cedole.');
   cons.push('Struttura Worst-of: il risultato dipende dal sottostante con la performance peggiore; gli altri sottostanti non compensano automaticamente un suo forte ribasso.');
   cons.push('Rischio di liquidità: in fasi di mercato tese la vendita anticipata può avvenire a prezzi sfavorevoli o con spread più ampi.');
   if (capitalBarrier !== couponBarrier) cons.push(`Barriera coupon (${cert.barrierCoupon}) e barriera capitale (${cert.barrierCapital}) sono diverse: la cedola può saltare prima della protezione del capitale.`);
