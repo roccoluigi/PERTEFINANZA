@@ -37,19 +37,17 @@ function cmsEditor(string $name, string $label, string $html, string $defaultFon
     $safeName = h($name);
     return '<div class="cms-rich-field" data-cms-field="' . $safeName . '"><span class="cms-field-label">' . h($label) . '</span>'
         . '<div class="rich-text-editor" data-rich-editor><div class="rich-text-toolbar" role="toolbar" aria-label="Formattazione">'
+        . '<span class="rich-text-style-controls" role="group" aria-label="Stile del testo">'
         . '<button type="button" data-rich-command="bold" aria-label="Grassetto" title="Grassetto"><strong>B</strong></button>'
         . '<button type="button" data-rich-command="italic" aria-label="Corsivo" title="Corsivo"><em>I</em></button>'
         . '<button type="button" data-rich-command="underline" aria-label="Sottolineato" title="Sottolineato"><u>U</u></button>'
+        . '</span>'
         . '<span class="rich-text-size-controls">'
         . '<label for="rich-font-size-' . $safeName . '">Px</label>'
         . '<input id="rich-font-size-' . $safeName . '" type="number" min="8" max="72" step="0.5" inputmode="decimal" value="' . h($defaultFontSize) . '" data-rich-font-size aria-label="Dimensione del carattere in pixel" title="Dimensione del carattere in pixel">'
-        . '<span class="rich-text-font-stepper" role="group" aria-label="Regola dimensione del carattere">'
-        . '<button type="button" data-rich-font-size-step="up" aria-label="Aumenta di 0,5 pixel" title="Aumenta di 0,5 pixel">&#9650;</button>'
-        . '<button type="button" data-rich-font-size-step="down" aria-label="Riduci di 0,5 pixel" title="Riduci di 0,5 pixel">&#9660;</button>'
-        . '</span>'
         . '</span>'
         . '<span class="rich-text-line-height-controls">'
-        . '<label for="rich-line-height-' . $safeName . '">Interlinea</label>'
+        . '<label for="rich-line-height-' . $safeName . '" title="Interlinea"><span class="rich-text-line-height-label-full">Interlinea</span><span class="rich-text-line-height-label-compact" aria-hidden="true">Interl.</span></label>'
         . '<input id="rich-line-height-' . $safeName . '" type="number" min="1" max="2.5" step="0.1" inputmode="decimal" value="' . h($defaultLineHeight) . '" data-rich-line-height aria-label="Interlinea" title="Interlinea">'
         . '</span>'
         . '</div><div class="rich-text-content cms-rich-content" contenteditable="true" role="textbox" aria-label="' . h($label) . '" aria-multiline="true" data-rich-content data-placeholder="Scrivi il contenuto">' . $html . '</div>'
@@ -220,8 +218,8 @@ try {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestione contenuti | PERTEFINANZA</title>
-  <script src="admin.js?v=20261010-1"></script>
-  <link rel="stylesheet" href="admin.css?v=20261010-71">
+  <script src="admin.js?v=20261018-2"></script>
+  <link rel="stylesheet" href="admin.css?v=20261018-7">
 </head>
 <body>
   <main class="admin-shell">
@@ -282,27 +280,27 @@ try {
             <?php if ($section === 'contacts'): ?>
               <p class="cms-editor-help cms-mobile-guide">Il modulo email e i suoi campi restano invariati. I recapiti aggiornano anche gli indirizzi email visibili nella pagina.</p>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
-              <label>Introduzione della pagina<textarea name="description" required maxlength="1000"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>
+              <?= cmsEditor('description', 'Introduzione della pagina', cmsFormValue($formItem, 'description')) ?>
               <?= cmsEditor('intro', 'Testo introduttivo del modulo', cmsFormValue($formItem, 'intro')) ?>
               <label>Titolo del recapito Telegram<input name="telegramTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'telegramTitle')) ?>"></label>
-              <label>Descrizione Telegram<input name="telegramDescription" required maxlength="500" value="<?= h(cmsFormValue($formItem, 'telegramDescription')) ?>"></label>
+              <?= cmsEditor('telegramDescription', 'Descrizione Telegram', cmsFormValue($formItem, 'telegramDescription')) ?>
               <label>Testo del collegamento Telegram<input name="telegramLabel" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'telegramLabel')) ?>"></label>
               <label>URL Telegram<input type="url" name="telegramUrl" required value="<?= h(cmsFormValue($formItem, 'telegramUrl')) ?>"></label>
               <label>Titolo del recapito email<input name="emailTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'emailTitle')) ?>"></label>
-              <label>Descrizione email<input name="emailDescription" required maxlength="500" value="<?= h(cmsFormValue($formItem, 'emailDescription')) ?>"></label>
+              <?= cmsEditor('emailDescription', 'Descrizione email', cmsFormValue($formItem, 'emailDescription')) ?>
               <label>Indirizzo email<input type="email" name="email" required maxlength="254" value="<?= h(cmsFormValue($formItem, 'email')) ?>"></label>
               <label>Titolo dei dati del titolare<input name="ownerTitle" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'ownerTitle')) ?>"></label>
               <?= cmsEditor('ownerDescription', 'Dati e descrizione del titolare', cmsFormValue($formItem, 'ownerDescription')) ?>
             <?php elseif ($section === 'transparency' && $editingId === 'transparency'): ?>
               <p class="cms-editor-help">Il titolo e il testo compaiono nel footer di tutte le pagine del sito e vengono pubblicati insieme.</p>
               <label>Titolo nel footer<input name="title" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
-              <label>Testo informativo<textarea name="content" required maxlength="2000" rows="6"><?= h(cmsFormValue($formItem, 'content')) ?></textarea></label>
+              <?= cmsEditor('content', 'Testo informativo', cmsFormValue($formItem, 'content')) ?>
             <?php elseif ($section === 'transparency' && $editingId === 'product-warning'): ?>
               <p class="cms-editor-help">Questo testo compare sotto ogni scheda prodotto. Puoi usare la formattazione; il contenuto HTML viene filtrato per rimuovere codice attivo non sicuro.</p>
               <?= cmsEditor('content', 'Avvertenza breve — schede prodotto', cmsFormValue($formItem, 'content'), '14', '1.6') ?>
             <?php elseif ($section === 'disclaimer' && $editingId === 'page-header'): ?>
               <label>Titolo della pagina<input name="title" required maxlength="180" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
-              <label>Introduzione<textarea name="description" required maxlength="1200"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>
+              <?= cmsEditor('description', 'Introduzione', cmsFormValue($formItem, 'description')) ?>
               <label>Data di aggiornamento<input name="date" required maxlength="80" value="<?= h(cmsFormValue($formItem, 'date')) ?>"></label>
             <?php elseif ($section === 'disclaimer'): ?>
               <label>Titolo della sezione<input name="title" required maxlength="300" value="<?= h(cmsFormValue($formItem, 'title')) ?>"></label>
@@ -310,7 +308,7 @@ try {
             <?php elseif ($section === 'issuers'): ?>
               <label>Nome emittente<input name="name" required maxlength="120" value="<?= h(cmsFormValue($formItem, 'name')) ?>"></label>
               <label>Paese e descrizione breve<input name="country" required maxlength="200" value="<?= h(cmsFormValue($formItem, 'country')) ?>"></label>
-              <label>Descrizione<textarea name="description" required maxlength="4000"><?= h(cmsFormValue($formItem, 'description')) ?></textarea></label>
+              <?= cmsEditor('description', 'Descrizione', cmsFormValue($formItem, 'description')) ?>
               <label>Rating (un’agenzia per riga, formato Agenzia | Valore)<textarea name="ratings" placeholder="S&amp;P | A+&#10;Moody's | A1"><?= h(isset($formItem['ratings']) && is_array($formItem['ratings']) ? cmsRatingText($formItem['ratings']) : (string)($formItem['ratings'] ?? '')) ?></textarea></label>
               <label>Testo del collegamento al sito ufficiale<input name="websiteLabel" maxlength="180" value="<?= h(cmsFormValue($formItem, 'websiteLabel')) ?>"></label>
               <label>URL del sito ufficiale<input type="url" name="websiteUrl" value="<?= h(cmsFormValue($formItem, 'websiteUrl')) ?>"></label>

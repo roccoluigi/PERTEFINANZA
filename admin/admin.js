@@ -130,19 +130,6 @@
       editor.querySelectorAll('[data-rich-font-size]').forEach((input) => {
         input.addEventListener('mousedown', saveSelection);
         input.addEventListener('change', applyContentFormat);
-        editor.querySelectorAll('[data-rich-font-size-step]').forEach((button) => {
-          button.addEventListener('mousedown', (event) => {
-            saveSelection();
-            event.preventDefault();
-          });
-          button.addEventListener('click', () => {
-            const currentValue = Number(input.value);
-            const direction = button.dataset.richFontSizeStep === 'up' ? 1 : -1;
-            const nextValue = Math.min(72, Math.max(8, (Number.isFinite(currentValue) ? currentValue : 14) + (direction * 0.5)));
-            input.value = Number.isInteger(nextValue) ? String(nextValue) : nextValue.toFixed(1);
-            applyContentFormat();
-          });
-        });
       });
       editor.querySelectorAll('[data-rich-line-height]').forEach((input) => {
         input.addEventListener('change', applyContentFormat);

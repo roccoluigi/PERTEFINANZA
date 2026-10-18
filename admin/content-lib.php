@@ -61,6 +61,11 @@ function cmsFindClass(DOMElement $root, string $tag, string $class): ?DOMElement
     return null;
 }
 
+function cmsFindContentBlock(DOMElement $root, string $class): ?DOMElement
+{
+    return cmsFindClass($root, 'div', $class) ?? cmsFindClass($root, 'p', $class);
+}
+
 function cmsInnerHtml(DOMNode $node): string
 {
     $html = '';
@@ -160,24 +165,24 @@ function cmsReadSection(string $section): array
         }
         $telegramLink = cmsFindClass($columns[0], 'a', 'contact-details-link');
         $emailNode = cmsFindClass($columns[1], 'span', 'contact-details-email');
-        $ownerText = cmsFindClass($columns[2], 'p', 'contact-details-text');
+        $ownerText = cmsFindContentBlock($columns[2], 'contact-details-text');
         $headerTitle = $header->getElementsByTagName('h1')->item(0);
-        $headerDescription = $header->getElementsByTagName('p')->item(0);
-        $introParagraph = $intro->getElementsByTagName('p')->item(0);
+        $headerDescription = cmsFindContentBlock($header, 'page-header-desc');
+        $introParagraph = cmsFindContentBlock($intro, 'contact-intro');
         if (!$headerTitle || !$headerDescription || !$introParagraph || !$telegramLink || !$emailNode || !$ownerText) {
             throw new RuntimeException('Contenuti della pagina Contatti non riconosciuti.');
         }
         return [[
             'id' => 'contacts',
             'title' => cmsText($headerTitle),
-            'description' => cmsText($headerDescription),
+            'description' => cmsInnerHtml($headerDescription),
             'intro' => cmsInnerHtml($introParagraph),
             'telegramTitle' => cmsText(cmsFindClass($columns[0], 'h3', 'contact-details-title')),
-            'telegramDescription' => cmsText(cmsFindClass($columns[0], 'p', 'contact-details-text')),
+            'telegramDescription' => cmsInnerHtml(cmsFindContentBlock($columns[0], 'contact-details-text')),
             'telegramLabel' => cmsText($telegramLink),
             'telegramUrl' => $telegramLink->getAttribute('href'),
             'emailTitle' => cmsText(cmsFindClass($columns[1], 'h3', 'contact-details-title')),
-            'emailDescription' => cmsText(cmsFindClass($columns[1], 'p', 'contact-details-text')),
+            'emailDescription' => cmsInnerHtml(cmsFindContentBlock($columns[1], 'contact-details-text')),
             'email' => cmsText($emailNode),
             'ownerTitle' => cmsText(cmsFindClass($columns[2], 'h3', 'contact-details-title')),
             'ownerDescription' => cmsInnerHtml($ownerText),
@@ -186,7 +191,7 @@ function cmsReadSection(string $section): array
     if ($section === 'transparency') {
         $footer = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-TRANSPARENCY:START -->', '<!-- CMS-TRANSPARENCY:END -->'));
         $title = cmsFindClass($footer, 'h4', 'footer-heading');
-        $content = cmsFindClass($footer, 'p', 'footer-disclaimer-text');
+        $content = cmsFindContentBlock($footer, 'footer-disclaimer-text');
         if (!$title || !$content) {
             throw new RuntimeException('Contenuto Trasparenza & Rischi non riconosciuto.');
         }
@@ -194,7 +199,7 @@ function cmsReadSection(string $section): array
             [
                 'id' => 'transparency',
                 'title' => cmsText($title),
-                'content' => cmsText($content),
+                'content' => cmsInnerHtml($content),
             ],
             [
                 'id' => 'product-warning',
@@ -206,7 +211,7 @@ function cmsReadSection(string $section): array
     if ($section === 'disclaimer') {
         $header = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-DISCLAIMER-HEADER:START -->', '<!-- CMS-DISCLAIMER-HEADER:END -->'));
         $headerTitle = $header->getElementsByTagName('h1')->item(0);
-        $headerDescription = $header->getElementsByTagName('p')->item(0);
+        $headerDescription = cmsFindContentBlock($header, 'page-header-desc');
         $dateParagraph = cmsFindClass($header, 'p', 'legal-update-date');
         if (!$headerTitle || !$headerDescription || !$dateParagraph) {
             throw new RuntimeException('Intestazione della pagina legale non riconosciuta.');
@@ -215,7 +220,7 @@ function cmsReadSection(string $section): array
         $items = [[
             'id' => 'page-header',
             'title' => cmsText($headerTitle),
-            'description' => cmsText($headerDescription),
+            'description' => cmsInnerHtml($headerDescription),
             'date' => trim((string)($dateMatch[1] ?? '')),
         ]];
         $root = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-DISCLAIMER-SECTIONS:START -->', '<!-- CMS-DISCLAIMER-SECTIONS:END -->'));
@@ -269,7 +274,7 @@ function cmsReadSection(string $section): array
                     'id' => $card->getAttribute('id'),
                     'name' => $name,
                     'country' => cmsText(cmsFindClass($card, 'span', 'issuer-country')),
-                    'description' => cmsText($description),
+                    'description' => cmsInnerHtml($description),
                     'ratings' => $ratings,
                     'websiteLabel' => cmsText($website),
                     'websiteUrl' => $website?->getAttribute('href') ?? '',
@@ -547,11 +552,20 @@ function cmsComparable(string $value): string
     return function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
 }
 
-function cmsRequiredHtml(mixed $value, string $label): string
+function cmsRequiredHtml(mixed $value, string $label, ?int $maxLength = null): string
 {
     $html = cmsSafeHtml(cmsInputString($value, $label));
-    if (trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8')) === '') {
+    $text = trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    if ($text === '') {
         throw new InvalidArgumentException('Inserisci un contenuto per ' . $label . '.');
+    }
+    if ($maxLength !== null) {
+        $length = function_exists('mb_strlen')
+            ? mb_strlen($text, 'UTF-8')
+            : (function_exists('iconv_strlen') ? iconv_strlen($text, 'UTF-8') : strlen($text));
+        if ($length === false || $length > $maxLength) {
+            throw new InvalidArgumentException('Inserisci un contenuto valido per ' . $label . '.');
+        }
     }
     return $html;
 }
@@ -577,7 +591,7 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
         return [
             'id' => 'transparency',
             'title' => cmsTextField($input['title'] ?? '', 'titolo Trasparenza & Rischi', 120),
-            'content' => cmsTextField($input['content'] ?? '', 'testo Trasparenza & Rischi', 2000),
+            'content' => cmsRequiredHtml($input['content'] ?? '', 'testo Trasparenza & Rischi', 2000),
         ];
     }
 
@@ -593,14 +607,14 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
         return [
             'id' => 'contacts',
             'title' => cmsTextField($input['title'] ?? '', 'titolo della pagina', 180),
-            'description' => cmsTextField($input['description'] ?? '', 'introduzione della pagina', 1000),
+            'description' => cmsRequiredHtml($input['description'] ?? '', 'introduzione della pagina', 1000),
             'intro' => cmsRequiredHtml($input['intro'] ?? '', 'introduzione al modulo di contatto'),
             'telegramTitle' => cmsTextField($input['telegramTitle'] ?? '', 'titolo Telegram', 120),
-            'telegramDescription' => cmsTextField($input['telegramDescription'] ?? '', 'descrizione Telegram', 500),
+            'telegramDescription' => cmsRequiredHtml($input['telegramDescription'] ?? '', 'descrizione Telegram', 500),
             'telegramLabel' => cmsTextField($input['telegramLabel'] ?? '', 'testo del collegamento Telegram', 120),
             'telegramUrl' => $telegramUrl,
             'emailTitle' => cmsTextField($input['emailTitle'] ?? '', 'titolo email', 120),
-            'emailDescription' => cmsTextField($input['emailDescription'] ?? '', 'descrizione email', 500),
+            'emailDescription' => cmsRequiredHtml($input['emailDescription'] ?? '', 'descrizione email', 500),
             'email' => $email,
             'ownerTitle' => cmsTextField($input['ownerTitle'] ?? '', 'titolo del titolare', 120),
             'ownerDescription' => cmsRequiredHtml($input['ownerDescription'] ?? '', 'dati del titolare'),
@@ -615,7 +629,7 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
             return [
                 'id' => 'page-header',
                 'title' => cmsTextField($input['title'] ?? '', 'titolo del disclaimer', 180),
-                'description' => cmsTextField($input['description'] ?? '', 'introduzione del disclaimer', 1200),
+                'description' => cmsRequiredHtml($input['description'] ?? '', 'introduzione del disclaimer', 1200),
                 'date' => cmsTextField($input['date'] ?? '', 'data di aggiornamento', 80),
             ];
         }
@@ -656,7 +670,7 @@ function cmsNormalizeForm(string $section, array $input, array $items, ?array $e
             'id' => $id,
             'name' => cmsTextField($input['name'] ?? '', 'nome emittente', 120),
             'country' => cmsTextField($input['country'] ?? '', 'paese e descrizione', 200),
-            'description' => cmsTextField($input['description'] ?? '', 'descrizione', 4000),
+            'description' => cmsRequiredHtml($input['description'] ?? '', 'descrizione emittente', 4000),
             'ratings' => $ratings,
             'websiteLabel' => $url === '' ? '' : cmsTextField($input['websiteLabel'] ?? '', 'testo del collegamento', 180),
             'websiteUrl' => $url,
@@ -708,7 +722,7 @@ function cmsRenderIssuers(array $items): array
         foreach ($item['ratings'] as $rating) {
             $cards .= '<div class="rating-pill"><span class="rating-agency">' . h((string)$rating['agency']) . ':</span> <span class="rating-val">' . h((string)$rating['value']) . '</span></div>';
         }
-        $cards .= '</div></div><div class="issuer-body">' . h((string)$item['description']) . '</div>';
+        $cards .= '</div></div><div class="issuer-body">' . (string)$item['description'] . '</div>';
         if (($item['websiteUrl'] ?? '') !== '') {
             $cards .= '<div class="issuer-footer"><a href="' . h((string)$item['websiteUrl']) . '" target="_blank" rel="noopener noreferrer" class="issuer-link">' . h((string)$item['websiteLabel']) . '</a></div>';
         }
@@ -883,7 +897,7 @@ function cmsPublishTransparency(array $items): string
     $footerItem = $itemsById['transparency'];
     $warningContent = (string)$itemsById['product-warning']['content'];
     $replacement = '<h4 class="footer-heading">' . h((string)$footerItem['title']) . '</h4>'
-        . "\n" . '<p class="footer-disclaimer-text">' . h((string)$footerItem['content']) . '</p>';
+        . "\n" . '<div class="footer-disclaimer-text">' . (string)$footerItem['content'] . '</div>';
     $prepared = [];
     foreach (cmsTransparencyPagePaths() as $relative) {
         $original = readProjectFile($relative);
@@ -973,14 +987,14 @@ function cmsPublishSection(string $section, array $items): string
             throw new InvalidArgumentException('La scheda Contatti non può essere aggiunta o rimossa.');
         }
         $item = $items[0];
-        $header = '<h1 class="page-header-title">' . h((string)$item['title']) . '</h1><p class="page-header-desc">' . h((string)$item['description']) . '</p>';
+        $header = '<h1 class="page-header-title">' . h((string)$item['title']) . '</h1><div class="page-header-desc">' . (string)$item['description'] . '</div>';
         $details = '<div class="contact-details-grid">'
-            . '<div><h3 class="contact-details-title">' . h((string)$item['telegramTitle']) . '</h3><p class="contact-details-text">' . h((string)$item['telegramDescription']) . '</p><a href="' . h((string)$item['telegramUrl']) . '" target="_blank" rel="noopener noreferrer" class="contact-details-link">' . h((string)$item['telegramLabel']) . '</a></div>'
-            . '<div><h3 class="contact-details-title">' . h((string)$item['emailTitle']) . '</h3><p class="contact-details-text">' . h((string)$item['emailDescription']) . '</p><span class="contact-details-email">' . h((string)$item['email']) . '</span></div>'
-            . '<div><h3 class="contact-details-title">' . h((string)$item['ownerTitle']) . '</h3><p class="contact-details-text">' . (string)$item['ownerDescription'] . '</p></div>'
+            . '<div><h3 class="contact-details-title">' . h((string)$item['telegramTitle']) . '</h3><div class="contact-details-text">' . (string)$item['telegramDescription'] . '</div><a href="' . h((string)$item['telegramUrl']) . '" target="_blank" rel="noopener noreferrer" class="contact-details-link">' . h((string)$item['telegramLabel']) . '</a></div>'
+            . '<div><h3 class="contact-details-title">' . h((string)$item['emailTitle']) . '</h3><div class="contact-details-text">' . (string)$item['emailDescription'] . '</div><span class="contact-details-email">' . h((string)$item['email']) . '</span></div>'
+            . '<div><h3 class="contact-details-title">' . h((string)$item['ownerTitle']) . '</h3><div class="contact-details-text">' . (string)$item['ownerDescription'] . '</div></div>'
             . '</div>';
         $html = cmsReplaceMarked($html, '<!-- CMS-CONTACT-HEADER:START -->', '<!-- CMS-CONTACT-HEADER:END -->', $header);
-        $html = cmsReplaceMarked($html, '<!-- CMS-CONTACT-INTRO:START -->', '<!-- CMS-CONTACT-INTRO:END -->', '<p class="contact-intro">' . (string)$item['intro'] . '</p>');
+        $html = cmsReplaceMarked($html, '<!-- CMS-CONTACT-INTRO:START -->', '<!-- CMS-CONTACT-INTRO:END -->', '<div class="contact-intro">' . (string)$item['intro'] . '</div>');
         $html = cmsReplaceMarked($html, '<!-- CMS-CONTACT-DETAILS:START -->', '<!-- CMS-CONTACT-DETAILS:END -->', $details);
         $current = cmsReadSection('contacts')[0]['email'];
         $html = str_replace((string)$current, (string)$item['email'], $html);
@@ -991,7 +1005,7 @@ function cmsPublishSection(string $section, array $items): string
             throw new InvalidArgumentException('Le sezioni e gli ancoraggi legali non possono essere aggiunti, rimossi o riordinati.');
         }
         $header = array_shift($items);
-        $headerHtml = '<h1 class="page-header-title">' . h((string)$header['title']) . '</h1><p class="page-header-desc">' . h((string)$header['description']) . '</p><p class="legal-update-date"><strong>Ultimo aggiornamento:</strong> ' . h((string)$header['date']) . '</p>';
+        $headerHtml = '<h1 class="page-header-title">' . h((string)$header['title']) . '</h1><div class="page-header-desc">' . (string)$header['description'] . '</div><p class="legal-update-date"><strong>Ultimo aggiornamento:</strong> ' . h((string)$header['date']) . '</p>';
         $html = cmsReplaceMarked($html, '<!-- CMS-DISCLAIMER-HEADER:START -->', '<!-- CMS-DISCLAIMER-HEADER:END -->', $headerHtml);
         $sectionsHtml = '';
         foreach ($items as $item) {
