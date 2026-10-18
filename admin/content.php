@@ -48,7 +48,7 @@ function cmsEditor(string $name, string $label, string $html, string $defaultFon
         . '</span>'
         . '<span class="rich-text-line-height-controls">'
         . '<label for="rich-line-height-' . $safeName . '" title="Interlinea"><span class="rich-text-line-height-label-full">Interlinea</span><span class="rich-text-line-height-label-compact" aria-hidden="true">Interl.</span></label>'
-        . '<input id="rich-line-height-' . $safeName . '" type="number" min="1" max="2.5" step="0.1" inputmode="decimal" value="' . h($defaultLineHeight) . '" data-rich-line-height aria-label="Interlinea" title="Interlinea">'
+        . '<input id="rich-line-height-' . $safeName . '" type="number" min="1" max="2.5" step="0.01" inputmode="decimal" value="' . h($defaultLineHeight) . '" data-rich-line-height aria-label="Interlinea" title="Interlinea">'
         . '</span>'
         . '</div><div class="rich-text-content cms-rich-content" contenteditable="true" role="textbox" aria-label="' . h($label) . '" aria-multiline="true" data-rich-content data-placeholder="Scrivi il contenuto">' . $html . '</div>'
         . '<input type="hidden" name="' . $safeName . '" value="' . h($html) . '" data-rich-input></div></div>';
@@ -218,8 +218,8 @@ try {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestione contenuti | PERTEFINANZA</title>
-  <script src="admin.js?v=20261018-2"></script>
-  <link rel="stylesheet" href="admin.css?v=20261018-7">
+  <script src="admin.js?v=20261018-3"></script>
+  <link rel="stylesheet" href="admin.css?v=20261018-8">
 </head>
 <body>
   <main class="admin-shell">

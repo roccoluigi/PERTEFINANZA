@@ -327,8 +327,8 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
-  <script src="admin.js?v=20261018-2"></script>
-  <link rel="stylesheet" href="admin.css?v=20261018-7">
+  <script src="admin.js?v=20261018-3"></script>
+  <link rel="stylesheet" href="admin.css?v=20261018-8">
 </head>
 <body>
   <main class="admin-shell">
@@ -390,6 +390,11 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                   <strong><?= h((string)$certificate['name']) ?></strong>
                   <small><?= h($isin) ?> · <?= h((string)$certificate['issuer']) ?> · <?= number_format((float)$certificate['annualYield'], 2, ',', '') ?>% annuo</small>
                 </div>
+                <?php if ($row['status'] !== 'removal'): ?>
+                  </a>
+                <?php else: ?>
+                  </div>
+                <?php endif; ?>
                 <?php
                   $statusLabels = ['new' => 'Nuovo · non pubblicato', 'modified' => 'Modifiche in bozza', 'published' => 'Pubblicato', 'removal' => 'Rimozione in attesa'];
                 ?>
@@ -398,15 +403,16 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                   <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
                     <span class="status-pill status-visibility<?= !empty($certificate['showHome']) ? ' is-selected' : '' ?>">Home: <?= !empty($certificate['showHome']) ? 'sì' : 'no' ?></span>
                     <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
-                    <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
                   </div>
                 </div>
-                <?php if ($row['status'] !== 'removal'): ?>
-                  </a>
-                <?php else: ?>
-                  </div>
-                <?php endif; ?>
               </div>
+              <div class="certificate-row-bottom">
+                <?php if (in_array($row['status'], ['published', 'modified'], true)): ?>
+                  <form method="post" onsubmit="return confirm('Segnare questa scheda per la rimozione? Resterà online finché non confermi la rimozione o pubblichi tutte le modifiche.')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger certificate-mark-removal" type="submit">Segna per rimozione</button></form>
+                <?php endif; ?>
+                <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
+              </div>
+              <?php if (in_array($row['status'], ['new', 'modified', 'removal'], true)): ?>
               <div class="row-actions">
                 <?php if (in_array($row['status'], ['new', 'modified'], true)): ?>
                   <form method="post" onsubmit="return confirm('Pubblicare solo questa scheda? Le altre modifiche resteranno in attesa.')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="publish_one"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button" type="submit"><?= $row['status'] === 'new' ? 'Pubblica scheda' : 'Pubblica modifiche' ?></button></form>
@@ -414,17 +420,14 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                 <?php if ($row['status'] === 'modified'): ?>
                   <form method="post" onsubmit="return confirm('Annullare le modifiche non pubblicate e ripristinare la versione online?')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="discard_changes"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button secondary" type="submit">Annulla modifiche</button></form>
                 <?php endif; ?>
-                <?php if ($row['status'] === 'published'): ?>
-                  <form method="post" onsubmit="return confirm('Segnare questa scheda per la rimozione? Resterà online finché non confermi la rimozione o pubblichi tutte le modifiche.')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger certificate-mark-removal" type="submit">Segna per rimozione</button></form>
-                <?php elseif ($row['status'] === 'new'): ?>
+                <?php if ($row['status'] === 'new'): ?>
                   <form method="post" onsubmit="return confirm('Eliminare questa bozza non ancora pubblicata?')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger" type="submit">Elimina bozza</button></form>
-                <?php elseif ($row['status'] === 'modified'): ?>
-                  <form method="post" onsubmit="return confirm('Segnare questa scheda per la rimozione dal sito?')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger certificate-mark-removal" type="submit">Segna per rimozione</button></form>
                 <?php elseif ($row['status'] === 'removal'): ?>
                   <form method="post" onsubmit="return confirm('Rimuovere dal sito la scheda <?= h($isin) ?> e toglierla da home, cataloghi, sitemap e manifest?')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="remove"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger" type="submit">Rimuovi dal sito</button></form>
                   <form method="post"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="restore"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button secondary" type="submit">Annulla rimozione</button></form>
                 <?php endif; ?>
               </div>
+              <?php endif; ?>
             </article>
           <?php endforeach; ?>
         </div>
@@ -459,9 +462,19 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <div class="editorial-field-label">Introduzione e analisi</div>
           <div class="rich-text-editor" data-rich-editor>
             <div class="rich-text-toolbar" role="toolbar" aria-label="Formattazione del testo">
-              <button type="button" data-rich-command="bold" aria-label="Grassetto" title="Grassetto"><strong>B</strong></button>
-              <button type="button" data-rich-command="italic" aria-label="Corsivo" title="Corsivo"><em>I</em></button>
-              <button type="button" data-rich-command="underline" aria-label="Sottolineato" title="Sottolineato"><u>U</u></button>
+              <span class="rich-text-style-controls" role="group" aria-label="Stile del testo">
+                <button type="button" data-rich-command="bold" aria-label="Grassetto" title="Grassetto"><strong>B</strong></button>
+                <button type="button" data-rich-command="italic" aria-label="Corsivo" title="Corsivo"><em>I</em></button>
+                <button type="button" data-rich-command="underline" aria-label="Sottolineato" title="Sottolineato"><u>U</u></button>
+              </span>
+              <span class="rich-text-size-controls">
+                <label for="rich-font-size-paragraphs">Px</label>
+                <input id="rich-font-size-paragraphs" type="number" min="8" max="72" step="0.5" inputmode="decimal" value="16" data-rich-font-size aria-label="Dimensione del carattere in pixel" title="Dimensione del carattere in pixel">
+              </span>
+              <span class="rich-text-line-height-controls">
+                <label for="rich-line-height-paragraphs" title="Interlinea"><span class="rich-text-line-height-label-full">Interlinea</span><span class="rich-text-line-height-label-compact" aria-hidden="true">Interl.</span></label>
+                <input id="rich-line-height-paragraphs" type="number" min="1" max="2.5" step="0.01" inputmode="decimal" value="1.6" data-rich-line-height aria-label="Interlinea" title="Interlinea">
+              </span>
             </div>
             <div class="rich-text-content review-copy-main" contenteditable="true" role="textbox" aria-label="Introduzione e analisi" aria-multiline="true" data-rich-content data-review-text data-placeholder="Salva prima i dati del certificato per generare il testo completo"><?= $formOverride['paragraphs'] ?? '' ?></div>
             <input type="hidden" name="paragraphs" value="<?= h((string)($formOverride['paragraphs'] ?? '')) ?>" data-rich-input>

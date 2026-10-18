@@ -93,7 +93,7 @@
           || fontSize < 8
           || fontSize > 72
           || !Number.isFinite(lineHeight)
-          || !Number.isInteger(lineHeight * 10)
+          || !Number.isInteger(Number((lineHeight * 100).toFixed(8)))
           || lineHeight < 1
           || lineHeight > 2.5
         ) return;

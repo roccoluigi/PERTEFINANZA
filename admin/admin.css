@@ -504,8 +504,11 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
 .status-removal { border-color: color-mix(in srgb, var(--admin-danger) 38%, var(--admin-border)); background: var(--admin-danger-soft); color: var(--admin-danger); }
 .status-published { border-color: color-mix(in srgb, var(--admin-success) 35%, var(--admin-border)); background: var(--admin-success-soft); color: var(--admin-success); }
 .row-actions { flex-wrap: wrap; gap: 8px; margin-top: 2px; }
+.certificate-row-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 5px; }
+.certificate-row-bottom form { margin: 0; }
 .row-actions .button { min-height: 34px; padding: 6px 10px; font-size: 0.78rem; }
-.row-actions .certificate-mark-removal { min-height: 26px; padding: 3px 8px; font-size: 0.74rem; }
+.row-actions .certificate-mark-removal,
+.certificate-row-bottom .certificate-mark-removal { min-height: 26px; padding: 3px 8px; font-size: 0.74rem; }
 .admin-footer { margin: 18px 4px 0; color: var(--admin-muted); font-size: 0.82rem; }
 
 .admin-auth {
@@ -718,6 +721,8 @@ a:focus-visible { outline: 3px solid color-mix(in srgb, var(--admin-focus) 65%, 
   .row-actions form { width: 100%; }
   .row-actions .button { width: 100%; min-height: 40px; white-space: normal; }
   .row-actions .button.certificate-mark-removal { min-height: 32px; padding: 5px 12px; font-size: 0.74rem; }
+  .certificate-row-bottom { flex-wrap: wrap; justify-content: center; }
+  .certificate-row-bottom .button.certificate-mark-removal { min-height: 32px; padding: 5px 12px; font-size: 0.74rem; }
   .status-pill { justify-content: center; text-align: center; }
   .status-pill { white-space: normal; }
   .checkbox-row { align-items: stretch; flex-direction: column; }

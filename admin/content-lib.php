@@ -457,7 +457,7 @@ function cmsSanitizeNode(DOMNode $parent): void
             } elseif ($name === 'style') {
                 if (
                     ($tag === 'span' && preg_match('/^\s*font-size\s*:\s*((?:[8-9]|[1-6]\d|7[0-2])(?:\.5)?)px\s*;?\s*$/i', $value, $fontSizeMatch) === 1)
-                    || ($tag === 'div' && cmsHasClass($child, 'cms-rich-format') && preg_match('/^\s*font-size\s*:\s*((?:[8-9]|[1-6]\d|7[0-2])(?:\.5)?)px\s*;\s*line-height\s*:\s*(1(?:\.\d)?|2(?:\.[0-5])?)\s*;?\s*$/i', $value, $formatMatch) === 1)
+                    || ($tag === 'div' && cmsHasClass($child, 'cms-rich-format') && preg_match('/^\s*font-size\s*:\s*((?:[8-9]|[1-6]\d|7[0-2])(?:\.5)?)px\s*;\s*line-height\s*:\s*(1(?:\.\d{1,2})?|2(?:\.(?:[0-4]\d?|5(?:0)?))?)\s*;?\s*$/i', $value, $formatMatch) === 1)
                 ) {
                     if ($tag === 'span') {
                         $child->setAttribute('style', 'font-size: ' . $fontSizeMatch[1] . 'px');

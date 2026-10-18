@@ -490,6 +490,32 @@ function normalizeEditorialParagraphs($value): array
     return array_values($paragraphs);
 }
 
+function editorialParagraphFormatFromHtml(string $html): array
+{
+    $fontSize = '(?:[8-9]|[1-6][0-9]|7[0-2])(?:\.5)?';
+    $lineHeight = '(?:1(?:\.[0-9]{1,2})?|2(?:\.(?:[0-4][0-9]?|5(?:0)?))?)';
+    $pattern = '/<div\b(?=[^>]*\bclass="cms-rich-format")(?=[^>]*\bstyle="font-size:\s*(' . $fontSize . ')px;\s*line-height:\s*(' . $lineHeight . ')\s*;?")[^>]*>/i';
+    if (preg_match($pattern, $html, $match) === 1) {
+        return ['paragraphFontSize' => $match[1], 'paragraphLineHeight' => $match[2]];
+    }
+    return ['paragraphFontSize' => null, 'paragraphLineHeight' => null];
+}
+
+function normalizeEditorialFormatValue(mixed $value, string $label, string $pattern): ?string
+{
+    if ($value === null || $value === '') {
+        return null;
+    }
+    if (!is_scalar($value)) {
+        throw new InvalidArgumentException('Il formato di ' . $label . ' non è valido.');
+    }
+    $value = trim((string)$value);
+    if (preg_match($pattern, $value) !== 1) {
+        throw new InvalidArgumentException('Il formato di ' . $label . ' non è valido.');
+    }
+    return $value;
+}
+
 function normalizeReviewOverride(array $input): array
 {
     foreach (['lead', 'note', 'scenarioDescription'] as $field) {
@@ -517,6 +543,22 @@ function normalizeReviewOverride(array $input): array
         return array_values(array_filter($items, static fn($item) => $item !== ''));
     };
     $paragraphs = normalizeEditorialParagraphs($input['paragraphs'] ?? null);
+    $paragraphFormat = is_string($input['paragraphs'] ?? null)
+        ? editorialParagraphFormatFromHtml($input['paragraphs'])
+        : ['paragraphFontSize' => null, 'paragraphLineHeight' => null];
+    $paragraphFontSize = normalizeEditorialFormatValue(
+        $input['paragraphFontSize'] ?? $paragraphFormat['paragraphFontSize'],
+        'la dimensione del testo',
+        '/^(?:[8-9]|[1-6][0-9]|7[0-2])(?:\.5)?$/'
+    );
+    $paragraphLineHeight = normalizeEditorialFormatValue(
+        $input['paragraphLineHeight'] ?? $paragraphFormat['paragraphLineHeight'],
+        'l’interlinea',
+        '/^(?:1(?:\.[0-9]{1,2})?|2(?:\.(?:[0-4][0-9]?|5(?:0)?))?)$/'
+    );
+    if (($paragraphFontSize === null) !== ($paragraphLineHeight === null)) {
+        throw new InvalidArgumentException('Dimensione del testo e interlinea devono essere impostate insieme.');
+    }
     $pros = $normalizeList($input['pros'] ?? null);
     $cons = $normalizeList($input['cons'] ?? null);
     $scenarios = [];
@@ -555,6 +597,8 @@ function normalizeReviewOverride(array $input): array
         'note' => $note,
         'fullText' => $hasFullText,
         'paragraphs' => $paragraphs,
+        'paragraphFontSize' => $paragraphFontSize,
+        'paragraphLineHeight' => $paragraphLineHeight,
         'scenarioDescription' => $scenarioDescription,
         'scenarios' => $scenarios,
         'pros' => $pros,

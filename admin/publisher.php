@@ -250,6 +250,8 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
         : 'Simulazione teorica del pay-off a scadenza, con i livelli espressi in rapporto agli strike iniziali dei sottostanti, fissati al momento del fixing del prodotto.';
     return [
         'paragraphs' => $paragraphs,
+        'paragraphFontSize' => $override['paragraphFontSize'],
+        'paragraphLineHeight' => $override['paragraphLineHeight'],
         'scenarios' => $scenarios,
         'pros' => $pros,
         'cons' => $cons,
@@ -270,8 +272,12 @@ function reviewEditorialFormValues(array $certificate, array $override = []): ar
     $underlyingProfiles = loadUnderlyingProfiles();
     $issuerProfile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
     $data = generateReviewData($certificate, $issuerProfile, $underlyingProfiles, $override);
+    $paragraphHtml = implode('', array_map('reviewMarkupToEditorHtml', $data['paragraphs']));
+    if ($data['paragraphFontSize'] !== null && $data['paragraphLineHeight'] !== null) {
+        $paragraphHtml = '<div class="cms-rich-format" style="font-size: ' . h($data['paragraphFontSize']) . 'px; line-height: ' . h($data['paragraphLineHeight']) . '">' . $paragraphHtml . '</div>';
+    }
     return [
-        'paragraphs' => implode('', array_map('reviewMarkupToEditorHtml', $data['paragraphs'])),
+        'paragraphs' => $paragraphHtml,
         'scenarioDescription' => $data['scenarioDescription'],
         'scenarios' => $data['scenarios'],
         'pros' => $data['pros'],
@@ -296,6 +302,9 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     }
     $summary = '';
     foreach ($data['paragraphs'] as $paragraph) $summary .= '<p>' . $paragraph . '</p>';
+    if ($data['paragraphFontSize'] !== null && $data['paragraphLineHeight'] !== null) {
+        $summary = '<div class="review-summary-format" style="font-size: ' . h($data['paragraphFontSize']) . 'px; line-height: ' . h($data['paragraphLineHeight']) . '">' . $summary . '</div>';
+    }
     $scenarioRows = '';
     foreach ($data['scenarios'] as $index => $scenario) {
         $scenarioRows .= '<tr class="scenario-row scenario-row-' . ($index + 1) . '"><td data-label="Scenario"><strong>' . formatEditorialParagraph($scenario[0]) . '</strong></td><td data-label="Sottostanti">' . formatEditorialParagraph($scenario[1]) . '</td><td data-label="Cedole">' . formatEditorialParagraph($scenario[2]) . '</td><td data-label="Rimborso capitale">' . formatEditorialParagraph($scenario[3]) . '</td><td data-label="Esito finanziario"><strong class="scenario-result">' . formatEditorialParagraph($scenario[4]) . '</strong></td></tr>';
