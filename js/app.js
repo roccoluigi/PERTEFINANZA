@@ -298,7 +298,7 @@ function initSidebarFeatured() {
       widget.classList.add('sidebar-featured-widget');
       widget.innerHTML = `
         <div class="widget-title">
-          <span>Ultimi Inserimenti</span>
+          <span>Certificati in evidenza</span>
         </div>
         <div id="sidebar-featured-certs">${html}</div>
       `;

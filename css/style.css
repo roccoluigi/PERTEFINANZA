@@ -209,7 +209,7 @@ button, input, select, textarea {
   top: 90px;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   z-index: 20;
 }
 
@@ -1903,7 +1903,13 @@ button, input, select, textarea {
   font-size: 0.78rem;
   color: #e2e8f0;
   line-height: 1.5;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+@media (min-width: 1025px) {
+  .sidebar-telegram-card .telegram-desc {
+    font-size: 0.76rem;
+  }
 }
 
 .telegram-perks {
@@ -1941,6 +1947,35 @@ button, input, select, textarea {
   border-color: rgba(37, 99, 235, 0.2);
   padding: 1rem;
   box-shadow: 0 5px 16px rgba(37, 99, 235, 0.06);
+}
+
+@media (min-width: 1025px) {
+  .sidebar-featured-widget #sidebar-featured-certs {
+    max-height: min(85vh, 40rem);
+    overflow-y: auto;
+    padding-right: 0.35rem;
+    scrollbar-color: rgba(100, 116, 139, 0.38) transparent;
+    scrollbar-width: thin;
+  }
+
+  .sidebar-featured-widget #sidebar-featured-certs::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  .sidebar-featured-widget #sidebar-featured-certs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-featured-widget #sidebar-featured-certs::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.38);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background-clip: padding-box;
+  }
+
+  .sidebar-featured-widget #sidebar-featured-certs::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, 0.58);
+  }
 }
 
 .sidebar-featured-widget .widget-title {

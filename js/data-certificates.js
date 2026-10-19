@@ -44,7 +44,7 @@ const CERTIFICATES_DATA = [
         "expiryDate": "23/09/2030",
         "price": 100,
         "showHome": true,
-        "showTopPick": false,
+        "showTopPick": true,
         "belowPar": false
     },
     {
@@ -136,7 +136,7 @@ const CERTIFICATES_DATA = [
         "expiryDate": "21/03/2028",
         "price": 1000,
         "showHome": false,
-        "showTopPick": false,
+        "showTopPick": true,
         "belowPar": false
     },
     {

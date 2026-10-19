@@ -42,7 +42,8 @@
         "expiryDate": "23/09/2030",
         "price": 100,
         "showHome": true,
-        "showTopPick": false
+        "showTopPick": true,
+        "belowPar": false
     },
     {
         "isin": "XS3184486804",
@@ -130,7 +131,8 @@
         "expiryDate": "21/03/2028",
         "price": 1000,
         "showHome": false,
-        "showTopPick": false
+        "showTopPick": true,
+        "belowPar": false
     },
     {
         "isin": "XS3127851296",
