@@ -403,6 +403,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                   <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
                     <span class="status-pill status-visibility<?= !empty($certificate['showHome']) ? ' is-selected' : '' ?>">Home: <?= !empty($certificate['showHome']) ? 'sì' : 'no' ?></span>
                     <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
+                    <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
                   </div>
                 </div>
               </div>
@@ -410,7 +411,6 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                 <?php if (in_array($row['status'], ['published', 'modified'], true)): ?>
                   <form method="post" onsubmit="return confirm('Segnare questa scheda per la rimozione? Resterà online finché non confermi la rimozione o pubblichi tutte le modifiche.')"><input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="isin" value="<?= h($isin) ?>"><button class="button danger certificate-mark-removal" type="submit">Segna per rimozione</button></form>
                 <?php endif; ?>
-                <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
               </div>
               <?php if (in_array($row['status'], ['new', 'modified', 'removal'], true)): ?>
               <div class="row-actions">
@@ -454,7 +454,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
             <label>Data scadenza<input name="expiryDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
           </div>
           <label>Sottostanti (uno per riga)<textarea name="underlyings" required><?= h(inputValue($formCertificate, 'underlyings')) ?></textarea></label>
-          <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Mostra in home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Evidenzia come selezione</label><label><input type="checkbox" name="belowPar" value="1" <?= !empty($formCertificate['belowPar']) ? 'checked' : '' ?>> Mostra badge “Sotto la pari”</label></div>
+          <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Top Picks</label><label><input type="checkbox" name="belowPar" value="1" <?= !empty($formCertificate['belowPar']) ? 'checked' : '' ?>> Sotto la pari</label></div>
           <?php if ($editingIsin !== ''): ?>
           <hr>
           <h3>Testo completo della scheda</h3>

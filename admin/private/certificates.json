@@ -152,6 +152,7 @@
         "expiryDate": "22/03/2028",
         "price": 1000,
         "showHome": false,
-        "showTopPick": true
+        "showTopPick": false,
+        "belowPar": false
     }
 ]
