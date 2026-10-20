@@ -1830,6 +1830,11 @@ button, input, select, textarea {
   overflow: hidden;
 }
 
+.home-page .sticky-sidebar .sidebar-telegram-card {
+  display: block;
+  flex: 0 0 auto;
+}
+
 .module-number {
   color: var(--primary);
 }
