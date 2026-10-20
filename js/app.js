@@ -264,6 +264,8 @@ function initSidebarFeatured() {
   }
 
   const topPicks = sortCertificatesBelowParFirst(CERTIFICATES_DATA.filter(c => c.showTopPick));
+  const shouldLoopFeaturedCertificates = topPicks.length > 1;
+  const shouldShowFeaturedScrollIndicator = topPicks.length > 1;
   let html = '';
 
   topPicks.forEach(c => {
@@ -292,6 +294,20 @@ function initSidebarFeatured() {
     `;
   });
 
+  const featuredCardsHtml = shouldLoopFeaturedCertificates
+    ? `
+      <div class="featured-certificate-sequence" aria-hidden="true" inert>${html}</div>
+      <div class="featured-certificate-sequence">${html}</div>
+      <div class="featured-certificate-sequence" aria-hidden="true" inert>${html}</div>
+    `
+    : html;
+  const featuredListAttributes = shouldShowFeaturedScrollIndicator
+    ? 'role="region" tabindex="0" aria-label="Certificati in evidenza, scorrimento manuale"'
+    : '';
+  const scrollIndicatorHtml = shouldShowFeaturedScrollIndicator
+    ? '<div class="featured-scroll-indicator" aria-hidden="true"><span class="featured-scroll-pill"></span></div>'
+    : '';
+
   containers.forEach(container => {
     const widget = container.closest('.sidebar-widget');
     if (widget) {
@@ -300,14 +316,73 @@ function initSidebarFeatured() {
         <div class="widget-title">
           <span>Certificati in evidenza</span>
         </div>
-        <div id="sidebar-featured-certs">${html}</div>
+        <div class="featured-certificate-viewport">
+          <div id="sidebar-featured-certs" ${featuredListAttributes}>${featuredCardsHtml}</div>
+          ${scrollIndicatorHtml}
+        </div>
       `;
+      const featuredList = widget.querySelector('#sidebar-featured-certs');
+      if (shouldShowFeaturedScrollIndicator) {
+        initFeaturedCertificateScroll(featuredList, shouldLoopFeaturedCertificates);
+      }
       initCopyableIsins(widget);
     } else {
-      container.innerHTML = html;
+      container.innerHTML = featuredCardsHtml;
+      if (shouldShowFeaturedScrollIndicator) {
+        initFeaturedCertificateScroll(container, shouldLoopFeaturedCertificates);
+      }
       initCopyableIsins(container);
     }
   });
+}
+
+function initFeaturedCertificateScroll(container, shouldLoop) {
+  const sequence = container.querySelector('.featured-certificate-sequence');
+  if (shouldLoop && !sequence) return;
+
+  const getCycleHeight = () => sequence.getBoundingClientRect().height;
+  const keepInMiddleCopy = () => {
+    if (!shouldLoop) return;
+    const cycleHeight = getCycleHeight();
+    if (cycleHeight <= 0) return;
+    if (container.scrollTop >= cycleHeight * 2) container.scrollTop -= cycleHeight;
+    else if (container.scrollTop < cycleHeight) container.scrollTop += cycleHeight;
+  };
+
+  const indicator = container.parentElement?.querySelector('.featured-scroll-indicator');
+  const pill = indicator?.querySelector('.featured-scroll-pill');
+  if (!indicator || !pill) return;
+
+  let previousProgress = 0;
+
+  const updateIndicator = () => {
+    const cycleHeight = shouldLoop ? getCycleHeight() : 0;
+    if (shouldLoop && cycleHeight <= 0) return;
+    const maxScroll = container.scrollHeight - container.clientHeight;
+    const progress = shouldLoop
+      ? (((container.scrollTop - cycleHeight) % cycleHeight) + cycleHeight) % cycleHeight / cycleHeight
+      : maxScroll > 0
+        ? Math.max(0, Math.min(container.scrollTop / maxScroll, 1))
+        : 0;
+    const travel = Math.max(indicator.clientHeight - pill.offsetHeight, 0);
+    const isWrapping = shouldLoop && previousProgress - progress > 0.5;
+    pill.style.transition = isWrapping ? 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
+    pill.style.transform = `translateY(${progress * travel}px)`;
+    previousProgress = progress;
+  };
+
+  keepInMiddleCopy();
+  updateIndicator();
+  container.addEventListener('scroll', () => {
+    keepInMiddleCopy();
+    updateIndicator();
+  }, { passive: true });
+  const refreshIndicator = () => {
+    keepInMiddleCopy();
+    updateIndicator();
+  };
+  window.addEventListener('resize', refreshIndicator);
+  window.addEventListener('load', refreshIndicator);
 }
 
 function certificateCardMarkup(c) {
