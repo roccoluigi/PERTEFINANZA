@@ -213,15 +213,19 @@ function cmsReadSection(string $section): array
         $headerTitle = $header->getElementsByTagName('h1')->item(0);
         $headerDescription = cmsFindContentBlock($header, 'page-header-desc');
         $dateParagraph = cmsFindClass($header, 'p', 'legal-update-date');
-        if (!$headerTitle || !$headerDescription || !$dateParagraph) {
+        if (!$headerTitle || !$headerDescription) {
             throw new RuntimeException('Intestazione della pagina legale non riconosciuta.');
         }
-        preg_match('/Ultimo aggiornamento:\s*(.*)$/u', cmsText($dateParagraph), $dateMatch);
+        $headerDate = '';
+        if ($dateParagraph) {
+            preg_match('/Ultimo aggiornamento:\s*(.*)$/u', cmsText($dateParagraph), $dateMatch);
+            $headerDate = trim((string)($dateMatch[1] ?? ''));
+        }
         $items = [[
             'id' => 'page-header',
             'title' => cmsText($headerTitle),
             'description' => cmsInnerHtml($headerDescription),
-            'date' => trim((string)($dateMatch[1] ?? '')),
+            'date' => $headerDate,
         ]];
         $root = cmsFragmentRoot(cmsMarkedContent($html, '<!-- CMS-DISCLAIMER-SECTIONS:START -->', '<!-- CMS-DISCLAIMER-SECTIONS:END -->'));
         foreach ($root->getElementsByTagName('section') as $card) {
@@ -237,6 +241,14 @@ function cmsReadSection(string $section): array
             if (!$title || !$body || $id === '') {
                 throw new RuntimeException('Una sezione legale non è riconoscibile.');
             }
+            if ($headerDate === '' && $id === 's11') {
+                foreach ($body->getElementsByTagName('p') as $paragraph) {
+                    if (preg_match('/Ultimo aggiornamento:\s*(.*)$/u', cmsText($paragraph), $dateMatch)) {
+                        $headerDate = trim((string)($dateMatch[1] ?? ''));
+                        break;
+                    }
+                }
+            }
             $items[] = [
                 'id' => $id,
                 'title' => cmsText($title),
@@ -245,6 +257,10 @@ function cmsReadSection(string $section): array
                 'bodyClass' => $body->getAttribute('class'),
             ];
         }
+        if ($headerDate === '') {
+            throw new RuntimeException('Data di aggiornamento della pagina legale non riconosciuta.');
+        }
+        $items[0]['date'] = $headerDate;
         return $items;
     }
     $root = cmsFragmentRoot(cmsMarkedContent($html, $config['start'], $config['end']));
@@ -1005,7 +1021,7 @@ function cmsPublishSection(string $section, array $items): string
             throw new InvalidArgumentException('Le sezioni e gli ancoraggi legali non possono essere aggiunti, rimossi o riordinati.');
         }
         $header = array_shift($items);
-        $headerHtml = '<h1 class="page-header-title">' . h((string)$header['title']) . '</h1><div class="page-header-desc">' . (string)$header['description'] . '</div><p class="legal-update-date"><strong>Ultimo aggiornamento:</strong> ' . h((string)$header['date']) . '</p>';
+        $headerHtml = '<h1 class="page-header-title">' . h((string)$header['title']) . '</h1><div class="page-header-desc">' . (string)$header['description'] . '</div>';
         $html = cmsReplaceMarked($html, '<!-- CMS-DISCLAIMER-HEADER:START -->', '<!-- CMS-DISCLAIMER-HEADER:END -->', $headerHtml);
         $sectionsHtml = '';
         foreach ($items as $item) {
