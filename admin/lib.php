@@ -308,7 +308,7 @@ function loadPublishedReviewOverrides(): array
 
 function normalizeCertificateInput(array $input, ?array $existing = null): array
 {
-    $isin = strtoupper(trim((string)($input['isin'] ?? '')));
+    $isin = trim((string)($input['isin'] ?? ''));
     $name = trim((string)($input['name'] ?? ''));
     $issuer = trim((string)($input['issuer'] ?? ''));
     $type = trim((string)($input['type'] ?? ''));
@@ -327,7 +327,7 @@ function normalizeCertificateInput(array $input, ?array $existing = null): array
     $price = filter_var($input['price'] ?? null, FILTER_VALIDATE_FLOAT);
 
     if (!validIsin($isin)) {
-        throw new InvalidArgumentException('Inserisci un ISIN valido di 12 caratteri, con prefisso paese e cifra di controllo corretta.');
+        throw new InvalidArgumentException('L’ISIN deve contenere 12 caratteri: solo lettere maiuscole e numeri.');
     }
     if ($name === '' || strlen($name) > 180 || preg_match('/[<>]/u', $name)) {
         throw new InvalidArgumentException('Inserisci un nome valido, massimo 180 caratteri.');
@@ -399,25 +399,7 @@ function normalizePercent(mixed $value): ?float
 
 function validIsin(string $isin): bool
 {
-    if (!preg_match('/^[A-Z]{2}[A-Z0-9]{9}[0-9]$/', $isin)) {
-        return false;
-    }
-    $digits = '';
-    foreach (str_split($isin) as $character) {
-        $digits .= ctype_alpha($character) ? (string)(ord($character) - 55) : $character;
-    }
-    $sum = 0;
-    $double = false;
-    foreach (array_reverse(str_split($digits)) as $digit) {
-        $value = (int)$digit;
-        if ($double) {
-            $value *= 2;
-            if ($value > 9) $value -= 9;
-        }
-        $sum += $value;
-        $double = !$double;
-    }
-    return $sum % 10 === 0;
+    return preg_match('/^[A-Z0-9]{12}$/', $isin) === 1;
 }
 
 function formatPercent(float $value): string

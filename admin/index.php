@@ -179,9 +179,7 @@ try {
             }
             writeJsonAtomic('certificates.json', array_values($certificates));
             writeJsonAtomic('review-overrides.json', (object)$overrides);
-            header('Location: ' . ($oldIsin === ''
-                ? 'index.php?saved=1'
-                : 'index.php?isin=' . rawurlencode($normalized['isin']) . '&saved=1'));
+            header('Location: index.php?isin=' . rawurlencode($normalized['isin']) . ($oldIsin === '' ? '&generated=1' : '&saved=1'));
             exit;
         } elseif ($action === 'delete') {
             $deleteIsin = strtoupper(trim((string)($_POST['isin'] ?? '')));
@@ -252,7 +250,8 @@ try {
             throw new InvalidArgumentException('Azione admin non riconosciuta.');
         }
     }
-    if (isset($_GET['saved'])) $message = 'Bozza salvata. Le modifiche pubbliche verranno applicate solo dopo la pubblicazione.';
+    if (isset($_GET['generated'])) $message = 'Recensione generata. Puoi modificarla e poi salvare la bozza.';
+    elseif (isset($_GET['saved'])) $message = 'Bozza salvata. Le modifiche pubbliche verranno applicate solo dopo la pubblicazione.';
     if ($editingIsin !== '' && $formCertificate === null) {
         $error = 'Certificato non trovato.';
     }
@@ -439,10 +438,11 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>"><input type="hidden" name="action" value="save">
           <input type="hidden" name="old_isin" value="<?= h($editingIsin) ?>">
           <input type="hidden" name="editorial_changed" value="0">
-          <label>ISIN<input name="isin" required maxlength="12" pattern="[A-Za-z0-9]{12}" value="<?= h(inputValue($formCertificate, 'isin')) ?>" <?= $editingIsin !== '' ? 'readonly' : '' ?>></label>
+          <label>ISIN<input name="isin" required maxlength="12" pattern="[A-Z0-9]{12}" title="Inserisci 12 caratteri: solo lettere maiuscole e numeri." value="<?= h(inputValue($formCertificate, 'isin')) ?>" <?= $editingIsin !== '' ? 'readonly' : '' ?>></label>
           <label>Nome del certificato<input name="name" required maxlength="180" value="<?= h(inputValue($formCertificate, 'name')) ?>"></label>
+          <datalist id="issuer-options"><?php foreach (array_keys(loadIssuerProfiles()) as $issuerName): ?><option value="<?= h((string)$issuerName) ?>"></option><?php endforeach; ?></datalist>
           <div class="form-grid">
-            <label>Emittente<input name="issuer" required maxlength="100" value="<?= h(inputValue($formCertificate, 'issuer')) ?>"></label>
+            <label>Emittente<input name="issuer" list="issuer-options" autocomplete="off" required maxlength="100" value="<?= h(inputValue($formCertificate, 'issuer')) ?>"></label>
             <label>Tipologia<input name="type" required maxlength="100" value="<?= h(inputValue($formCertificate, 'type')) ?>"></label>
             <label>Rendimento annuo (%)<input name="annualYield" type="number" min="0.01" max="1000" step="0.01" required value="<?= h(inputValue($formCertificate, 'annualYield')) ?>"></label>
             <label>Prezzo di emissione<input name="price" type="number" min="0.01" step="0.01" required value="<?= h(inputValue($formCertificate, 'price')) ?>"></label>
@@ -453,7 +453,13 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
             <label>Data strike/fixing<input name="strikeDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'strikeDate')) ?>"></label>
             <label>Data scadenza<input name="expiryDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
           </div>
-          <label>Sottostanti (uno per riga)<textarea name="underlyings" required><?= h(inputValue($formCertificate, 'underlyings')) ?></textarea></label>
+          <?php $selectedUnderlyings = array_values((array)($formCertificate['underlyings'] ?? [])); ?>
+          <datalist id="underlying-options"><?php foreach (array_keys(loadUnderlyingProfiles()) as $underlyingName): ?><option value="<?= h((string)$underlyingName) ?>"></option><?php endforeach; ?></datalist>
+          <div class="underlying-picker">
+            <?php for ($i = 0; $i < 4; $i++): ?>
+            <label>Sottostante <?= $i + 1 ?><input name="underlyings[]" list="underlying-options" autocomplete="off" maxlength="80" placeholder="Scrivi o scegli…" <?= $i === 0 ? 'required' : '' ?> value="<?= h((string)($selectedUnderlyings[$i] ?? '')) ?>"></label>
+            <?php endfor; ?>
+          </div>
           <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Top Picks</label><label><input type="checkbox" name="belowPar" value="1" <?= !empty($formCertificate['belowPar']) ? 'checked' : '' ?>> Sotto la pari</label></div>
           <?php if ($editingIsin !== ''): ?>
           <hr>
@@ -515,7 +521,7 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
             <?php endforeach; ?>
           </div>
           <?php endif; ?>
-          <div class="admin-actions"><button class="button" type="submit">Salva bozza</button><a class="button secondary" href="index.php">Annulla</a></div>
+          <div class="admin-actions"><button class="button" type="submit"><?= $editingIsin === '' ? 'Genera Recensione' : 'Salva bozza' ?></button><a class="button secondary" href="index.php">Annulla</a></div>
         </form>
       </section>
       <?php else: ?>

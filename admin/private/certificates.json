@@ -156,5 +156,28 @@
         "showHome": false,
         "showTopPick": false,
         "belowPar": false
+    },
+    {
+        "isin": "XS3184486111",
+        "name": "xd",
+        "issuer": "Marex Financial",
+        "type": "Phoenix Memory Step Down",
+        "underlyings": [
+            "BPER Banca",
+            "iShares MSCI India ETF",
+            "iShares MSCI South Korea",
+            "CRH"
+        ],
+        "annualYield": 10,
+        "barrierCapital": "50%",
+        "barrierCoupon": "50%",
+        "stepDown": "1%",
+        "stepDownStartMonth": 1,
+        "strikeDate": "25/11/2026",
+        "expiryDate": "25/11/2028",
+        "price": 100,
+        "showHome": false,
+        "showTopPick": false,
+        "belowPar": false
     }
 ]
