@@ -1,6 +1,6 @@
 # File JavaScript del sito
 
-Questa cartella contiene il codice interattivo, i dati dei certificati e le funzioni usate per generare le recensioni.
+Questa cartella contiene il codice interattivo e i dati usati dal sito.
 
 ## File principali
 
@@ -10,11 +10,11 @@ Gestisce le funzioni interattive del sito: menu e navigazione, tema, catalogo e 
 
 ### `data-certificates.js`
 
-Contiene i dati dei certificati, tra cui ISIN, emittente, sottostanti, barriere, rendimenti e scadenze. Il catalogo, alcuni riquadri informativi e i generatori di recensioni usano questi dati.
+Contiene i dati dei certificati, tra cui ISIN, emittente, sottostanti, barriere, rendimenti e scadenze. Il catalogo, alcuni riquadri informativi e il publisher PHP del CMS usano questi dati.
 
 ### `data-review-pages.js`
 
-Elenca gli ISIN per i quali esiste una recensione statica. `app.js` usa l’elenco per collegare ogni certificato alla relativa pagina, se disponibile. I generatori aggiornano questo file: non modificarlo a mano.
+Elenca gli ISIN per i quali esiste una recensione statica. `app.js` usa l’elenco per collegare ogni certificato alla relativa pagina, se disponibile. Il publisher PHP del CMS aggiorna questo file: non modificarlo a mano.
 
 ### `data-underlyings.js`
 
@@ -22,29 +22,11 @@ Contiene brevi descrizioni dei sottostanti, usate per comporre il testo delle re
 
 ### `reviews.js`
 
-Genera il testo della recensione, gli scenari e gli elenchi dei punti di forza e delle criticità a partire dai dati di un certificato. È usato dalla pagina dinamica di ripiego e dal generatore. Le recensioni statiche contengono già il testo generato e non caricano questo file.
+Genera il testo della recensione dinamica di ripiego, gli scenari e gli elenchi dei punti di forza e delle criticità a partire dai dati di un certificato. Le recensioni statiche contengono già il testo generato e non caricano questo file.
 
 ## Recensioni statiche
 
-Le recensioni statiche sono file HTML nella cartella `recensioni/`. Il generatore legge i dati dei certificati da `data-certificates.js` e le valutazioni e descrizioni degli emittenti dalle schede HTML di `emittenti.html`.
-
-Per generare o aggiornare tutte le recensioni:
-
-```powershell
-node scripts/generate-review.mjs --all
-```
-
-Per generare una sola recensione, sostituisci `<ISIN>` con il codice del certificato:
-
-```powershell
-node scripts/generate-review.mjs <ISIN>
-```
-
-Se aggiungi o rimuovi manualmente una pagina HTML, aggiorna l’elenco delle recensioni statiche e i collegamenti della home:
-
-```powershell
-node scripts/generate-review.mjs --sync
-```
+Le recensioni statiche sono file HTML nella cartella `recensioni/`. Il publisher PHP del CMS le genera e aggiorna, insieme all’elenco delle recensioni e ai collegamenti della home, quando pubblichi i certificati.
 
 ## FAQ e glossario
 

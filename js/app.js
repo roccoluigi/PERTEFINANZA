@@ -322,6 +322,7 @@ function initSidebarFeatured() {
         </div>
       `;
       const featuredList = widget.querySelector('#sidebar-featured-certs');
+      initFeaturedSidebarViewport(widget);
       if (shouldShowFeaturedScrollIndicator) {
         initFeaturedCertificateScroll(featuredList, shouldLoopFeaturedCertificates);
       }
@@ -336,17 +337,72 @@ function initSidebarFeatured() {
   });
 }
 
+function initFeaturedSidebarViewport(widget) {
+  const sidebar = widget.closest('.sticky-sidebar');
+  if (!sidebar) return;
+
+  let frame = 0;
+  const updateHeight = () => {
+    frame = 0;
+    if (!window.matchMedia('(min-width: 1025px)').matches) {
+      widget.style.removeProperty('height');
+      return;
+    }
+    const stickyTop = Number.parseFloat(getComputedStyle(sidebar).top) || 0;
+    const visibleTop = Math.max(widget.getBoundingClientRect().top, stickyTop);
+    widget.style.height = `${Math.max(window.innerHeight - visibleTop - 16, 0)}px`;
+  };
+  const scheduleUpdate = () => {
+    if (frame) return;
+    frame = window.requestAnimationFrame(updateHeight);
+  };
+
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
+  window.addEventListener('resize', scheduleUpdate);
+  updateHeight();
+}
+
 function initFeaturedCertificateScroll(container, shouldLoop) {
   const sequence = container.querySelector('.featured-certificate-sequence');
   if (shouldLoop && !sequence) return;
 
   const getCycleHeight = () => sequence.getBoundingClientRect().height;
-  const keepInMiddleCopy = () => {
-    if (!shouldLoop) return;
+  const useLoop = () => shouldLoop && (
+    !container.closest('.sidebar-featured-widget')
+    || window.matchMedia('(min-width: 1025px)').matches
+  );
+  const isHomeSidebar = () => container.closest('.sidebar-featured-widget');
+  const ensureHomeLoopCopies = () => {
+    if (!isHomeSidebar() || !useLoop()) return;
     const cycleHeight = getCycleHeight();
     if (cycleHeight <= 0) return;
-    if (container.scrollTop >= cycleHeight * 2) container.scrollTop -= cycleHeight;
-    else if (container.scrollTop < cycleHeight) container.scrollTop += cycleHeight;
+    const requiredCopies = Math.max(3, Math.ceil(container.clientHeight / cycleHeight) + 2);
+    const extraCopies = [...container.querySelectorAll('.featured-certificate-sequence[data-loop-extra]')];
+    let copyCount = container.querySelectorAll('.featured-certificate-sequence').length;
+
+    while (copyCount < requiredCopies) {
+      const clone = sequence.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('inert', '');
+      clone.dataset.loopExtra = '';
+      container.append(clone);
+      copyCount++;
+    }
+    while (copyCount > requiredCopies && extraCopies.length > 0) {
+      extraCopies.pop().remove();
+      copyCount--;
+    }
+  };
+  const keepInMiddleCopy = () => {
+    if (!useLoop()) {
+      container.scrollTop = 0;
+      return;
+    }
+    const cycleHeight = getCycleHeight();
+    if (cycleHeight <= 0) return;
+    const tolerance = isHomeSidebar() ? 1 : 0;
+    if (container.scrollTop >= cycleHeight * 2 - tolerance) container.scrollTop -= cycleHeight;
+    else if (container.scrollTop < cycleHeight - tolerance) container.scrollTop += cycleHeight;
   };
 
   const indicator = container.parentElement?.querySelector('.featured-scroll-indicator');
@@ -356,33 +412,44 @@ function initFeaturedCertificateScroll(container, shouldLoop) {
   let previousProgress = 0;
 
   const updateIndicator = () => {
-    const cycleHeight = shouldLoop ? getCycleHeight() : 0;
-    if (shouldLoop && cycleHeight <= 0) return;
+    const looping = useLoop();
+    const cycleHeight = looping ? getCycleHeight() : 0;
+    if (looping && cycleHeight <= 0) return;
     const maxScroll = container.scrollHeight - container.clientHeight;
-    const progress = shouldLoop
-      ? (((container.scrollTop - cycleHeight) % cycleHeight) + cycleHeight) % cycleHeight / cycleHeight
-      : maxScroll > 0
-        ? Math.max(0, Math.min(container.scrollTop / maxScroll, 1))
-        : 0;
+    let progress = maxScroll > 0
+      ? Math.max(0, Math.min(container.scrollTop / maxScroll, 1))
+      : 0;
+    if (looping) {
+      let cycleOffset = (((container.scrollTop - cycleHeight) % cycleHeight) + cycleHeight) % cycleHeight;
+      if (isHomeSidebar() && Math.min(cycleOffset, cycleHeight - cycleOffset) < 1) cycleOffset = 0;
+      progress = cycleOffset / cycleHeight;
+    }
     const travel = Math.max(indicator.clientHeight - pill.offsetHeight, 0);
-    const isWrapping = shouldLoop && previousProgress - progress > 0.5;
+    const isWrapping = looping && previousProgress - progress > 0.5;
     pill.style.transition = isWrapping ? 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
     pill.style.transform = `translateY(${progress * travel}px)`;
     previousProgress = progress;
   };
 
-  keepInMiddleCopy();
-  updateIndicator();
   container.addEventListener('scroll', () => {
     keepInMiddleCopy();
     updateIndicator();
   }, { passive: true });
   const refreshIndicator = () => {
+    ensureHomeLoopCopies();
     keepInMiddleCopy();
     updateIndicator();
   };
   window.addEventListener('resize', refreshIndicator);
   window.addEventListener('load', refreshIndicator);
+  if (isHomeSidebar() && 'ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(refreshIndicator);
+    resizeObserver.observe(container);
+    resizeObserver.observe(sequence);
+  }
+  ensureHomeLoopCopies();
+  keepInMiddleCopy();
+  updateIndicator();
 }
 
 function certificateCardMarkup(c) {

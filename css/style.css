@@ -2020,6 +2020,48 @@ html[data-theme="dark"] .featured-scroll-pill {
   border-bottom: 3px solid #f59e0b;
 }
 
+@media (min-width: 1025px) {
+  .sticky-sidebar > .sidebar-featured-widget {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .sidebar-featured-widget .featured-certificate-viewport {
+    display: flex;
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .sidebar-featured-widget #sidebar-featured-certs {
+    flex: 1 1 auto;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar-featured-widget #sidebar-featured-certs {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .sidebar-featured-widget .featured-certificate-sequence[aria-hidden="true"],
+  .sidebar-featured-widget .featured-scroll-indicator {
+    display: none;
+  }
+}
+
+@media (min-width: 1025px) and (max-height: 700px) {
+  body.home-page .sticky-sidebar > .sidebar-telegram-card {
+    display: none;
+  }
+}
+
 .widget-title {
   font-size: 0.9375rem;
   font-weight: 800;
