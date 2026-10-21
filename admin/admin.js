@@ -43,8 +43,174 @@
       if (changed) changed.value = '1';
     };
 
+    const validationMessage = (control) => {
+      const label = control.labels?.[0]?.textContent.replace(/\s+/g, ' ').trim() || 'Questo campo';
+      const validity = control.validity;
+      if (validity.valueMissing) return `Compila il campo «${label}».`;
+      if (validity.badInput) return `Inserisci un valore valido per «${label}».`;
+      if (validity.typeMismatch) {
+        if (control.type === 'email') return 'Inserisci un indirizzo email valido.';
+        if (control.type === 'url') return 'Inserisci un indirizzo web valido.';
+        return `Inserisci un valore valido per «${label}».`;
+      }
+      if (validity.patternMismatch) {
+        if (control.name === 'isin') return 'Inserisci 12 caratteri: solo lettere maiuscole e numeri.';
+        if (control.matches('[data-date-mask]')) return 'Inserisci la data nel formato GG/MM/AAAA.';
+        return `Il formato inserito per «${label}» non è valido.`;
+      }
+      if (validity.rangeUnderflow) return `Per «${label}» inserisci un valore non inferiore a ${control.min}.`;
+      if (validity.rangeOverflow) return `Per «${label}» inserisci un valore non superiore a ${control.max}.`;
+      if (validity.stepMismatch) return `Per «${label}» utilizza incrementi di ${control.step}.`;
+      if (validity.tooLong) return `«${label}» non può superare ${control.maxLength} caratteri.`;
+      if (validity.tooShort) return `«${label}» deve contenere almeno ${control.minLength} caratteri.`;
+      return `Controlla il valore inserito per «${label}».`;
+    };
+    document.addEventListener('invalid', (event) => {
+      const control = event.target;
+      if (
+        control instanceof HTMLInputElement
+        || control instanceof HTMLTextAreaElement
+        || control instanceof HTMLSelectElement
+      ) control.setCustomValidity(validationMessage(control));
+    }, true);
+    const clearCustomValidation = (event) => {
+      const control = event.target;
+      if (
+        control instanceof HTMLInputElement
+        || control instanceof HTMLTextAreaElement
+        || control instanceof HTMLSelectElement
+      ) control.setCustomValidity('');
+    };
+    document.addEventListener('input', clearCustomValidation);
+    document.addEventListener('change', clearCustomValidation);
+
+    document.querySelectorAll('[data-cms-autocomplete]').forEach((input) => {
+      const optionsList = document.getElementById(input.dataset.optionsId);
+      if (!optionsList) return;
+      const options = Array.from(optionsList.options, (option) => option.value);
+      const suggestions = document.getElementById(input.getAttribute('aria-controls'));
+      if (!suggestions) return;
+      let matches = [];
+      let activeIndex = -1;
+
+      const closeSuggestions = () => {
+        suggestions.hidden = true;
+        suggestions.replaceChildren();
+        input.setAttribute('aria-expanded', 'false');
+        input.removeAttribute('aria-activedescendant');
+        matches = [];
+        activeIndex = -1;
+      };
+      const setActiveOption = (index) => {
+        activeIndex = index;
+        suggestions.querySelectorAll('[role="option"]').forEach((option, optionIndex) => {
+          option.setAttribute('aria-selected', String(optionIndex === activeIndex));
+        });
+        const activeOption = suggestions.children[activeIndex];
+        if (activeOption) {
+          input.setAttribute('aria-activedescendant', activeOption.id);
+          activeOption.scrollIntoView({ block: 'nearest' });
+        } else {
+          input.removeAttribute('aria-activedescendant');
+        }
+      };
+      const showSuggestions = () => {
+        const query = input.value.trim().toLocaleLowerCase();
+        if (!query) {
+          closeSuggestions();
+          return;
+        }
+        matches = options
+          .filter((option) => option.toLocaleLowerCase().includes(query))
+          .slice(0, 20);
+        suggestions.replaceChildren();
+        matches.forEach((match, index) => {
+          const option = document.createElement('span');
+          option.id = `${suggestions.id}-option-${index}`;
+          option.className = 'autocomplete-suggestion';
+          option.setAttribute('role', 'option');
+          option.setAttribute('aria-selected', 'false');
+          option.textContent = match;
+          option.addEventListener('pointerdown', (event) => event.preventDefault());
+          option.addEventListener('click', () => {
+            input.value = match;
+            closeSuggestions();
+          });
+          suggestions.append(option);
+        });
+        suggestions.hidden = matches.length === 0;
+        input.setAttribute('aria-expanded', String(matches.length > 0));
+        input.removeAttribute('aria-activedescendant');
+        activeIndex = -1;
+      };
+
+      input.addEventListener('input', showSuggestions);
+      input.addEventListener('blur', closeSuggestions);
+      input.addEventListener('keydown', (event) => {
+        if (suggestions.hidden) return;
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setActiveOption(Math.min(activeIndex + 1, matches.length - 1));
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setActiveOption(Math.max(activeIndex - 1, 0));
+        } else if (event.key === 'Enter' && activeIndex >= 0) {
+          event.preventDefault();
+          input.value = matches[activeIndex];
+          closeSuggestions();
+        } else if (event.key === 'Escape') {
+          closeSuggestions();
+        }
+      });
+    });
+
+    const formatDateMask = (digits) => {
+      const day = digits.slice(0, 2).padEnd(2, '_');
+      const month = digits.slice(2, 4).padEnd(2, '_');
+      const year = digits.slice(4).padEnd(4, '_');
+      return `${day}/${month}/${year}`;
+    };
+    const updateDateMask = (input, digits) => {
+      input.value = formatDateMask(digits);
+      input.classList.toggle('date-mask-incomplete', digits.length < 8);
+    };
+    const dateMaskCaret = (digitCount) => {
+      if (digitCount <= 2) return digitCount + (digitCount === 2 ? 1 : 0);
+      if (digitCount <= 4) return digitCount + 1 + (digitCount === 4 ? 1 : 0);
+      return digitCount + 2;
+    };
+    document.querySelectorAll('[data-date-mask]').forEach((input) => {
+      updateDateMask(input, input.value.replace(/\D/g, '').slice(0, 8));
+      input.addEventListener('input', () => {
+        const rawValue = input.value;
+        const selectionStart = input.selectionStart ?? rawValue.length;
+        const selectionEnd = input.selectionEnd ?? selectionStart;
+        const digitsBeforeStart = rawValue.slice(0, selectionStart).replace(/\D/g, '').length;
+        const digitsBeforeEnd = rawValue.slice(0, selectionEnd).replace(/\D/g, '').length;
+        const digits = rawValue.replace(/\D/g, '').slice(0, 8);
+        updateDateMask(input, digits);
+        input.setSelectionRange(dateMaskCaret(digitsBeforeStart), dateMaskCaret(digitsBeforeEnd));
+      });
+      input.addEventListener('keydown', (event) => {
+        if (!['Backspace', 'Delete'].includes(event.key) || input.selectionStart !== input.selectionEnd) return;
+        const caret = input.selectionStart ?? 0;
+        const slashIndex = event.key === 'Backspace' ? caret - 1 : caret;
+        if (input.value[slashIndex] !== '/') return;
+        const digitIndex = input.value.slice(0, slashIndex).replace(/\D/g, '').length;
+        const digits = input.value.replace(/\D/g, '').split('');
+        const removeIndex = event.key === 'Backspace' ? digitIndex - 1 : digitIndex;
+        if (removeIndex < 0 || removeIndex >= digits.length) return;
+        event.preventDefault();
+        digits.splice(removeIndex, 1);
+        updateDateMask(input, digits.join(''));
+        const nextCaret = dateMaskCaret(removeIndex);
+        input.setSelectionRange(nextCaret, nextCaret);
+      });
+    });
+
     document.addEventListener('input', (event) => {
       if (event.target.matches('[data-review-text]')) markEditorialChanged();
+      if (event.target instanceof HTMLInputElement) event.target.classList.remove('provisional-value');
     });
 
     document.querySelectorAll('[data-rich-editor]').forEach((editor) => {

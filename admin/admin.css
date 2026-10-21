@@ -3,6 +3,7 @@
   --admin-primary: #1d4ed8;
   --admin-primary-hover: #1e40af;
   --admin-primary-soft: #eff6ff;
+  --admin-provisional: #94a3b8;
   --admin-text: #0f172a;
   --admin-body: #334155;
   --admin-muted: #64748b;
@@ -31,6 +32,7 @@ html[data-theme="dark"] {
   --admin-primary: #60a5fa;
   --admin-primary-hover: #93c5fd;
   --admin-primary-soft: #172a45;
+  --admin-provisional: #cbd5e1;
   --admin-text: #f1f5f9;
   --admin-body: #cbd5e1;
   --admin-muted: #94a3b8;
@@ -269,7 +271,8 @@ input[readonly] { background: var(--admin-surface-soft); color: var(--admin-mute
 textarea { min-height: 100px; resize: vertical; }
 .cms-editor-form > label,
 .certificate-editor-form > label,
-.certificate-editor-form .form-grid label { color: var(--admin-primary); font-size: 0.82rem; font-weight: 650; }
+.certificate-editor-form .form-grid label,
+.certificate-editor-form .underlying-picker label { color: var(--admin-primary); font-size: 0.82rem; font-weight: 650; }
 .cms-editor-form input:not([type="checkbox"]),
 .cms-editor-form select,
 .cms-editor-form textarea,
@@ -282,6 +285,9 @@ textarea { min-height: 100px; resize: vertical; }
   font-size: 0.92rem;
   font-weight: 550;
 }
+.certificate-editor-form input.provisional-value { color: var(--admin-provisional); }
+.certificate-editor-form input[data-date-mask].date-mask-incomplete { color: var(--admin-muted); }
+.certificate-editor-form input[data-date-mask].date-mask-incomplete:focus { color: var(--admin-text); }
 .cms-editor-form textarea,
 .certificate-editor-form textarea { line-height: 1.6; }
 .editorial-help,
@@ -366,6 +372,26 @@ textarea { min-height: 100px; resize: vertical; }
 
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
 .underlying-picker label { grid-template-columns: 110px minmax(0, 1fr); align-items: center; gap: 12px; margin: 9px 0; }
+.autocomplete-combobox { position: relative; display: block; min-width: 0; }
+.autocomplete-suggestions {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--admin-border);
+  border-radius: 9px;
+  background: var(--admin-surface);
+  box-shadow: var(--admin-shadow);
+}
+.autocomplete-suggestion { display: block; padding: 9px 12px; color: var(--admin-text); cursor: pointer; }
+.autocomplete-suggestion:hover,
+.autocomplete-suggestion[aria-selected="true"] { background: var(--admin-primary-soft); }
+.certificate-editor-form input.hide-number-spinner { appearance: textfield; -moz-appearance: textfield; }
+.certificate-editor-form input.hide-number-spinner::-webkit-inner-spin-button,
+.certificate-editor-form input.hide-number-spinner::-webkit-outer-spin-button { margin: 0; appearance: none; }
 @media (max-width: 560px) {
   .underlying-picker label { grid-template-columns: minmax(0, 1fr); gap: 5px; }
 }

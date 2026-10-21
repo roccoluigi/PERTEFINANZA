@@ -40,6 +40,7 @@ $globalPendingCount = 0;
 $formCertificate = null;
 $formOverride = ['paragraphs' => '', 'scenarioDescription' => '', 'scenarios' => [], 'pros' => [], 'cons' => []];
 $editingIsin = strtoupper(trim((string)($_GET['isin'] ?? '')));
+$showProvisionalDefaults = $editingIsin === '' && isset($_GET['new']) && $_SERVER['REQUEST_METHOD'] !== 'POST';
 
 try {
     $certificates = loadCertificates();
@@ -61,8 +62,8 @@ try {
     } elseif (isset($_GET['new'])) {
         $formCertificate = [
             'isin' => '', 'name' => '', 'issuer' => '', 'type' => 'Phoenix Memory Step Down',
-            'underlyings' => [], 'annualYield' => '', 'barrierCapital' => '', 'barrierCoupon' => '',
-            'stepDown' => '', 'stepDownStartMonth' => 1, 'strikeDate' => '', 'expiryDate' => '',
+            'underlyings' => [], 'annualYield' => 12, 'barrierCapital' => 50, 'barrierCoupon' => 50,
+            'stepDown' => 1, 'stepDownStartMonth' => 2, 'strikeDate' => '', 'expiryDate' => '',
             'price' => 100, 'showHome' => false, 'showTopPick' => false, 'belowPar' => false,
         ];
     }
@@ -326,8 +327,8 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
-  <script src="admin.js?v=20261018-3"></script>
-  <link rel="stylesheet" href="admin.css?v=20261018-8">
+  <script src="admin.js?v=20261021-7"></script>
+  <link rel="stylesheet" href="admin.css?v=20261021-7">
 </head>
 <body>
   <main class="admin-shell">
@@ -442,22 +443,22 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <label>Nome del certificato<input name="name" required maxlength="180" value="<?= h(inputValue($formCertificate, 'name')) ?>"></label>
           <datalist id="issuer-options"><?php foreach (array_keys(loadIssuerProfiles()) as $issuerName): ?><option value="<?= h((string)$issuerName) ?>"></option><?php endforeach; ?></datalist>
           <div class="form-grid">
-            <label>Emittente<input name="issuer" list="issuer-options" autocomplete="off" required maxlength="100" value="<?= h(inputValue($formCertificate, 'issuer')) ?>"></label>
+            <label>Emittente<span class="autocomplete-combobox"><input name="issuer" data-cms-autocomplete data-options-id="issuer-options" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="issuer-suggestions" autocomplete="off" required maxlength="100" value="<?= h(inputValue($formCertificate, 'issuer')) ?>"><span id="issuer-suggestions" class="autocomplete-suggestions" role="listbox" hidden></span></span></label>
             <label>Tipologia<input name="type" required maxlength="100" value="<?= h(inputValue($formCertificate, 'type')) ?>"></label>
-            <label>Rendimento annuo (%)<input name="annualYield" type="number" min="0.01" max="1000" step="0.01" required value="<?= h(inputValue($formCertificate, 'annualYield')) ?>"></label>
-            <label>Prezzo di emissione<input name="price" type="number" min="0.01" step="0.01" required value="<?= h(inputValue($formCertificate, 'price')) ?>"></label>
-            <label>Barriera capitale (%)<input name="barrierCapital" type="number" min="0" max="100" step="0.01" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCapital'), '%')) ?>"></label>
-            <label>Barriera coupon (%)<input name="barrierCoupon" type="number" min="0" max="100" step="0.01" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCoupon'), '%')) ?>"></label>
-            <label>Step-down (%)<input name="stepDown" type="number" min="0" max="100" step="0.01" required value="<?= h(rtrim(inputValue($formCertificate, 'stepDown'), '%')) ?>"></label>
-            <label>Avvio step-down (mese 0-6)<input name="stepDownStartMonth" type="number" min="0" max="6" step="1" required value="<?= h(inputValue($formCertificate, 'stepDownStartMonth')) ?>"></label>
-            <label>Data strike/fixing<input name="strikeDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'strikeDate')) ?>"></label>
-            <label>Data scadenza<input name="expiryDate" placeholder="GG/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
+            <label>Rendimento annuo (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="annualYield" type="number" min="0.5" max="1000" step="0.5" required value="<?= h(inputValue($formCertificate, 'annualYield')) ?>"></label>
+            <label>Prezzo di emissione<input class="hide-number-spinner<?= $showProvisionalDefaults ? ' provisional-value' : '' ?>" name="price" type="number" min="0.01" step="0.01" required value="<?= h(inputValue($formCertificate, 'price')) ?>"></label>
+            <label>Barriera capitale (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCapital" type="number" min="0" max="100" step="5" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCapital'), '%')) ?>"></label>
+            <label>Barriera coupon (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCoupon" type="number" min="0" max="100" step="5" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCoupon'), '%')) ?>"></label>
+            <label>Step-down (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDown" type="number" min="0" max="100" step="0.5" required value="<?= h(rtrim(inputValue($formCertificate, 'stepDown'), '%')) ?>"></label>
+            <label>Avvio step-down (0-12)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDownStartMonth" type="number" min="0" max="12" step="1" required value="<?= h(inputValue($formCertificate, 'stepDownStartMonth')) ?>"></label>
+            <label>Data strike/fixing<input name="strikeDate" type="text" inputmode="numeric" data-date-mask placeholder="__/__/____" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'strikeDate')) ?>"></label>
+            <label>Data scadenza<input name="expiryDate" type="text" inputmode="numeric" data-date-mask placeholder="__/__/____" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
           </div>
           <?php $selectedUnderlyings = array_values((array)($formCertificate['underlyings'] ?? [])); ?>
           <datalist id="underlying-options"><?php foreach (array_keys(loadUnderlyingProfiles()) as $underlyingName): ?><option value="<?= h((string)$underlyingName) ?>"></option><?php endforeach; ?></datalist>
           <div class="underlying-picker">
             <?php for ($i = 0; $i < 4; $i++): ?>
-            <label>Sottostante <?= $i + 1 ?><input name="underlyings[]" list="underlying-options" autocomplete="off" maxlength="80" placeholder="Scrivi o scegli…" <?= $i === 0 ? 'required' : '' ?> value="<?= h((string)($selectedUnderlyings[$i] ?? '')) ?>"></label>
+            <label>SOTTOSTANTE <?= $i + 1 ?><span class="autocomplete-combobox"><input name="underlyings[]" data-cms-autocomplete data-options-id="underlying-options" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="underlying-suggestions-<?= $i ?>" autocomplete="off" maxlength="80" placeholder="Inizia a scrivere…" <?= $i === 0 ? 'required' : '' ?> value="<?= h((string)($selectedUnderlyings[$i] ?? '')) ?>"><span id="underlying-suggestions-<?= $i ?>" class="autocomplete-suggestions" role="listbox" hidden></span></span></label>
             <?php endfor; ?>
           </div>
           <div class="checkbox-row"><label><input type="checkbox" name="showHome" value="1" <?= !empty($formCertificate['showHome']) ? 'checked' : '' ?>> Home</label><label><input type="checkbox" name="showTopPick" value="1" <?= !empty($formCertificate['showTopPick']) ? 'checked' : '' ?>> Top Picks</label><label><input type="checkbox" name="belowPar" value="1" <?= !empty($formCertificate['belowPar']) ? 'checked' : '' ?>> Sotto la pari</label></div>

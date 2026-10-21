@@ -352,8 +352,8 @@ function normalizeCertificateInput(array $input, ?array $existing = null): array
     if ($barrierCapital === null || $barrierCoupon === null || $stepDown === null) {
         throw new InvalidArgumentException('Barriere e step-down devono essere percentuali numeriche valide.');
     }
-    if ($month === false || $month < 0 || $month > 6) {
-        throw new InvalidArgumentException('Il mese di avvio dello step-down deve essere tra 0 e 6.');
+    if ($month === false || $month < 0 || $month > 12) {
+        throw new InvalidArgumentException('Il mese di avvio dello step-down deve essere tra 0 e 12.');
     }
     if (!validItalianDate($strikeDate) || !validItalianDate($expiryDate)) {
         throw new InvalidArgumentException('Le date devono essere nel formato GG/MM/AAAA.');

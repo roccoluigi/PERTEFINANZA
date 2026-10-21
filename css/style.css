@@ -3636,6 +3636,15 @@ html[data-theme="dark"] .featured-scroll-pill {
     margin-top: 2rem;
   }
 
+  .legal-page-layout .sticky-sidebar {
+    order: -1;
+    margin-top: 0;
+  }
+
+  .legal-page-layout .legal-sidebar-index {
+    order: -1;
+  }
+
   .home-page-layout .sticky-sidebar {
     margin-top: 2rem;
   }
