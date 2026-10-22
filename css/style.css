@@ -1859,6 +1859,23 @@ button, input, select, textarea {
   width: 100%;
 }
 
+.contact-method-title {
+  margin: 0 0 0.625rem;
+  color: var(--secondary);
+  font-size: 1rem;
+}
+
+.contact-method-card .home-method-actions {
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.contact-method-card .home-method-actions .btn {
+  width: 100%;
+  justify-content: center;
+}
+
 @media (max-width: 1024px) {
   .contact-page .page-layout {
     display: flex;
