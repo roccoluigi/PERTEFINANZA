@@ -1835,6 +1835,56 @@ button, input, select, textarea {
   flex: 0 0 auto;
 }
 
+.contact-page .sticky-sidebar .sidebar-telegram-card {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.contact-method-card {
+  padding: 1rem;
+}
+
+.contact-method-card .home-method-layout {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.contact-method-card .home-method-avatar {
+  width: 64px;
+  height: 64px;
+}
+
+.contact-method-card .home-method-content {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .contact-page .page-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-page .sticky-sidebar {
+    display: contents;
+  }
+
+  .contact-page .sticky-sidebar > .sidebar-telegram-card {
+    order: -1;
+  }
+
+  .contact-page .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .contact-page .contact-details-card {
+    margin-top: 0;
+  }
+}
+
 .module-number {
   color: var(--primary);
 }
@@ -2003,6 +2053,20 @@ button, input, select, textarea {
   border-radius: 999px;
   background: #f59e0b;
   will-change: transform;
+  position: relative;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+.featured-scroll-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0 -8px;
+}
+
+.featured-scroll-pill.is-dragging {
+  cursor: grabbing;
 }
 
 html[data-theme="dark"] .featured-scroll-indicator {

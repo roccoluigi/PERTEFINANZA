@@ -22,7 +22,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20261021-2">
+  <link rel="stylesheet" href="css/style.css?v=20261022-contact-mobile">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-pf-day-32.png?v=20261022-1">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-pf-day-48.png?v=20261022-1">
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-day.png?v=20261022-1">
@@ -31,7 +31,7 @@
   <script src="js/meta-pixel-consent.js?v=e76c852b0846" defer></script>
   <!-- SITE-CONSENT-ASSETS:END -->
 </head>
-<body>
+<body class="contact-page">
 
   <!-- Barra Superiore con Avviso Rapido -->
   <aside class="top-bar" aria-label="Informazioni istituzionali e avvisi normativi">
@@ -232,15 +232,31 @@
         </a>
       </div>
 
-      <!-- Widget Certificati in Evidenza -->
-      <div class="sidebar-widget">
-        <div class="widget-title">
-          <span>In Evidenza</span>
+      <section class="card home-method-card contact-method-card" aria-label="Autore e metodo di analisi">
+        <div class="home-method-layout">
+          <div class="home-method-avatar">
+            <img src="assets/luigi-rocco-240.webp" alt="Luigi Rocco, ideatore e curatore di PERTEFINANZA" draggable="false">
+          </div>
+          <div class="home-method-content">
+            <p class="home-method-text">
+              Benvenuto su PERTEFINANZA. Sono Luigi Rocco e da oltre dieci anni analizzo i mercati finanziari, dedicandomi in particolare a ETF, opzioni, trading quantitativo e prodotti strutturati.
+            </p>
+            <p class="home-method-text">
+              Laureato in Fisica e professionista nel settore informatico, affronto la finanza attraverso dati, logica e metodo.
+            </p>
+            <p class="home-method-text">
+              Qui esamino i prodotti strutturati più interessanti, mettendone in evidenza opportunità, rischi e criticità con chiarezza e trasparenza.
+            </p>
+            <p class="home-method-text">
+              Non offro consigli di investimento: il mio obiettivo è fornirti gli strumenti utili per comprendere il mercato e scegliere in totale autonomia.
+            </p>
+            <div class="home-method-actions">
+              <a href="formazione.html" class="btn btn-secondary btn-sm">Consulta la Guida Operativa</a>
+              <a href="disclaimer.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali</a>
+            </div>
+          </div>
         </div>
-        <div id="sidebar-featured-certs">
-          <!-- App.js inserisce qui i certificati in evidenza dal dataset locale. -->
-        </div>
-      </div>
+      </section>
 
     </aside>
   </div>
@@ -299,6 +315,6 @@
 
   <script src="js/data-certificates.js"></script>
   <script src="js/data-review-pages.js?v=0dbce747b7bd"></script>
-  <script src="js/app.js?v=20261021-4"></script>
+  <script src="js/app.js?v=20261022-drag-bottom"></script>
 </body>
 </html>

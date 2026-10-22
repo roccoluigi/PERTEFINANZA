@@ -410,6 +410,7 @@ function initFeaturedCertificateScroll(container, shouldLoop) {
   if (!indicator || !pill) return;
 
   let previousProgress = 0;
+  let currentProgress = 0;
 
   const updateIndicator = () => {
     const looping = useLoop();
@@ -429,7 +430,44 @@ function initFeaturedCertificateScroll(container, shouldLoop) {
     pill.style.transition = isWrapping ? 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)' : 'none';
     pill.style.transform = `translateY(${progress * travel}px)`;
     previousProgress = progress;
+    currentProgress = progress;
   };
+
+  const scrollToProgress = progress => {
+    if (useLoop()) {
+      const cycleHeight = getCycleHeight();
+      if (cycleHeight > 0) {
+        const maxLoopOffset = Math.max(cycleHeight - 2, 0);
+        container.scrollTop = cycleHeight + Math.min(progress * cycleHeight, maxLoopOffset);
+      }
+    } else {
+      container.scrollTop = (container.scrollHeight - container.clientHeight) * progress;
+    }
+  };
+
+  let dragStartY = 0;
+  let dragStartProgress = 0;
+  pill.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    dragStartY = event.clientY;
+    dragStartProgress = currentProgress;
+    pill.setPointerCapture(event.pointerId);
+    pill.classList.add('is-dragging');
+  });
+  pill.addEventListener('pointermove', event => {
+    if (!pill.hasPointerCapture(event.pointerId)) return;
+    const travel = Math.max(indicator.clientHeight - pill.offsetHeight, 0);
+    if (travel <= 0) return;
+    const progress = dragStartProgress + (event.clientY - dragStartY) / travel;
+    scrollToProgress(Math.max(0, Math.min(progress, 1)));
+  });
+  const endDrag = event => {
+    if (pill.hasPointerCapture(event.pointerId)) pill.releasePointerCapture(event.pointerId);
+    pill.classList.remove('is-dragging');
+  };
+  pill.addEventListener('pointerup', endDrag);
+  pill.addEventListener('pointercancel', endDrag);
 
   container.addEventListener('scroll', () => {
     keepInMiddleCopy();
