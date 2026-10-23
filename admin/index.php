@@ -327,8 +327,8 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
-  <script src="admin.js?v=20261021-7"></script>
-  <link rel="stylesheet" href="admin.css?v=20261021-7">
+  <script src="admin.js?v=20261023-integer-month"></script>
+  <link rel="stylesheet" href="admin.css?v=20261023-number-steps">
 </head>
 <body>
   <main class="admin-shell">
@@ -445,12 +445,57 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <div class="form-grid">
             <label>Emittente<span class="autocomplete-combobox"><input name="issuer" data-cms-autocomplete data-options-id="issuer-options" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="issuer-suggestions" autocomplete="off" required maxlength="100" value="<?= h(inputValue($formCertificate, 'issuer')) ?>"><span id="issuer-suggestions" class="autocomplete-suggestions" role="listbox" hidden></span></span></label>
             <label>Tipologia<input name="type" required maxlength="100" value="<?= h(inputValue($formCertificate, 'type')) ?>"></label>
-            <label>Rendimento annuo (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="annualYield" type="number" min="0.5" max="1000" step="0.5" required value="<?= h(inputValue($formCertificate, 'annualYield')) ?>"></label>
-            <label>Prezzo di emissione<input class="hide-number-spinner<?= $showProvisionalDefaults ? ' provisional-value' : '' ?>" name="price" type="number" min="0.01" step="0.01" required value="<?= h(inputValue($formCertificate, 'price')) ?>"></label>
-            <label>Barriera capitale (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCapital" type="number" min="0" max="100" step="5" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCapital'), '%')) ?>"></label>
-            <label>Barriera coupon (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCoupon" type="number" min="0" max="100" step="5" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCoupon'), '%')) ?>"></label>
-            <label>Step-down (%)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDown" type="number" min="0" max="100" step="0.5" required value="<?= h(rtrim(inputValue($formCertificate, 'stepDown'), '%')) ?>"></label>
-            <label>Avvio step-down (0-12)<input class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDownStartMonth" type="number" min="0" max="12" step="1" required value="<?= h(inputValue($formCertificate, 'stepDownStartMonth')) ?>"></label>
+            <div class="cms-number-field">
+              <label for="certificate-annual-yield">Rendimento annuo (%)</label>
+              <div class="cms-number-stepper" data-number-step="0.5">
+                <input id="certificate-annual-yield" class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="annualYield" type="number" min="0.5" max="1000" step="any" required value="<?= h(inputValue($formCertificate, 'annualYield')) ?>">
+                <span class="cms-number-stepper-buttons">
+                  <button type="button" data-number-direction="1" aria-label="Aumenta rendimento annuo di 0,5"></button>
+                  <button type="button" data-number-direction="-1" aria-label="Riduci rendimento annuo di 0,5"></button>
+                </span>
+              </div>
+            </div>
+            <label>Prezzo di emissione<input class="hide-number-spinner<?= $showProvisionalDefaults ? ' provisional-value' : '' ?>" name="price" type="number" min="0.01" step="any" required value="<?= h(inputValue($formCertificate, 'price')) ?>"></label>
+            <div class="cms-number-field">
+              <label for="certificate-capital-barrier">Barriera capitale (%)</label>
+              <div class="cms-number-stepper" data-number-step="5">
+                <input id="certificate-capital-barrier" class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCapital" type="number" min="0" max="100" step="any" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCapital'), '%')) ?>">
+                <span class="cms-number-stepper-buttons">
+                  <button type="button" data-number-direction="1" aria-label="Aumenta barriera capitale di 5"></button>
+                  <button type="button" data-number-direction="-1" aria-label="Riduci barriera capitale di 5"></button>
+                </span>
+              </div>
+            </div>
+            <div class="cms-number-field">
+              <label for="certificate-coupon-barrier">Barriera coupon (%)</label>
+              <div class="cms-number-stepper" data-number-step="5">
+                <input id="certificate-coupon-barrier" class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="barrierCoupon" type="number" min="0" max="100" step="any" required value="<?= h(rtrim(inputValue($formCertificate, 'barrierCoupon'), '%')) ?>">
+                <span class="cms-number-stepper-buttons">
+                  <button type="button" data-number-direction="1" aria-label="Aumenta barriera coupon di 5"></button>
+                  <button type="button" data-number-direction="-1" aria-label="Riduci barriera coupon di 5"></button>
+                </span>
+              </div>
+            </div>
+            <div class="cms-number-field">
+              <label for="certificate-step-down">Step-down (%)</label>
+              <div class="cms-number-stepper" data-number-step="0.5">
+                <input id="certificate-step-down" class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDown" type="number" min="0" max="100" step="any" required value="<?= h(rtrim(inputValue($formCertificate, 'stepDown'), '%')) ?>">
+                <span class="cms-number-stepper-buttons">
+                  <button type="button" data-number-direction="1" aria-label="Aumenta step-down di 0,5"></button>
+                  <button type="button" data-number-direction="-1" aria-label="Riduci step-down di 0,5"></button>
+                </span>
+              </div>
+            </div>
+            <div class="cms-number-field">
+              <label for="certificate-step-down-month">Avvio step-down (0-12)</label>
+              <div class="cms-number-stepper" data-number-step="1">
+                <input id="certificate-step-down-month" class="<?= $showProvisionalDefaults ? 'provisional-value' : '' ?>" name="stepDownStartMonth" type="number" inputmode="numeric" data-integer-only min="0" max="12" step="1" required value="<?= h(inputValue($formCertificate, 'stepDownStartMonth')) ?>">
+                <span class="cms-number-stepper-buttons">
+                  <button type="button" data-number-direction="1" aria-label="Aumenta mese di avvio dello step-down di 1"></button>
+                  <button type="button" data-number-direction="-1" aria-label="Riduci mese di avvio dello step-down di 1"></button>
+                </span>
+              </div>
+            </div>
             <label>Data strike/fixing<input name="strikeDate" type="text" inputmode="numeric" data-date-mask placeholder="__/__/____" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'strikeDate')) ?>"></label>
             <label>Data scadenza<input name="expiryDate" type="text" inputmode="numeric" data-date-mask placeholder="__/__/____" pattern="\d{2}/\d{2}/\d{4}" required value="<?= h(inputValue($formCertificate, 'expiryDate')) ?>"></label>
           </div>

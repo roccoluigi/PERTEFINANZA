@@ -84,6 +84,63 @@
     document.addEventListener('input', clearCustomValidation);
     document.addEventListener('change', clearCustomValidation);
 
+    document.querySelectorAll('.cms-number-stepper[data-number-step]').forEach((stepper) => {
+      const input = stepper.querySelector('input[type="number"]');
+      const step = Number(stepper.dataset.numberStep);
+      if (!input || !Number.isFinite(step) || step <= 0) return;
+
+      if (input.hasAttribute('data-integer-only')) {
+        const containsNonIntegerSyntax = (value) => /[.,eE]/.test(value);
+        input.addEventListener('keydown', (event) => {
+          if (['.', ',', 'e', 'E', 'Decimal'].includes(event.key)) event.preventDefault();
+        });
+        input.addEventListener('beforeinput', (event) => {
+          if (typeof event.data === 'string' && containsNonIntegerSyntax(event.data)) {
+            event.preventDefault();
+          }
+        });
+        input.addEventListener('paste', (event) => {
+          if (containsNonIntegerSyntax(event.clipboardData?.getData('text') || '')) {
+            event.preventDefault();
+          }
+        });
+        input.addEventListener('drop', (event) => {
+          if (containsNonIntegerSyntax(event.dataTransfer?.getData('text/plain') || '')) {
+            event.preventDefault();
+          }
+        });
+      }
+
+      const adjustValue = (direction) => {
+        const current = input.value === '' ? 0 : Number(input.value);
+        if (!Number.isFinite(current)) return;
+        const precision = Math.max(
+          (stepper.dataset.numberStep.split('.')[1] || '').length,
+          (input.value.split('.')[1] || '').length
+        );
+        const next = Number((current + direction * step).toFixed(precision));
+        const min = input.min === '' ? -Infinity : Number(input.min);
+        const max = input.max === '' ? Infinity : Number(input.max);
+        if (next < min || next > max) return;
+
+        input.value = String(next);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.focus({ preventScroll: true });
+      };
+
+      stepper.querySelectorAll('[data-number-direction]').forEach((button) => {
+        button.addEventListener('click', () => {
+          adjustValue(Number(button.dataset.numberDirection));
+        });
+      });
+      input.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+        event.preventDefault();
+        adjustValue(event.key === 'ArrowUp' ? 1 : -1);
+      });
+    });
+
     document.querySelectorAll('[data-cms-autocomplete]').forEach((input) => {
       const optionsList = document.getElementById(input.dataset.optionsId);
       if (!optionsList) return;

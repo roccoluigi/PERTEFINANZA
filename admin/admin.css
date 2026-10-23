@@ -290,6 +290,34 @@ textarea { min-height: 100px; resize: vertical; }
 .certificate-editor-form input[data-date-mask].date-mask-incomplete:focus { color: var(--admin-text); }
 .cms-editor-form textarea,
 .certificate-editor-form textarea { line-height: 1.6; }
+.cms-number-field { min-width: 0; margin: 9px 0; }
+.cms-number-field > label {
+  display: block;
+  margin: 0 0 5px;
+  color: var(--admin-primary);
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+.cms-number-stepper { display: grid; grid-template-columns: minmax(0, 1fr) 30px; gap: 5px; align-items: stretch; }
+.cms-number-stepper input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+.cms-number-stepper input[type="number"]::-webkit-inner-spin-button,
+.cms-number-stepper input[type="number"]::-webkit-outer-spin-button { margin: 0; appearance: none; }
+.cms-number-stepper-buttons { display: grid; grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 3px; }
+.cms-number-stepper-buttons button {
+  display: grid;
+  min-height: 0;
+  padding: 0;
+  place-items: center;
+  border: 1px solid var(--admin-border);
+  border-radius: 5px;
+  background: var(--admin-surface-soft);
+  color: var(--admin-primary);
+  cursor: pointer;
+}
+.cms-number-stepper-buttons button::before { content: "▲"; font-size: 0.58rem; line-height: 1; }
+.cms-number-stepper-buttons button[data-number-direction="-1"]::before { content: "▼"; }
+.cms-number-stepper-buttons button:hover { border-color: var(--admin-primary); background: var(--admin-primary-soft); }
+.cms-number-stepper-buttons button:focus-visible { outline: 2px solid var(--admin-focus); outline-offset: 1px; }
 .editorial-help,
 .cms-editor-help {
   margin: 0 0 16px;

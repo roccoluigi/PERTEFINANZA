@@ -16,12 +16,12 @@ const CERTIFICATES_DATA = [
         "barrierCapital": "50%",
         "barrierCoupon": "50%",
         "stepDown": "4%",
-        "stepDownStartMonth": 1,
+        "stepDownStartMonth": 3,
         "strikeDate": "07/09/2026",
         "expiryDate": "05/09/2028",
         "price": 100,
         "showHome": true,
-        "showTopPick": false,
+        "showTopPick": true,
         "belowPar": true
     },
     {
