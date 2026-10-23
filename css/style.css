@@ -2137,12 +2137,6 @@ html[data-theme="dark"] .featured-scroll-pill {
   }
 }
 
-@media (min-width: 1025px) and (max-height: 700px) {
-  body.home-page .sticky-sidebar > .sidebar-telegram-card {
-    display: none;
-  }
-}
-
 .widget-title {
   font-size: 0.9375rem;
   font-weight: 800;
@@ -2559,7 +2553,8 @@ html[data-theme="dark"] .featured-scroll-pill {
 
 #review-overview,
 #review-scenarios,
-#review-pros-cons {
+#review-pros-cons,
+#review-start {
   scroll-margin-top: 9rem;
 }
 

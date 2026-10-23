@@ -314,7 +314,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     $base = h((string)$certificate['isin']);
     $underlyings = h(implode(', ', $certificate['underlyings']));
     $shareText = rawurlencode($certificate['name'] . "\nRendimento potenziale annuo " . number_format((float)$certificate['annualYield'], 2, ',', '') . '% · barriera capitale ' . $certificate['barrierCapital']);
-    $pageUrl = 'https://www.pertefinanza.it/recensioni/recensione-' . rawurlencode($certificate['isin']) . '.html#review-overview';
+    $pageUrl = 'https://www.pertefinanza.it/recensioni/recensione-' . rawurlencode($certificate['isin']) . '.html#review-start';
     $encodedUrl = rawurlencode($pageUrl);
     ob_start();
     ?>
@@ -327,7 +327,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
       <nav class="review-section-links" aria-label="Sezioni della scheda tecnica"><a href="#review-overview">Riepilogo<br>certificato</a><a href="#review-scenarios">Matrice<br>scenari</a><a href="#review-pros-cons">Punti di forza<br>e criticità</a></nav>
       <details class="content-share"><summary class="share-button share-trigger" title="Condividi: <?= $name ?>" aria-label="Condividi: <?= $name ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 10.5 6.8-4M8.6 13.5l6.8 4"></path></svg></summary><div class="share-menu-options"><a class="share-menu-item share-whatsapp" href="https://wa.me/?text=<?= $shareText ?>%20<?= $encodedUrl ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="share-menu-item share-telegram" href="https://t.me/share/url?url=<?= $encodedUrl ?>&amp;text=<?= $shareText ?>" target="_blank" rel="noopener noreferrer">Telegram</a><button type="button" class="share-menu-item share-copy" data-copy-share-url="<?= h($pageUrl) ?>">Copia link</button></div></details>
     </div></div>
-    <div class="review-hero">
+    <div class="review-hero" id="review-start">
       <h1 class="review-title">Analisi del certificato <?= $name ?></h1>
       <div class="review-title-meta">
         <p class="review-title-isin">ISIN: <strong><?= $base ?></strong></p>

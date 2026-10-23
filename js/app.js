@@ -276,7 +276,7 @@ function initSidebarFeatured() {
           <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
             <span class="widget-cert-isin-label">ISIN:</span>${c.isin}
           </button>
-          ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewUrl)}
+          ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewStartUrl(reviewUrl))}
           ${c.belowPar ? '<span class="badge badge-below-par">Sotto la pari</span>' : ''}
         </div>
         <a href="${reviewUrl}" class="widget-cert-link">
@@ -695,6 +695,12 @@ function contentShareMenuMarkup(anchorId, title, shareText = title, destinationU
       </div>
     </details>
   `;
+}
+
+function reviewStartUrl(url) {
+  const reviewUrl = new URL(url, window.location.href);
+  reviewUrl.hash = 'review-start';
+  return reviewUrl.href;
 }
 
 function contentAnchorId(prefix, title) {
@@ -1456,6 +1462,22 @@ function initReviewPage() {
   if (!reviewContainer) return;
 
   if (reviewContainer.dataset.reviewIsin) {
+    const reviewHero = reviewContainer.querySelector('.review-hero');
+    if (reviewHero) reviewHero.id = 'review-start';
+    const reviewShareUrl = reviewStartUrl(window.location.href);
+    reviewContainer.querySelectorAll('.review-sticky-header .content-share').forEach(menu => {
+      menu.querySelectorAll('.share-menu-item[href]').forEach(link => {
+        const shareLink = new URL(link.href);
+        for (const [key, value] of shareLink.searchParams) {
+          if (value.includes('#review-overview')) {
+            shareLink.searchParams.set(key, value.replace('#review-overview', '#review-start'));
+          }
+        }
+        link.href = shareLink.href;
+      });
+      const copyButton = menu.querySelector('[data-copy-share-url]');
+      if (copyButton) copyButton.dataset.copyShareUrl = reviewShareUrl;
+    });
     initCopyableIsins(reviewContainer);
     const isinPicker = document.getElementById('review-isin-picker');
     if (isinPicker) {
@@ -1563,11 +1585,11 @@ function initReviewPage() {
           <a href="#review-scenarios">Matrice<br>scenari</a>
           <a href="#review-pros-cons">Punti di forza<br>e criticità</a>
         </nav>
-        ${contentShareMenuMarkup('review-overview', cert.name, reviewShareText)}
+        ${contentShareMenuMarkup('review-start', cert.name, reviewShareText)}
       </div>
     </div>
 
-    <div class="review-hero">
+    <div class="review-hero" id="review-start">
       <h1 class="review-title">
         Analisi del certificato ${cert.name}
       </h1>
