@@ -45,7 +45,7 @@ const CERTIFICATES_DATA = [
         "price": 100,
         "showHome": true,
         "showTopPick": true,
-        "belowPar": false
+        "belowPar": true
     },
     {
         "isin": "XS3184486804",
@@ -68,7 +68,7 @@ const CERTIFICATES_DATA = [
         "price": 100,
         "showHome": true,
         "showTopPick": true,
-        "belowPar": false
+        "belowPar": true
     },
     {
         "isin": "DE000BD6FHT4",
@@ -89,9 +89,9 @@ const CERTIFICATES_DATA = [
         "strikeDate": "10/09/2026",
         "expiryDate": "08/03/2029",
         "price": 100,
-        "showHome": false,
-        "showTopPick": false,
-        "belowPar": false
+        "showHome": true,
+        "showTopPick": true,
+        "belowPar": true
     },
     {
         "isin": "XS3127847187",
@@ -112,9 +112,9 @@ const CERTIFICATES_DATA = [
         "strikeDate": "14/09/2026",
         "expiryDate": "21/03/2028",
         "price": 1000,
-        "showHome": false,
-        "showTopPick": false,
-        "belowPar": false
+        "showHome": true,
+        "showTopPick": true,
+        "belowPar": true
     },
     {
         "isin": "XS3127846700",
@@ -135,9 +135,9 @@ const CERTIFICATES_DATA = [
         "strikeDate": "14/09/2026",
         "expiryDate": "21/03/2028",
         "price": 1000,
-        "showHome": false,
+        "showHome": true,
         "showTopPick": true,
-        "belowPar": false
+        "belowPar": true
     },
     {
         "isin": "XS3127851296",
@@ -158,8 +158,8 @@ const CERTIFICATES_DATA = [
         "strikeDate": "15/09/2026",
         "expiryDate": "22/03/2028",
         "price": 1000,
-        "showHome": false,
-        "showTopPick": false,
-        "belowPar": false
+        "showHome": true,
+        "showTopPick": true,
+        "belowPar": true
     }
 ];
