@@ -585,20 +585,18 @@ function initHomeFeaturedCertificates() {
   const container = document.getElementById('home-featured-certificates');
   if (!container) return;
 
-  if (container.querySelector('.home-certificate-card')) {
-    initCopyableIsins(container);
-    alignCertificateMetrics(container);
+  if (typeof CERTIFICATES_DATA === 'undefined') {
+    if (container.querySelector('.home-certificate-card')) {
+      initCopyableIsins(container);
+      alignCertificateMetrics(container);
+    }
     return;
   }
-  if (typeof CERTIFICATES_DATA === 'undefined') return;
 
   container.innerHTML = sortHomeCertificates(CERTIFICATES_DATA.filter(c => c.showHome)).map(certificateCardMarkup).join('');
   initCopyableIsins(container);
   alignCertificateMetrics(container);
 }
-
-
-
 function issuerDescriptionWithoutName(issuer, description) {
   const escapedIssuer = issuer.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   return description
@@ -610,30 +608,43 @@ function issuerDescriptionWithoutName(issuer, description) {
     .trim();
 }
 
+function availableIssuerRatings(issuer) {
+  const ratings = issuer && issuer.ratings
+    ? Object.entries(issuer.ratings)
+    : issuer
+      ? [
+          ['S&P', issuer.ratingSP],
+          ["Moody's", issuer.ratingMoodys],
+          ['Fitch', issuer.ratingFitch]
+        ]
+      : [];
+  return ratings.filter(([, rating]) => rating && !/^(?:n\.d\.|non rated|not rated|n\/a|[-—])$/i.test(rating.trim()));
+}
+
+function issuerRatingSentenceMarkup(issuer) {
+  const entries = availableIssuerRatings(issuer);
+  if (entries.length === 0) return '';
+  const parts = entries.map(([agency, rating]) => `${agency} <strong>${rating}</strong>`);
+  if (parts.length === 1) {
+    return `${entries[0][0]} assegna all'emittente un rating <strong>${entries[0][1]}</strong>.`;
+  }
+  const last = parts.pop();
+  return `Rating disponibili: ${parts.join(', ')} e ${last}.`;
+}
+
 function reviewPreviewMarkup(cert) {
   const monthlyYield = cert.annualYield / 12;
   const issuer = typeof ISSUERS_DATA !== 'undefined'
     ? ISSUERS_DATA.find(item => item.name === cert.issuer)
     : null;
   const issuerDescription = issuer
-    ? issuerDescriptionWithoutName(cert.issuer, issuer.marketShare || issuer.description).replace(/[.!?]+$/, '')
+    ? issuerDescriptionWithoutName(cert.issuer, issuer.previewDescription || issuer.marketShare || issuer.description).replace(/[.!?]+$/, '')
     : 'emittente attivo nel mercato dei prodotti strutturati';
   const issuerDescriptionStart = issuerDescription.charAt(0).toLowerCase() + issuerDescription.slice(1);
-  const ratingParts = issuer && issuer.ratings
-    ? Object.entries(issuer.ratings)
-      .map(([agency, rating]) => `${rating} da parte di ${agency}`)
-    : '';
-  const ratings = ratingParts.length > 1
-    ? `${ratingParts.slice(0, -1).join(', ')} e ${ratingParts[ratingParts.length - 1]}`
-    : '';
-  const ratingSentence = ratingParts.length === 1
-    ? ` ${issuer.ratings && Object.keys(issuer.ratings)[0]} assegna all'emittente un rating di credito pari ad ${issuer.ratings && Object.values(issuer.ratings)[0]}.`
-    : ratings
-      ? ` Le agenzie assegnano all'emittente i seguenti rating di credito: ${ratings}.`
-      : '';
-  const issuerLink = `<a href="emittenti.html#${issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
+  const ratingSentence = issuerRatingSentenceMarkup(issuer);
+  const issuerLink = `<a href="emittenti.html#${issuer && issuer.id ? issuer.id : issuerAnchorId(cert.issuer)}">${cert.issuer}</a>`;
   const underlyingList = `<span class="certificate-preview-underlyings" aria-label="Sottostanti">${cert.underlyings.map(name => `<span class="certificate-preview-underlying"><strong>${name}</strong></span>`).join(' <span class="certificate-preview-separator" aria-hidden="true">·</span> ')}</span>`;
-  return `<div class="certificate-preview">Il presente certificato di investimento è emesso da <strong>${issuerLink}</strong>, ${issuerDescriptionStart}.${ratingSentence} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong> (con effetto memoria), con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
+  return `<div class="certificate-preview">Il certificato in oggetto è emesso da <strong>${issuerLink}</strong>, ${issuerDescriptionStart}.${ratingSentence ? ` ${ratingSentence}` : ''} La struttura investe su:${underlyingList} e prevede un rendimento potenziale mensile del <strong>${monthlyYield.toFixed(2)}%</strong> (con effetto memoria), con scadenza il ${cert.expiryDate}. La barriera capitale è posta al <strong>${cert.barrierCapital}</strong> (europea, con valutazione a scadenza).</div>`;
 }
 
 function issuerAnchorId(name) {

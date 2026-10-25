@@ -12,6 +12,10 @@ Gestisce le funzioni interattive del sito: menu e navigazione, tema, catalogo e 
 
 Contiene i dati dei certificati, tra cui ISIN, emittente, sottostanti, barriere, rendimenti e scadenze. Il catalogo, alcuni riquadri informativi e il publisher PHP del CMS usano questi dati.
 
+### `data-issuers.js`
+
+Contiene le descrizioni brevi e i rating disponibili degli emittenti, derivati dai profili in `emittenti.html`. Le anteprime delle schede usano questi dati; il publisher PHP del CMS aggiorna il file. Non modificarlo a mano.
+
 ### `data-review-pages.js`
 
 Elenca gli ISIN per i quali esiste una recensione statica. `app.js` usa l’elenco per collegare ogni certificato alla relativa pagina, se disponibile. Il publisher PHP del CMS aggiorna questo file: non modificarlo a mano.

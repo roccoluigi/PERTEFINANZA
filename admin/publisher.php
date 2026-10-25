@@ -78,6 +78,14 @@ function loadIssuerProfiles(): array
             continue;
         }
         $description = plainHtml($bodyMatch[1]);
+        $previewDescription = '';
+        if (preg_match('/\bdata-preview-description=["\']([^"\']+)["\']/i', $cardMatch[1], $previewMatch)) {
+            $previewDescription = html_entity_decode($previewMatch[1], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        }
+        if ($previewDescription === '') {
+            $sentences = preg_split('/(?<=[.!?])\s+(?=[A-ZÀ-ÖØ-Þ])/u', $description, 2);
+            $previewDescription = $sentences[0] ?? $description;
+        }
         $ratings = [];
         preg_match_all('/<div\b[^>]*class=["\'][^"\']*\brating-pill\b[^"\']*["\'][^>]*>([\s\S]*?)<\/div>/i', $card, $pills);
         foreach ($pills[1] as $pill) {
@@ -87,13 +95,18 @@ function loadIssuerProfiles(): array
             ) {
                 $agency = rtrim(plainHtml($agencyMatch[1]), ': ');
                 $rating = plainHtml($ratingMatch[1]);
-                if ($agency !== '' && $rating !== '' && strtolower($rating) !== 'n.d.' && strtolower($rating) !== 'non rated') {
+                if ($agency !== '' && $rating !== '' && !preg_match('/^(?:n\.d\.|non rated|not rated|n\/a|[-—])$/iu', $rating)) {
                     $ratings[$agency] = $rating;
                 }
             }
         }
         $id = preg_match('/\bid=["\']([^"\']+)["\']/i', $cardMatch[1], $idMatch) ? $idMatch[1] : '';
-        $issuers[$name] = ['id' => $id, 'description' => $description, 'ratings' => $ratings];
+        $issuers[$name] = [
+            'id' => $id,
+            'description' => $description,
+            'previewDescription' => $previewDescription,
+            'ratings' => $ratings,
+        ];
     }
     if ($issuers === []) {
         throw new RuntimeException('Nessun profilo emittente trovato in emittenti.html.');
@@ -113,12 +126,14 @@ function findIssuerProfile(string $issuer, array $profiles): ?array
 
 function issuerDescriptionStart(string $issuer, ?array $profile): string
 {
-    $description = $profile['description'] ?? "L'emittente {$issuer} opera nel mercato dei prodotti strutturati.";
+    $description = $profile['previewDescription'] ?? $profile['description'] ?? "L'emittente {$issuer} opera nel mercato dei prodotti strutturati.";
+    $sentences = preg_split('/(?<=[.!?])\s+(?=[A-ZÀ-ÖØ-Þ])/u', $description, 2);
+    $description = $sentences[0] ?? $description;
     $description = preg_replace('/^' . preg_quote($issuer, '/') . '\s*/iu', '', $description) ?? $description;
     $description = preg_replace('/^\([^)]*\)\s*/u', '', $description) ?? $description;
     $description = preg_replace('/^,\s*|^è\s+/iu', '', $description) ?? $description;
     $description = preg_replace("/^un['’]\\s*/iu", '', $description) ?? $description;
-    $description = trim($description);
+    $description = trim(preg_replace('/[.!?]+$/u', '', $description) ?? $description);
     return $description === '' ? $description : strtolower(substr($description, 0, 1)) . substr($description, 1);
 }
 
@@ -128,6 +143,25 @@ function issuerRatings(?array $profile): array
         return [];
     }
     return $profile['ratings'];
+}
+
+function issuerRatingSentence(?array $profile): string
+{
+    $ratings = issuerRatings($profile);
+    if ($ratings === []) {
+        return '';
+    }
+    $parts = [];
+    foreach ($ratings as $agency => $rating) {
+        $parts[] = h((string)$agency) . ' <strong>' . h((string)$rating) . '</strong>';
+    }
+    if (count($parts) === 1) {
+        $agency = array_key_first($ratings);
+        $rating = reset($ratings);
+        return h((string)$agency) . " assegna all'emittente un rating <strong>" . h((string)$rating) . '</strong>.';
+    }
+    $last = array_pop($parts);
+    return 'Rating disponibili: ' . implode(', ', $parts) . ' e ' . $last . '.';
 }
 
 function formatEditorialParagraph(string $text): string
@@ -155,20 +189,7 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
     $ratingText = $ratings === []
         ? 'non disponibile tra le fonti consultate'
         : implode(' · ', array_map(static fn($agency, $rating) => $agency . ': ' . $rating, $ratingNames, $ratingValues));
-    if (count($ratings) === 1) {
-        $agency = $ratingNames[0];
-        $ratingSentence = $agency . " assegna all'emittente un rating di credito pari ad " . $ratingValues[0] . '. Poiché il rating può cambiare, è opportuno verificarne il valore più aggiornato sul sito dell’agenzia e nella documentazione ufficiale del prodotto.';
-    } elseif (count($ratings) > 1) {
-        $parts = [];
-        foreach ($ratings as $agency => $rating) {
-            $parts[] = $rating . ' ' . (count($parts) === 0 ? 'da parte di ' : 'da ') . $agency;
-        }
-        $last = array_pop($parts);
-        $summary = $parts === [] ? $last : implode(', ', $parts) . ' e ' . $last;
-        $ratingSentence = 'Le agenzie assegnano all’emittente i seguenti rating di credito: ' . $summary . '. Poiché queste valutazioni possono cambiare, è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.';
-    } else {
-        $ratingSentence = 'Le valutazioni delle agenzie sulla solidità creditizia dell’emittente non sono disponibili: è opportuno verificarne i valori più recenti sui siti delle agenzie e nella documentazione ufficiale del prodotto.';
-    }
+    $ratingSentence = issuerRatingSentence($issuerProfile);
     $barrierComment = "La barriera capitale europea al <strong>{$certificate['barrierCapital']}</strong> è osservata a scadenza e corrisponde a una soglia pari al {$capital}% dei livelli iniziali (buffer del " . (100 - $capital) . '%). Il buffer è condizionato e non limita la perdita massima: se alla scadenza il Worst-of chiude sotto barriera, il rimborso segue la sua performance finale. Per esempio, se il Worst-of chiudesse a ' . ($capital - 5) . '% (5 punti percentuali sotto la barriera), il rimborso sarebbe pari al ' . ($capital - 5) . '% dell’importo investito, con una perdita del ' . (100 - ($capital - 5)) . '% prima di considerare gli eventuali premi già incassati.';
     $couponComment = "Il pagamento della cedola mensile è condizionato al rispetto della barriera coupon del {$certificate['barrierCoupon']} a ogni data di osservazione. Se il Worst-of non raggiunge questa soglia, la cedola non viene pagata. Grazie all’<strong>effetto memoria</strong>, le cedole sospese possono essere recuperate in una successiva data di osservazione solo se il Worst-of torna almeno al {$certificate['barrierCoupon']}.";
     $stepMonth = (int)$certificate['stepDownStartMonth'];
@@ -180,7 +201,7 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
         : 'Il prodotto non prevede uno Step-down: la soglia di rimborso anticipato non si riduce nel tempo, secondo i dati disponibili.';
 
     $paragraphs = [
-        'Il presente certificato di investimento è emesso da <strong>' . h((string)$certificate['issuer']) . '</strong>, ' . h(issuerDescriptionStart((string)$certificate['issuer'], $issuerProfile)) . ' ' . h($ratingSentence),
+        'Il certificato in oggetto è emesso da <strong>' . h((string)$certificate['issuer']) . '</strong>, ' . h(issuerDescriptionStart((string)$certificate['issuer'], $issuerProfile)) . '.' . ($ratingSentence !== '' ? ' ' . $ratingSentence : ''),
         'La scadenza teorica del certificato è fissata per il ' . h((string)$certificate['expiryDate']) . '. Il rendimento potenziale annuo lordo è pari al <strong>' . number_format($annual, 2, '.', '') . '%</strong> e, poiché presuppone il pagamento di tutte le cedole condizionate previste, non è garantito.',
         $barrierComment,
         $couponComment,
@@ -389,8 +410,8 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
     $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261021-2', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261021-4', (string)$html);
-    $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-issuers|data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261025-issuer-preview', (string)$html);
+    $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
         $value = $match[3];
         if ($value === '' || preg_match('/^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#|\?|\.\.\/)/i', $value)) return $match[0];
@@ -419,7 +440,9 @@ function renderHomeCards(array $certificates): string
         $anchor = strtolower((string)preg_replace('/[^a-z0-9]+/i', '-', $issuerSlug));
         $anchor = trim($anchor, '-');
         if (!empty($profile['id'])) $anchor = (string)$profile['id'];
-        $preview = 'Il presente certificato di investimento è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, emittente attivo nel mercato dei prodotti strutturati.';
+        $preview = 'Il certificato in oggetto è emesso da <strong><a href="emittenti.html#' . h($anchor) . '">' . $issuer . '</a></strong>, ' . h(issuerDescriptionStart((string)$certificate['issuer'], $profile)) . '.';
+        $ratingSentence = issuerRatingSentence($profile);
+        if ($ratingSentence !== '') $preview .= ' ' . $ratingSentence;
         $preview .= ' La struttura investe su:<span class="certificate-preview-underlyings" aria-label="Sottostanti">';
         foreach ($certificate['underlyings'] as $index => $underlying) {
             if ($index > 0) $preview .= ' <span class="certificate-preview-separator" aria-hidden="true">·</span> ';
@@ -671,6 +694,19 @@ function publishSite(?string $onlyIsin = null): array
     }
     $dataJson = json_encode($publishedCertificates, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $files['js/data-certificates.js'] = "// Dataset locale dei certificati, caricato prima di app.js nelle pagine che lo usano.\n\nconst CERTIFICATES_DATA = " . $dataJson . ";\n";
+    $issuerData = [];
+    foreach ($issuerProfiles as $name => $profile) {
+        $issuerData[] = [
+            'name' => $name,
+            'id' => $profile['id'],
+            'description' => $profile['description'],
+            'previewDescription' => $profile['previewDescription'],
+            'ratings' => $profile['ratings'],
+        ];
+    }
+    $issuerDataJson = json_encode($issuerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    $files['js/data-issuers.js'] = "// Dataset locale degli emittenti, derivato dai profili in emittenti.html.\n\nconst ISSUERS_DATA = " . $issuerDataJson . ";\n";
+    $issuerDataVersion = substr(hash('sha256', $files['js/data-issuers.js']), 0, 12);
     $isins = array_keys($wanted);
     sort($isins, SORT_STRING);
     $manifest = 'window.STATIC_REVIEW_ISINS = Object.freeze(' . json_encode($isins, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . ");\n";
@@ -698,6 +734,15 @@ function publishSite(?string $onlyIsin = null): array
         $pattern = '/(<script\s+src=["\'])' . preg_quote($manifestPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
         $updated = preg_replace($pattern, '$1' . $manifestPath . '?v=' . $manifestVersion . '$2', $content, 1, $scriptCount);
         if ($scriptCount !== 1) throw new RuntimeException('Include manifest non trovato in ' . $relative . '.');
+        if (
+            in_array($relative, ['index.html', 'certificati.html', 'recensione.html'], true)
+            || str_starts_with($relative, 'recensioni/')
+        ) {
+            $issuerDataPath = str_starts_with($relative, 'recensioni/') ? '../js/data-issuers.js' : 'js/data-issuers.js';
+            $issuerPattern = '/(<script\s+src=["\'])' . preg_quote($issuerDataPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
+            $updated = preg_replace($issuerPattern, '$1' . $issuerDataPath . '?v=' . $issuerDataVersion . '$2', (string)$updated, 1, $issuerScriptCount);
+            if ($issuerScriptCount !== 1) throw new RuntimeException('Include dati emittenti non trovato in ' . $relative . '.');
+        }
         $selectedIsin = preg_match('/^recensioni\/recensione-([A-Z0-9]{12})\.html$/i', $relative, $match)
             ? strtoupper($match[1])
             : '';
