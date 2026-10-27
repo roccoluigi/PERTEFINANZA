@@ -40,7 +40,7 @@ I numeri accanto alle voci del menu indicano quanti elementi sono diversi dalla 
 ## Gestione dei certificati
 
 - **Nuovo ISIN** crea una bozza dopo aver verificato il formato e la cifra di controllo dell’ISIN.
-- **Modifica** permette di aggiornare i dati del prodotto, i sottostanti e la visibilità nella home. Mostra anche tutti i testi della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità.
+- **Modifica** permette di aggiornare i dati del prodotto, i sottostanti e la visibilità nella home. Mostra anche l’URL della recensione, modificabile, e tutti i testi della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità. Le nuove URL seguono il formato `/recensioni/<emittente>-cash-collect-<ISIN>/`.
 - I contatori accanto a **In home** e **Top Picks** indicano quanti certificati sono selezionati per ciascuna area. Non c’è un limite massimo: vengono mostrati tutti quelli selezionati.
 - Ogni scheda dell’elenco indica se il certificato è incluso in **Home** e/o in **Top Picks**.
 - Per formattare il testo principale, seleziona le parole e usa i pulsanti per il grassetto, il corsivo e la sottolineatura. Non occorre inserire marcatori o codice HTML. I punti di forza e le criticità si modificano uno alla volta: puoi aggiungere o rimuovere singole voci.

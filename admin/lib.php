@@ -500,14 +500,30 @@ function normalizeEditorialFormatValue(mixed $value, string $label, string $patt
 
 function normalizeReviewOverride(array $input): array
 {
-    foreach (['lead', 'note', 'scenarioDescription'] as $field) {
+    foreach (['lead', 'note', 'scenarioDescription', 'url'] as $field) {
         if (isset($input[$field]) && !is_scalar($input[$field])) {
             throw new InvalidArgumentException('Il formato dei testi editoriali non è valido.');
         }
     }
     $lead = trim((string)($input['lead'] ?? ''));
     $note = trim((string)($input['note'] ?? ''));
+    $url = trim((string)($input['url'] ?? ''));
     $scenarioDescription = trim((string)($input['scenarioDescription'] ?? ''));
+    if ($url !== '') {
+        $urlParts = parse_url($url);
+        $reviewPath = is_array($urlParts) ? (string)($urlParts['path'] ?? '') : '';
+        $isReadableReviewPath = preg_match('/^\/recensioni\/[a-z0-9-]+\/$/i', $reviewPath) === 1;
+        $isLegacyReviewPath = preg_match('/^\/recensioni\/recensione-[a-z0-9]{12}\.html$/i', $reviewPath) === 1;
+        if (strlen($url) > 2048 || !is_array($urlParts)
+            || strtolower((string)($urlParts['scheme'] ?? '')) !== 'https'
+            || empty($urlParts['host']) || isset($urlParts['user']) || isset($urlParts['pass'])
+            || isset($urlParts['query']) || isset($urlParts['fragment'])
+            || (isset($urlParts['port']) && $urlParts['port'] !== 443)
+            || (!$isReadableReviewPath && !$isLegacyReviewPath)) {
+            throw new InvalidArgumentException('Inserisci un URL HTTPS valido sotto /recensioni/ (cartella con / finale o file storico recensione-<ISIN>.html).');
+        }
+        $url = 'https://' . strtolower((string)$urlParts['host']) . $urlParts['path'];
+    }
     $normalizeList = static function ($value): array {
         if (is_string($value)) {
             $items = preg_split('/\R/u', trim($value)) ?: [];
@@ -575,6 +591,7 @@ function normalizeReviewOverride(array $input): array
             array_key_exists('pros', $input) || array_key_exists('cons', $input) ||
             array_key_exists('scenarios', $input);
     return [
+        'url' => $url,
         'lead' => $lead,
         'note' => $note,
         'fullText' => $hasFullText,
@@ -591,7 +608,7 @@ function normalizeReviewOverride(array $input): array
 function reviewOverrideHasContent(array $override): bool
 {
     $override = normalizeReviewOverride($override);
-    return $override['fullText'] || $override['lead'] !== '' || $override['note'] !== '' ||
+    return $override['url'] !== '' || $override['fullText'] || $override['lead'] !== '' || $override['note'] !== '' ||
         $override['paragraphs'] !== [] || $override['scenarioDescription'] !== '' ||
         $override['pros'] !== [] || $override['cons'] !== [];
 }

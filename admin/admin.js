@@ -267,6 +267,7 @@
 
     document.addEventListener('input', (event) => {
       if (event.target.matches('[data-review-text]')) markEditorialChanged();
+      if (event.target.matches('[data-review-url]')) markEditorialChanged();
       if (event.target instanceof HTMLInputElement) event.target.classList.remove('provisional-value');
     });
 

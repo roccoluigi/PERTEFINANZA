@@ -38,11 +38,13 @@ $contentDrafts = [];
 $contentPendingCounts = array_fill_keys(array_keys($contentSectionLabels), 0);
 $globalPendingCount = 0;
 $formCertificate = null;
+$siteUrl = '';
 $formOverride = ['paragraphs' => '', 'scenarioDescription' => '', 'scenarios' => [], 'pros' => [], 'cons' => []];
 $editingIsin = strtoupper(trim((string)($_GET['isin'] ?? '')));
 $showProvisionalDefaults = $editingIsin === '' && isset($_GET['new']) && $_SERVER['REQUEST_METHOD'] !== 'POST';
 
 try {
+    $siteUrl = (string)adminConfig()['site_url'];
     $certificates = loadCertificates();
     $publishedCertificates = loadPublishedCertificates();
     $overrides = loadReviewOverrides();
@@ -55,7 +57,8 @@ try {
         foreach ($certificates as $certificate) {
             if (($certificate['isin'] ?? '') === $editingIsin) {
                 $formCertificate = $certificate;
-                $formOverride = reviewEditorialFormValues($certificate, $overrides[$editingIsin] ?? []);
+                $isPublished = in_array($editingIsin, array_column($publishedCertificates, 'isin'), true);
+                $formOverride = reviewEditorialFormValues($certificate, $overrides[$editingIsin] ?? [], $siteUrl, $isPublished);
                 break;
             }
         }
@@ -175,6 +178,17 @@ try {
             }
             if (($_POST['editorial_changed'] ?? '') === '1') {
                 $editorial = normalizeReviewOverride($_POST);
+                if (reviewOverrideHasContent($editorial)) $overrides[$normalized['isin']] = $editorial;
+                else unset($overrides[$normalized['isin']]);
+            } elseif ($oldIsin === '') {
+                $overrides[$normalized['isin']] = normalizeReviewOverride([
+                    'url' => defaultReviewUrl($normalized, $siteUrl),
+                ]);
+            } elseif (array_key_exists('url', $_POST)) {
+                $editorial = normalizeReviewOverride(array_merge(
+                    $overrides[$normalized['isin']] ?? [],
+                    ['url' => $_POST['url']]
+                ));
                 if (reviewOverrideHasContent($editorial)) $overrides[$normalized['isin']] = $editorial;
                 else unset($overrides[$normalized['isin']]);
             }
@@ -511,6 +525,8 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
           <hr>
           <h3>Testo completo della scheda</h3>
           <p class="editorial-help">Puoi modificare introduzione, analisi, scenari, punti di forza e criticità. Seleziona il testo e usa i pulsanti per grassetto, corsivo e sottolineato. Le modifiche testuali non cambiano i dati finanziari: ricontrolla che percentuali e condizioni restino coerenti con i campi del certificato.</p>
+          <div class="editorial-field-label">URL</div>
+          <input type="url" name="url" maxlength="2048" aria-label="URL" value="<?= h((string)($formOverride['url'] ?? '')) ?>" data-review-url>
           <div class="editorial-field-label">Introduzione e analisi</div>
           <div class="rich-text-editor" data-rich-editor>
             <div class="rich-text-toolbar" role="toolbar" aria-label="Formattazione del testo">

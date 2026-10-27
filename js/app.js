@@ -28,8 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
    Identita e navigazione condivise
    =========================================================================== */
 function initSiteNavigation() {
-  const pathnamePage = window.location.pathname.split('/').pop() || 'index.html';
-  const isReviewPage = pathnamePage === 'recensione.html' || /^recensione-[A-Z0-9]{12}\.html$/i.test(pathnamePage);
+  const pathSegments = window.location.pathname.split('/').filter(Boolean);
+  const pathnamePage = pathSegments.at(-1) || 'index.html';
+  const isReviewPage = pathSegments.includes('recensioni')
+    || pathnamePage === 'recensione.html'
+    || /^recensione-[A-Z0-9]{12}\.html$/i.test(pathnamePage);
   const currentPage = isReviewPage ? 'certificati.html' : pathnamePage;
   document.querySelectorAll('.main-nav, .mobile-nav').forEach(nav => {
     const linkClass = nav.classList.contains('mobile-nav') ? 'mobile-nav-link' : 'nav-link';
@@ -94,18 +97,31 @@ function initBrandTaglineAlignment() {
 }
 
 function reviewTemplateUrl(isin) {
-  const inReviewFolder = window.location.pathname.split('/').includes('recensioni');
-  const encodedIsin = encodeURIComponent(isin);
+  const pathSegments = window.location.pathname.split('/').filter(Boolean);
+  const reviewFolderIndex = pathSegments.indexOf('recensioni');
+  const inReviewFolder = reviewFolderIndex !== -1;
+  const isNestedReviewDirectory = inReviewFolder
+    && pathSegments.length > reviewFolderIndex + 1
+    && window.location.pathname.endsWith('/');
   const hasStaticReview = Array.isArray(window.STATIC_REVIEW_ISINS)
     && window.STATIC_REVIEW_ISINS.includes(isin);
 
   if (hasStaticReview) {
+    const reviewPath = window.STATIC_REVIEW_PATHS?.[isin];
+    if (typeof reviewPath === 'string' && reviewPath !== '') {
+      return inReviewFolder
+        ? `${isNestedReviewDirectory ? '../' : ''}${reviewPath}`
+        : `recensioni/${reviewPath}`;
+    }
+    const encodedIsin = encodeURIComponent(isin);
     return inReviewFolder
-      ? `recensione-${encodedIsin}.html`
+      ? `${isNestedReviewDirectory ? '../' : ''}recensione-${encodedIsin}.html`
       : `recensioni/recensione-${encodedIsin}.html`;
   }
 
-  const templatePath = inReviewFolder ? '../recensione.html' : 'recensione.html';
+  const templatePath = inReviewFolder
+    ? `${isNestedReviewDirectory ? '../../' : '../'}recensione.html`
+    : 'recensione.html';
   return `${templatePath}?isin=${encodedIsin}`;
 }
 

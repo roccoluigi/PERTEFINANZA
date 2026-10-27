@@ -822,7 +822,11 @@ function cmsReplaceMarked(string $html, string $start, string $end, string $repl
 
 function cmsEnsureConsentAssets(string $html, string $relative): string
 {
-    $prefix = str_starts_with($relative, 'recensioni/') ? '../' : '';
+    $prefix = '';
+    if (str_starts_with($relative, 'recensioni/')) {
+        $directory = dirname(str_replace('\\', '/', $relative));
+        $prefix = str_repeat('../', count(explode('/', $directory)));
+    }
     $scriptVersion = hash_file('sha256', projectPath('js/meta-pixel-consent.js'));
     $styleVersion = hash_file('sha256', projectPath('css/meta-pixel-consent.css'));
     if (!is_string($scriptVersion) || !is_string($styleVersion)) {
@@ -869,19 +873,24 @@ function cmsTransparencyPagePaths(): array
         'disclaimer.html',
         'recensione.html',
     ];
-    $reviewPages = glob(projectPath('recensioni/recensione-*.html'));
-    if ($reviewPages === false) {
+    $reviewsDirectory = projectPath('recensioni');
+    if (!is_dir($reviewsDirectory)) {
         throw new RuntimeException('Impossibile individuare le schede recensione da aggiornare.');
     }
+    $reviewPages = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($reviewsDirectory, FilesystemIterator::SKIP_DOTS)
+    );
     foreach ($reviewPages as $reviewPage) {
-        $pages[] = 'recensioni/' . basename($reviewPage);
+        if (!$reviewPage->isFile() || strtolower($reviewPage->getExtension()) !== 'html') continue;
+        $relativePath = substr($reviewPage->getPathname(), strlen($reviewsDirectory) + 1);
+        $pages[] = 'recensioni/' . str_replace(DIRECTORY_SEPARATOR, '/', $relativePath);
     }
     return $pages;
 }
 
 function cmsReplaceReviewDisclaimer(string $html, string $content): string
 {
-    $pattern = '/<div class="review-disclaimer">[\s\S]*?(<a href="(?:\.\.\/)?disclaimer\.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali<\/a>\s*<\/div>)/';
+    $pattern = '/<div class="review-disclaimer">[\s\S]*?(<a href="(?:\.\.\/)*disclaimer\.html" class="btn btn-secondary btn-sm">Disclaimer e Note Legali<\/a>\s*<\/div>)/';
     $updated = preg_replace_callback(
         $pattern,
         static fn(array $match): string => '<div class="review-disclaimer">' . $content . $match[1],

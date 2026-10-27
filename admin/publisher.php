@@ -287,8 +287,65 @@ function parsePercentValue(string $value): float
     return (float)str_replace(',', '.', str_replace('%', '', $value));
 }
 
-function reviewEditorialFormValues(array $certificate, array $override = []): array
+function defaultReviewUrl(array $certificate, string $siteUrl): string
 {
+    $issuer = (string)$certificate['issuer'];
+    $asciiIssuer = function_exists('iconv')
+        ? (iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $issuer) ?: $issuer)
+        : $issuer;
+    $issuerSlug = strtolower(trim((string)preg_replace('/[^a-z0-9]+/i', '-', $asciiIssuer), '-'));
+    if ($issuerSlug === '') $issuerSlug = 'emittente';
+    return rtrim($siteUrl, '/') . '/recensioni/' . $issuerSlug . '-cash-collect-' . rawurlencode((string)$certificate['isin']) . '/';
+}
+
+function reviewUrlMatchesSite(string $reviewUrl, string $siteUrl): bool
+{
+    $reviewParts = parse_url($reviewUrl);
+    $siteParts = parse_url($siteUrl);
+    if (!is_array($reviewParts) || !is_array($siteParts)) return false;
+    return strtolower((string)($reviewParts['scheme'] ?? '')) === strtolower((string)($siteParts['scheme'] ?? 'https'))
+        && strtolower((string)($reviewParts['host'] ?? '')) === strtolower((string)($siteParts['host'] ?? ''))
+        && (int)($reviewParts['port'] ?? 443) === (int)($siteParts['port'] ?? 443);
+}
+
+function reviewUrlForCertificate(array $certificate, array $override, string $siteUrl, bool $preserveLegacy = false): string
+{
+    $customUrl = trim((string)($override['url'] ?? ''));
+    if ($customUrl !== '') {
+        $normalized = normalizeReviewOverride(['url' => $customUrl])['url'];
+        if (!reviewUrlMatchesSite($normalized, $siteUrl)) {
+            throw new InvalidArgumentException('L’URL della recensione deve appartenere al dominio configurato per il sito.');
+        }
+        return $normalized;
+    }
+    if ($preserveLegacy) {
+        return rtrim($siteUrl, '/') . '/recensioni/recensione-' . rawurlencode((string)$certificate['isin']) . '.html';
+    }
+    return defaultReviewUrl($certificate, $siteUrl);
+}
+
+function reviewUrlToRelativePath(string $reviewUrl): string
+{
+    $path = parse_url($reviewUrl, PHP_URL_PATH);
+    if (!is_string($path) || !str_starts_with($path, '/recensioni/')) {
+        throw new InvalidArgumentException('Il percorso URL della recensione non è valido.');
+    }
+    $relative = 'recensioni/' . ltrim(substr($path, strlen('/recensioni/')), '/');
+    if (str_ends_with($path, '/')) return $relative . 'index.html';
+    if (!preg_match('/^recensioni\/recensione-[A-Z0-9]{12}\.html$/i', $relative)) {
+        throw new InvalidArgumentException('Il percorso URL della recensione non è valido.');
+    }
+    return $relative;
+}
+
+function reviewAssetPrefix(string $relativePath): string
+{
+    return str_repeat('../', substr_count(trim(str_replace('\\', '/', dirname($relativePath)), '/'), '/') + 1);
+}
+
+function reviewEditorialFormValues(array $certificate, array $override = [], string $siteUrl = '', bool $isPublished = false): array
+{
+    $reviewUrl = reviewUrlForCertificate($certificate, $override, $siteUrl, $isPublished && empty($override['url']));
     $issuerProfiles = loadIssuerProfiles();
     $underlyingProfiles = loadUnderlyingProfiles();
     $issuerProfile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
@@ -298,6 +355,7 @@ function reviewEditorialFormValues(array $certificate, array $override = []): ar
         $paragraphHtml = '<div class="cms-rich-format" style="font-size: ' . h($data['paragraphFontSize']) . 'px; line-height: ' . h($data['paragraphLineHeight']) . '">' . $paragraphHtml . '</div>';
     }
     return [
+        'url' => $reviewUrl,
         'paragraphs' => $paragraphHtml,
         'scenarioDescription' => $data['scenarioDescription'],
         'scenarios' => $data['scenarios'],
@@ -306,7 +364,7 @@ function reviewEditorialFormValues(array $certificate, array $override = []): ar
     ];
 }
 
-function renderReviewContent(array $certificate, array $certificates, array $issuerProfiles, array $underlyingProfiles, array $overrides, string $reviewDisclaimer): string
+function renderReviewContent(array $certificate, array $certificates, array $issuerProfiles, array $underlyingProfiles, array $overrides, string $reviewDisclaimer, string $reviewUrl): string
 {
     $issuerProfile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
     $data = generateReviewData($certificate, $issuerProfile, $underlyingProfiles, $overrides[$certificate['isin']] ?? []);
@@ -335,7 +393,7 @@ function renderReviewContent(array $certificate, array $certificates, array $iss
     $base = h((string)$certificate['isin']);
     $underlyings = h(implode(', ', $certificate['underlyings']));
     $shareText = rawurlencode($certificate['name'] . "\nRendimento potenziale annuo " . number_format((float)$certificate['annualYield'], 2, ',', '') . '% · barriera capitale ' . $certificate['barrierCapital']);
-    $pageUrl = 'https://www.pertefinanza.it/recensioni/recensione-' . rawurlencode($certificate['isin']) . '.html#review-start';
+    $pageUrl = $reviewUrl . '#review-start';
     $encodedUrl = rawurlencode($pageUrl);
     ob_start();
     ?>
@@ -383,7 +441,7 @@ function replaceMeta(string $html, string $attribute, string $name, string $valu
     return (string)$updated;
 }
 
-function buildReviewPage(string $template, array $certificate, string $markup): string
+function buildReviewPage(string $template, array $certificate, string $markup, string $canonical, string $relativePath): string
 {
     $isin = (string)$certificate['isin'];
     $title = (string)$certificate['name'] . ' (' . $isin . ') | PERTEFINANZA';
@@ -391,7 +449,6 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     if (!preg_match('/<meta\s+property=["\']og:url["\']\s+content=["\']([^"\']+)["\']/i', $template, $original)) {
         throw new RuntimeException('URL Open Graph non trovato nel template recensione.');
     }
-    $canonical = rtrim($GLOBALS['adminSiteUrl'], '/') . '/recensioni/recensione-' . rawurlencode($isin) . '.html';
     $pattern = '/(<main\b[^>]*\bid=["\']review-content-area["\'][^>]*>)[\s\S]*?(<\/main>)/i';
     $html = preg_replace_callback($pattern, static function ($match) use ($isin, $markup) {
         $opening = preg_replace('/\sdata-review-isin=["\'][^"\']*["\']/', '', $match[1]);
@@ -410,16 +467,18 @@ function buildReviewPage(string $template, array $certificate, string $markup): 
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
     $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261021-2', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261025-issuer-preview', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261025-review-url', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
-    return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) {
+    $assetPrefix = reviewAssetPrefix($relativePath);
+    return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) use ($assetPrefix) {
         $value = $match[3];
-        if ($value === '' || preg_match('/^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#|\?|\.\.\/)/i', $value)) return $match[0];
-        return $match[1] . '=' . $match[2] . '../' . $value . $match[2];
+        if ($value === '' || preg_match('/^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#|\?)/i', $value)) return $match[0];
+        if (str_starts_with($value, '../')) $value = substr($value, 3);
+        return $match[1] . '=' . $match[2] . $assetPrefix . $value . $match[2];
     }, (string)$html);
 }
 
-function renderHomeCards(array $certificates): string
+function renderHomeCards(array $certificates, array $reviewPaths): string
 {
     $visible = array_values(array_filter($certificates, static fn($certificate) => !empty($certificate['showHome'])));
     usort($visible, static function ($a, $b): int {
@@ -431,7 +490,7 @@ function renderHomeCards(array $certificates): string
     $issuerProfiles = loadIssuerProfiles();
     $html = '';
     foreach ($visible as $certificate) {
-        $href = 'recensioni/recensione-' . rawurlencode((string)$certificate['isin']) . '.html';
+        $href = 'recensioni/' . ($reviewPaths[(string)$certificate['isin']] ?? ('recensione-' . rawurlencode((string)$certificate['isin']) . '.html'));
         $profile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
         $issuer = h((string)$certificate['issuer']);
         $issuerSlug = function_exists('iconv')
@@ -553,19 +612,21 @@ function publicSitemapBaseUrl(string $siteUrl): string
     return 'https://' . $host;
 }
 
-function buildReviewSitemap(array $isins, string $siteUrl): string
+function buildReviewSitemap(array $reviewUrls, string $siteUrl): string
 {
     $sitemap = readProjectFile('sitemap.xml');
     $sitemap = str_replace(["\r\n", "\r"], "\n", $sitemap);
-    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/recensione-[A-Z0-9]{12}\.html<\/loc>\s*<\/url>/i', '', $sitemap);
+    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/(?:recensione-[A-Z0-9]{12}\.html|[a-z0-9-]+\/)<\/loc>\s*<\/url>/i', '', $sitemap);
     if (!is_string($sitemap)) throw new RuntimeException('Impossibile aggiornare gli URL delle recensioni nella sitemap.');
 
-    $reviewUrls = '';
-    foreach ($isins as $isin) {
-        if (!is_string($isin) || !validIsin($isin)) throw new RuntimeException('ISIN non valido nell’archivio pubblicato.');
-        $reviewUrls .= "  <url>\n    <loc>" . $siteUrl . '/recensioni/recensione-' . $isin . ".html</loc>\n  </url>\n";
+    $reviewEntries = '';
+    foreach ($reviewUrls as $reviewUrl) {
+        if (!is_string($reviewUrl) || !reviewUrlMatchesSite($reviewUrl, $siteUrl)) {
+            throw new RuntimeException('URL recensione non valido nell’archivio pubblicato.');
+        }
+        $reviewEntries .= "  <url>\n    <loc>" . h($reviewUrl) . "</loc>\n  </url>\n";
     }
-    $sitemap = preg_replace('/<\/urlset>\s*$/', $reviewUrls . '</urlset>' . "\n", $sitemap, 1, $sitemapCount);
+    $sitemap = preg_replace('/<\/urlset>\s*$/', $reviewEntries . '</urlset>' . "\n", $sitemap, 1, $sitemapCount);
     if (!is_string($sitemap) || $sitemapCount !== 1) throw new RuntimeException('Formato sitemap non valido.');
     return $sitemap;
 }
@@ -577,12 +638,20 @@ function regenerateSitemap(): array
     $publishedCertificates = loadPublishedCertificates();
     $isins = array_map(static fn($certificate) => (string)$certificate['isin'], $publishedCertificates);
     if (count(array_unique($isins)) !== count($isins)) throw new RuntimeException('ISIN duplicati nei dati pubblicati.');
-    sort($isins, SORT_STRING);
+    $publishedOverrides = loadPublishedReviewOverrides();
+    $reviewUrls = [];
+    foreach ($publishedCertificates as $certificate) {
+        $isin = (string)$certificate['isin'];
+        $override = $publishedOverrides[$isin] ?? [];
+        if (!is_array($override)) throw new RuntimeException('Modifica editoriale non valida per ' . $isin . '.');
+        $reviewUrls[] = reviewUrlForCertificate($certificate, $override, $siteUrl, empty($override['url']));
+    }
+    sort($reviewUrls, SORT_STRING);
 
     $targetPath = projectPath('sitemap.xml');
     $previous = readProjectFile('sitemap.xml');
-    $updated = buildReviewSitemap($isins, $siteUrl);
-    if ($updated === $previous) return ['count' => count($isins), 'changed' => false];
+    $updated = buildReviewSitemap($reviewUrls, $siteUrl);
+    if ($updated === $previous) return ['count' => count($reviewUrls), 'changed' => false];
 
     $backupDir = storagePath('backups') . DIRECTORY_SEPARATOR . gmdate('Ymd-His') . '-' . bin2hex(random_bytes(3));
     if (!mkdir($backupDir, 0750, true) && !is_dir($backupDir)) throw new RuntimeException('Impossibile creare il backup della sitemap.');
@@ -595,7 +664,7 @@ function regenerateSitemap(): array
         if (is_file($temporary)) unlink($temporary);
         throw new RuntimeException('Impossibile aggiornare sitemap.xml.');
     }
-    return ['count' => count($isins), 'changed' => true];
+    return ['count' => count($reviewUrls), 'changed' => true];
 }
 
 function publishSite(?string $onlyIsin = null): array
@@ -606,11 +675,13 @@ function publishSite(?string $onlyIsin = null): array
     $draftOverrides = loadReviewOverrides();
     $previousPublishedOverrides = loadPublishedReviewOverrides();
     $publishedCertificates = loadPublishedCertificates();
+    $originalPublishedCertificates = $publishedCertificates;
     $publishedOverrides = [];
     foreach ($previousPublishedOverrides as $isin => $override) {
         if (!is_array($override)) throw new RuntimeException('Archivio dei testi editoriali pubblicati non valido.');
         $publishedOverrides[strtoupper((string)$isin)] = normalizeReviewOverride($override);
     }
+    $originalPublishedOverrides = $publishedOverrides;
     $normalizedDrafts = [];
     $draftByIsin = [];
     foreach ($draftCertificates as $certificate) {
@@ -685,12 +756,28 @@ function publishSite(?string $onlyIsin = null): array
         throw new RuntimeException('Avvertenza breve delle schede prodotto non disponibile.');
     }
     $wanted = [];
+    $reviewUrlsByIsin = [];
+    $reviewPathsByIsin = [];
+    $reviewIsinByRelativePath = [];
+    $reviewRouteKeys = [];
     foreach ($publishedCertificates as $certificate) {
         $isin = $certificate['isin'];
         if (isset($wanted[$isin])) throw new RuntimeException('ISIN duplicato: ' . $isin);
         $wanted[$isin] = true;
-        $markup = renderReviewContent($certificate, $publishedCertificates, $issuerProfiles, $underlyingProfiles, $publishedOverrides, $reviewDisclaimer);
-        $files['recensioni/recensione-' . $isin . '.html'] = buildReviewPage($template, $certificate, $markup);
+        $override = $publishedOverrides[$isin] ?? [];
+        $preserveLegacy = isset($publishedByIsin[$isin]) && empty($override['url']);
+        $reviewUrl = reviewUrlForCertificate($certificate, $override, (string)$config['site_url'], $preserveLegacy);
+        $relativePath = reviewUrlToRelativePath($reviewUrl);
+        $routeKey = strtolower($relativePath);
+        if (isset($reviewRouteKeys[$routeKey])) {
+            throw new RuntimeException('URL recensione duplicato: ' . $reviewUrl);
+        }
+        $reviewRouteKeys[$routeKey] = true;
+        $reviewUrlsByIsin[$isin] = $reviewUrl;
+        $reviewPathsByIsin[$isin] = substr($relativePath, strlen('recensioni/'));
+        $reviewIsinByRelativePath[$relativePath] = $isin;
+        $markup = renderReviewContent($certificate, $publishedCertificates, $issuerProfiles, $underlyingProfiles, $publishedOverrides, $reviewDisclaimer, $reviewUrl);
+        $files[$relativePath] = buildReviewPage($template, $certificate, $markup, $reviewUrl, $relativePath);
     }
     $dataJson = json_encode($publishedCertificates, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $files['js/data-certificates.js'] = "// Dataset locale dei certificati, caricato prima di app.js nelle pagine che lo usano.\n\nconst CERTIFICATES_DATA = " . $dataJson . ";\n";
@@ -709,7 +796,10 @@ function publishSite(?string $onlyIsin = null): array
     $issuerDataVersion = substr(hash('sha256', $files['js/data-issuers.js']), 0, 12);
     $isins = array_keys($wanted);
     sort($isins, SORT_STRING);
-    $manifest = 'window.STATIC_REVIEW_ISINS = Object.freeze(' . json_encode($isins, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . ");\n";
+    $manifestPaths = [];
+    foreach ($isins as $isin) $manifestPaths[$isin] = $reviewPathsByIsin[$isin];
+    $manifest = 'window.STATIC_REVIEW_ISINS = Object.freeze(' . json_encode($isins, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . ");\n"
+        . 'window.STATIC_REVIEW_PATHS = Object.freeze(' . json_encode($manifestPaths, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . ");\n";
     $files['js/data-review-pages.js'] = $manifest;
     $manifestVersion = substr(hash('sha256', $manifest), 0, 12);
     $siteRoot = dirname(__DIR__);
@@ -730,32 +820,45 @@ function publishSite(?string $onlyIsin = null): array
         ) {
             continue;
         }
-        $manifestPath = str_starts_with($relative, 'recensioni/') ? '../js/data-review-pages.js' : 'js/data-review-pages.js';
+        $assetPrefix = str_starts_with($relative, 'recensioni/') ? reviewAssetPrefix($relative) : '';
+        $manifestPath = $assetPrefix . 'js/data-review-pages.js';
         $pattern = '/(<script\s+src=["\'])' . preg_quote($manifestPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
         $updated = preg_replace($pattern, '$1' . $manifestPath . '?v=' . $manifestVersion . '$2', $content, 1, $scriptCount);
         if ($scriptCount !== 1) throw new RuntimeException('Include manifest non trovato in ' . $relative . '.');
+        $appPath = $assetPrefix . 'js/app.js';
+        $appPattern = '/(<script\s+src=["\'])' . preg_quote($appPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
+        $updated = preg_replace($appPattern, '$1' . $appPath . '?v=20261025-review-url$2', (string)$updated, 1, $appScriptCount);
+        if ($appScriptCount > 1) throw new RuntimeException('Include app non univoco in ' . $relative . '.');
         if (
             in_array($relative, ['index.html', 'certificati.html', 'recensione.html'], true)
             || str_starts_with($relative, 'recensioni/')
         ) {
-            $issuerDataPath = str_starts_with($relative, 'recensioni/') ? '../js/data-issuers.js' : 'js/data-issuers.js';
+            $issuerDataPath = $assetPrefix . 'js/data-issuers.js';
             $issuerPattern = '/(<script\s+src=["\'])' . preg_quote($issuerDataPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
             $updated = preg_replace($issuerPattern, '$1' . $issuerDataPath . '?v=' . $issuerDataVersion . '$2', (string)$updated, 1, $issuerScriptCount);
             if ($issuerScriptCount !== 1) throw new RuntimeException('Include dati emittenti non trovato in ' . $relative . '.');
         }
-        $selectedIsin = preg_match('/^recensioni\/recensione-([A-Z0-9]{12})\.html$/i', $relative, $match)
+        $selectedIsin = $reviewIsinByRelativePath[$relative] ?? (preg_match('/^recensioni\/recensione-([A-Z0-9]{12})\.html$/i', $relative, $match)
             ? strtoupper($match[1])
-            : '';
+            : '');
         $updated = updateReviewPicker((string)$updated, $publishedCertificates, $selectedIsin);
         $files[$relative] = cmsEnsureConsentAssets((string)$updated, $relative);
     }
     $index = $files['index.html'] ?? readProjectFile('index.html');
-    $indexUpdated = preg_replace_callback('/(<!-- STATIC-HOME-CERTIFICATES:START -->)[\s\S]*?(<!-- STATIC-HOME-CERTIFICATES:END -->)/', static fn($m) => $m[1] . "\n" . renderHomeCards($publishedCertificates) . "\n" . $m[2], $index, 1, $markerCount);
+    $indexUpdated = preg_replace_callback('/(<!-- STATIC-HOME-CERTIFICATES:START -->)[\s\S]*?(<!-- STATIC-HOME-CERTIFICATES:END -->)/', static fn($m) => $m[1] . "\n" . renderHomeCards($publishedCertificates, $reviewPathsByIsin) . "\n" . $m[2], $index, 1, $markerCount);
     if ($markerCount !== 1) throw new RuntimeException('Marcatori delle schede statiche non trovati in index.html.');
     $files['index.html'] = (string)$indexUpdated;
 
-    $files['sitemap.xml'] = buildReviewSitemap($isins, rtrim((string)$config['site_url'], '/'));
+    $files['sitemap.xml'] = buildReviewSitemap(array_values($reviewUrlsByIsin), publicSitemapBaseUrl((string)$config['site_url']));
 
+    $nextReviewPaths = array_fill_keys(array_keys($reviewIsinByRelativePath), true);
+    foreach ($originalPublishedCertificates as $previousCertificate) {
+        $previousIsin = (string)$previousCertificate['isin'];
+        $previousOverride = $originalPublishedOverrides[$previousIsin] ?? [];
+        $previousUrl = reviewUrlForCertificate($previousCertificate, $previousOverride, (string)$config['site_url'], empty($previousOverride['url']));
+        $previousPath = reviewUrlToRelativePath($previousUrl);
+        if (!isset($nextReviewPaths[$previousPath])) $files[$previousPath] = null;
+    }
     foreach ($existingPages as $path) {
         $name = basename($path);
         if (preg_match('/^recensione-([A-Z0-9]{12})\.html$/i', $name, $match) && !isset($wanted[strtoupper($match[1])])) {
