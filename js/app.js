@@ -342,13 +342,13 @@ function initSidebarFeatured() {
       if (shouldShowFeaturedScrollIndicator) {
         initFeaturedCertificateScroll(featuredList, shouldLoopFeaturedCertificates);
       }
-      initCopyableIsins(widget);
+      initCopyableIsins(widget, 'widget');
     } else {
       container.innerHTML = featuredCardsHtml;
       if (shouldShowFeaturedScrollIndicator) {
         initFeaturedCertificateScroll(container, shouldLoopFeaturedCertificates);
       }
-      initCopyableIsins(container);
+      initCopyableIsins(container, 'widget');
     }
   });
 }
@@ -603,14 +603,14 @@ function initHomeFeaturedCertificates() {
 
   if (typeof CERTIFICATES_DATA === 'undefined') {
     if (container.querySelector('.home-certificate-card')) {
-      initCopyableIsins(container);
+      initCopyableIsins(container, 'home');
       alignCertificateMetrics(container);
     }
     return;
   }
 
   container.innerHTML = sortHomeCertificates(CERTIFICATES_DATA.filter(c => c.showHome)).map(certificateCardMarkup).join('');
-  initCopyableIsins(container);
+  initCopyableIsins(container, 'home');
   alignCertificateMetrics(container);
 }
 function issuerDescriptionWithoutName(issuer, description) {
@@ -936,7 +936,7 @@ function initShareButtons() {
   });
 }
 
-function initCopyableIsins(container) {
+function initCopyableIsins(container, surface) {
   // Mantiene stabile la larghezza del controllo mentre il testo cambia in "ISIN COPIATO!".
   container.querySelectorAll('[data-copy-isin]').forEach(isinElement => {
     const isin = isinElement.dataset.copyIsin;
@@ -950,18 +950,28 @@ function initCopyableIsins(container) {
 
       try {
         await copyTextToClipboard(isin);
-        isinElement.classList.add('is-copied');
-        isinElement.textContent = 'ISIN COPIATO!';
-        setTimeout(() => {
-          isinElement.classList.remove('is-copied');
-          isinElement.innerHTML = originalMarkup;
-        }, 1200);
       } catch {
         isinElement.classList.add('copy-failed');
         setTimeout(() => {
           isinElement.classList.remove('copy-failed');
         }, 1600);
+        return;
       }
+
+      if (typeof window.trackMetaCustomEvent === 'function') {
+        try {
+          window.trackMetaCustomEvent('CopyISIN', { isin_code: isin, surface });
+        } catch (error) {
+          console.warn('Impossibile inviare l’evento di copia ISIN a Meta Pixel.', error);
+        }
+      }
+
+      isinElement.classList.add('is-copied');
+      isinElement.textContent = 'ISIN COPIATO!';
+      setTimeout(() => {
+        isinElement.classList.remove('is-copied');
+        isinElement.innerHTML = originalMarkup;
+      }, 1200);
     };
 
     isinElement.addEventListener('click', copyIsin);
@@ -1052,7 +1062,7 @@ function initCertificatesCatalog() {
     const pageStart = (currentPage - 1) * pageSize;
     cardsContainer.innerHTML = data.slice(pageStart, pageStart + pageSize).map(certificateCardMarkup).join('');
 
-    initCopyableIsins(cardsContainer);
+    initCopyableIsins(cardsContainer, 'catalog');
     alignCertificateMetrics(cardsContainer);
     renderPagination(totalPages);
   }
@@ -1505,7 +1515,7 @@ function initReviewPage() {
       const copyButton = menu.querySelector('[data-copy-share-url]');
       if (copyButton) copyButton.dataset.copyShareUrl = reviewShareUrl;
     });
-    initCopyableIsins(reviewContainer);
+    initCopyableIsins(reviewContainer, 'technical_sheet');
     const isinPicker = document.getElementById('review-isin-picker');
     if (isinPicker) {
       isinPicker.addEventListener('change', (event) => {
@@ -1727,7 +1737,7 @@ function initReviewPage() {
     ${reviewDisclaimer}
   `;
 
-  initCopyableIsins(reviewContainer);
+  initCopyableIsins(reviewContainer, 'technical_sheet');
 
   const isinPicker = document.getElementById('review-isin-picker');
   if (isinPicker) {

@@ -6,7 +6,7 @@ Questa cartella contiene il codice interattivo e i dati usati dal sito.
 
 ### `app.js`
 
-Gestisce le funzioni interattive del sito: menu e navigazione, tema, catalogo e filtri, ricerca nelle FAQ e nel glossario, condivisione e copia degli ISIN. Nelle recensioni statiche conserva il contenuto HTML e attiva i controlli, come il selettore del certificato.
+Gestisce le funzioni interattive del sito: menu e navigazione, tema, catalogo e filtri, ricerca nelle FAQ e nel glossario, condivisione e copia degli ISIN. Dopo una copia riuscita invia a Meta Pixel l’evento personalizzato `CopyISIN`, con ISIN e superficie (`home`, `widget`, `catalog` o `technical_sheet`), solo se il consenso marketing è attivo. Nelle recensioni statiche conserva il contenuto HTML e attiva i controlli, come il selettore del certificato.
 
 ### `data-certificates.js`
 

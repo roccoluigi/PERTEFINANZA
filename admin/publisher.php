@@ -467,7 +467,7 @@ function buildReviewPage(string $template, array $certificate, string $markup, s
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
     $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261021-2', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261025-review-url', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261027-copy-isin-meta', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     $assetPrefix = reviewAssetPrefix($relativePath);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) use ($assetPrefix) {
@@ -827,7 +827,7 @@ function publishSite(?string $onlyIsin = null): array
         if ($scriptCount !== 1) throw new RuntimeException('Include manifest non trovato in ' . $relative . '.');
         $appPath = $assetPrefix . 'js/app.js';
         $appPattern = '/(<script\s+src=["\'])' . preg_quote($appPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
-        $updated = preg_replace($appPattern, '$1' . $appPath . '?v=20261025-review-url$2', (string)$updated, 1, $appScriptCount);
+        $updated = preg_replace($appPattern, '$1' . $appPath . '?v=20261027-copy-isin-meta$2', (string)$updated, 1, $appScriptCount);
         if ($appScriptCount > 1) throw new RuntimeException('Include app non univoco in ' . $relative . '.');
         if (
             in_array($relative, ['index.html', 'certificati.html', 'recensione.html'], true)

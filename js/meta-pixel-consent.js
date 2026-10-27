@@ -8,6 +8,12 @@
   let pixelAllowed = false;
   let banner;
 
+  window.trackMetaCustomEvent = (eventName, parameters = {}) => {
+    if (!pixelAllowed || typeof window.fbq !== 'function') return false;
+    window.fbq('trackCustom', eventName, parameters);
+    return true;
+  };
+
   function readConsent() {
     try {
       const rawConsent = localStorage.getItem(storageKey);
