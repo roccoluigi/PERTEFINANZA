@@ -141,6 +141,14 @@
       });
     });
 
+    document.querySelectorAll('[data-certificate-visibility]').forEach((form) => {
+      form.addEventListener('change', (event) => {
+        if (!(event.target instanceof HTMLInputElement) || event.target.type !== 'checkbox') return;
+        if (typeof form.requestSubmit === 'function') form.requestSubmit();
+        else form.submit();
+      });
+    });
+
     document.querySelectorAll('[data-cms-autocomplete]').forEach((input) => {
       const optionsList = document.getElementById(input.dataset.optionsId);
       if (!optionsList) return;

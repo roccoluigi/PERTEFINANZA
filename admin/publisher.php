@@ -161,7 +161,7 @@ function issuerRatingSentence(?array $profile): string
         return h((string)$agency) . " assegna all'emittente un rating <strong>" . h((string)$rating) . '</strong>.';
     }
     $last = array_pop($parts);
-    return 'Rating disponibili: ' . implode(', ', $parts) . ' e ' . $last . '.';
+    return 'I rating assegnati dalle maggiori agenzie sono: ' . implode(', ', $parts) . ' e ' . $last . '.';
 }
 
 function formatEditorialParagraph(string $text): string
@@ -246,7 +246,6 @@ function generateReviewData(array $certificate, ?array $issuerProfile, array $un
     }
     if ($step > 0) {
         $pros[] = "Step-down di {$stepLabel} {$stepUnit} per osservazione: può aumentare la probabilità di rimborso anticipato e contribuire a sostenere il prezzo del prodotto.";
-        $cons[] = 'Il rimborso anticipato interrompe le cedole future e può comportare il rischio di reinvestire il capitale a condizioni meno favorevoli.';
     }
     $pros[] = 'Effetto memoria: le cedole non pagate possono essere recuperate se, a una successiva data di osservazione, il Worst-of raggiunge nuovamente la barriera coupon.';
     $pros[] = 'Struttura Quanto: protegge dall’effetto diretto del cambio sia il capitale sia le cedole.';
@@ -287,7 +286,7 @@ function parsePercentValue(string $value): float
     return (float)str_replace(',', '.', str_replace('%', '', $value));
 }
 
-function defaultReviewUrl(array $certificate, string $siteUrl): string
+function reviewSlugForCertificate(array $certificate): string
 {
     $issuer = (string)$certificate['issuer'];
     $asciiIssuer = function_exists('iconv')
@@ -295,7 +294,12 @@ function defaultReviewUrl(array $certificate, string $siteUrl): string
         : $issuer;
     $issuerSlug = strtolower(trim((string)preg_replace('/[^a-z0-9]+/i', '-', $asciiIssuer), '-'));
     if ($issuerSlug === '') $issuerSlug = 'emittente';
-    return rtrim($siteUrl, '/') . '/recensioni/' . $issuerSlug . '-cash-collect-' . rawurlencode((string)$certificate['isin']) . '/';
+    return $issuerSlug . '-cash-collect-' . rawurlencode((string)$certificate['isin']);
+}
+
+function defaultReviewUrl(array $certificate, string $siteUrl): string
+{
+    return rtrim($siteUrl, '/') . '/recensioni/' . reviewSlugForCertificate($certificate) . '.html';
 }
 
 function reviewUrlMatchesSite(string $reviewUrl, string $siteUrl): bool
@@ -331,8 +335,8 @@ function reviewUrlToRelativePath(string $reviewUrl): string
         throw new InvalidArgumentException('Il percorso URL della recensione non è valido.');
     }
     $relative = 'recensioni/' . ltrim(substr($path, strlen('/recensioni/')), '/');
-    if (str_ends_with($path, '/')) return $relative . 'index.html';
-    if (!preg_match('/^recensioni\/recensione-[A-Z0-9]{12}\.html$/i', $relative)) {
+    if (preg_match('/^recensioni\/[a-z0-9-]+\/$/i', $relative)) return $relative . 'index.html';
+    if (!preg_match('/^recensioni\/[a-z0-9-]+\.html$/i', $relative)) {
         throw new InvalidArgumentException('Il percorso URL della recensione non è valido.');
     }
     return $relative;
@@ -346,6 +350,16 @@ function reviewAssetPrefix(string $relativePath): string
 function reviewEditorialFormValues(array $certificate, array $override = [], string $siteUrl = '', bool $isPublished = false): array
 {
     $reviewUrl = reviewUrlForCertificate($certificate, $override, $siteUrl, $isPublished && empty($override['url']));
+    $storedUrl = trim((string)($override['url'] ?? ''));
+    $storedUrlParts = parse_url($storedUrl);
+    if (
+        $storedUrl !== ''
+        && is_array($storedUrlParts)
+        && reviewUrlMatchesSite($storedUrl, $siteUrl)
+        && strtolower((string)($storedUrlParts['path'] ?? '')) === strtolower('/recensioni/' . reviewSlugForCertificate($certificate) . '/')
+    ) {
+        $reviewUrl = defaultReviewUrl($certificate, $siteUrl);
+    }
     $issuerProfiles = loadIssuerProfiles();
     $underlyingProfiles = loadUnderlyingProfiles();
     $issuerProfile = findIssuerProfile((string)$certificate['issuer'], $issuerProfiles);
@@ -467,7 +481,7 @@ function buildReviewPage(string $template, array $certificate, string $markup, s
     $html = preg_replace('/<link\s+rel=["\']canonical["\'][^>]*>/i', $canonicalTag, (string)$html, 1, $canonicalCount);
     if ($canonicalCount !== 1) throw new RuntimeException('Canonical non trovato nel template.');
     $html = preg_replace('/css\/style\.css\?v=[^"\']+/', 'css/style.css?v=20261021-2', (string)$html);
-    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261027-copy-isin-meta', (string)$html);
+    $html = preg_replace('/js\/app\.js\?v=[^"\']+/', 'js/app.js?v=20261028-multi-agency-ratings', (string)$html);
     $html = preg_replace('/^\s*<script\s+src=["\']js\/(?:data-underlyings|reviews)\.js(?:\?[^"\']*)?["\']><\/script>\s*$/im', '', (string)$html);
     $assetPrefix = reviewAssetPrefix($relativePath);
     return (string)preg_replace_callback('/\b(href|src)=(["\'])(.*?)\2/i', static function ($match) use ($assetPrefix) {
@@ -616,7 +630,7 @@ function buildReviewSitemap(array $reviewUrls, string $siteUrl): string
 {
     $sitemap = readProjectFile('sitemap.xml');
     $sitemap = str_replace(["\r\n", "\r"], "\n", $sitemap);
-    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/(?:recensione-[A-Z0-9]{12}\.html|[a-z0-9-]+\/)<\/loc>\s*<\/url>/i', '', $sitemap);
+    $sitemap = preg_replace('/\s*<url>\s*<loc>[^<]*\/recensioni\/(?:[a-z0-9-]+\.html|[a-z0-9-]+\/)<\/loc>\s*<\/url>/i', '', $sitemap);
     if (!is_string($sitemap)) throw new RuntimeException('Impossibile aggiornare gli URL delle recensioni nella sitemap.');
 
     $reviewEntries = '';
@@ -827,7 +841,7 @@ function publishSite(?string $onlyIsin = null): array
         if ($scriptCount !== 1) throw new RuntimeException('Include manifest non trovato in ' . $relative . '.');
         $appPath = $assetPrefix . 'js/app.js';
         $appPattern = '/(<script\s+src=["\'])' . preg_quote($appPath, '/') . '(?:\?v=[^"\']*)?(["\'][^>]*>\s*<\/script>)/i';
-        $updated = preg_replace($appPattern, '$1' . $appPath . '?v=20261027-copy-isin-meta$2', (string)$updated, 1, $appScriptCount);
+        $updated = preg_replace($appPattern, '$1' . $appPath . '?v=20261028-multi-agency-ratings$2', (string)$updated, 1, $appScriptCount);
         if ($appScriptCount > 1) throw new RuntimeException('Include app non univoco in ' . $relative . '.');
         if (
             in_array($relative, ['index.html', 'certificati.html', 'recensione.html'], true)

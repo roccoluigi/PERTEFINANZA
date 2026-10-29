@@ -40,9 +40,9 @@ I numeri accanto alle voci del menu indicano quanti elementi sono diversi dalla 
 ## Gestione dei certificati
 
 - **Nuovo ISIN** crea una bozza dopo aver verificato il formato e la cifra di controllo dell’ISIN.
-- **Modifica** permette di aggiornare i dati del prodotto, i sottostanti e la visibilità nella home. Mostra anche l’URL della recensione, modificabile, e tutti i testi della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità. Le nuove URL seguono il formato `/recensioni/<emittente>-cash-collect-<ISIN>/`.
+- **Modifica** permette di aggiornare i dati del prodotto, i sottostanti e la visibilità nella home. Mostra anche l’URL della recensione, modificabile, e tutti i testi della scheda: introduzione e analisi, descrizione e celle della matrice, punti di forza e criticità. Le nuove URL seguono il formato `/recensioni/<emittente>-cash-collect-<ISIN>.html`; gli URL di cartella generati in precedenza vengono proposti nel nuovo formato quando si apre la scheda in modifica.
 - I contatori accanto a **In home** e **Top Picks** indicano quanti certificati sono selezionati per ciascuna area. Non c’è un limite massimo: vengono mostrati tutti quelli selezionati.
-- Ogni scheda dell’elenco indica se il certificato è incluso in **Home** e/o in **Top Picks**.
+- I checkbox **Home**, **Top Picks** e **Sotto la pari** nella lista salvano subito la bozza di visibilità. Se la scheda pubblicata cambia, compaiono **Pubblica modifiche** e **Annulla modifiche** nella relativa riga.
 - Per formattare il testo principale, seleziona le parole e usa i pulsanti per il grassetto, il corsivo e la sottolineatura. Non occorre inserire marcatori o codice HTML. I punti di forza e le criticità si modificano uno alla volta: puoi aggiungere o rimuovere singole voci.
 - I dati finanziari hanno campi dedicati. Una modifica al testo descrittivo non aggiorna quei dati: verifica che percentuali e condizioni della matrice siano coerenti.
 - **Salva bozza** non aggiorna il sito pubblico. Per pubblicare una scheda nuova o modificata, usa **Pubblica scheda** o **Pubblica modifiche** nella relativa riga; le altre bozze restano in attesa.

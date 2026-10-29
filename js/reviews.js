@@ -78,7 +78,6 @@ function buildGeneratedReviewContent(cert) {
   } else cons.push(`Rating dell'emittente: ${ratingText}; verifica gli aggiornamenti più recenti e considera il rischio di credito.`);
   if (stepDownValue > 0) {
     pros.push(`Step-down di ${stepDownAmount} ${stepDownUnit} per osservazione: può aumentare la probabilità di rimborso anticipato e contribuire a sostenere il prezzo del prodotto.`);
-    cons.push('Il rimborso anticipato interrompe le cedole future e può comportare il rischio di reinvestire il capitale a condizioni meno favorevoli.');
   }
   pros.push('Effetto memoria: le cedole non pagate possono essere recuperate se, a una successiva data di osservazione, il Worst-of raggiunge nuovamente la barriera coupon.');
   pros.push('Struttura Quanto: protegge dall’effetto diretto del cambio sia il capitale sia le cedole.');

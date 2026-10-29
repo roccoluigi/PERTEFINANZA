@@ -513,14 +513,14 @@ function normalizeReviewOverride(array $input): array
         $urlParts = parse_url($url);
         $reviewPath = is_array($urlParts) ? (string)($urlParts['path'] ?? '') : '';
         $isReadableReviewPath = preg_match('/^\/recensioni\/[a-z0-9-]+\/$/i', $reviewPath) === 1;
-        $isLegacyReviewPath = preg_match('/^\/recensioni\/recensione-[a-z0-9]{12}\.html$/i', $reviewPath) === 1;
+        $isReadableReviewFilePath = preg_match('/^\/recensioni\/[a-z0-9-]+\.html$/i', $reviewPath) === 1;
         if (strlen($url) > 2048 || !is_array($urlParts)
             || strtolower((string)($urlParts['scheme'] ?? '')) !== 'https'
             || empty($urlParts['host']) || isset($urlParts['user']) || isset($urlParts['pass'])
             || isset($urlParts['query']) || isset($urlParts['fragment'])
             || (isset($urlParts['port']) && $urlParts['port'] !== 443)
-            || (!$isReadableReviewPath && !$isLegacyReviewPath)) {
-            throw new InvalidArgumentException('Inserisci un URL HTTPS valido sotto /recensioni/ (cartella con / finale o file storico recensione-<ISIN>.html).');
+            || (!$isReadableReviewPath && !$isReadableReviewFilePath)) {
+            throw new InvalidArgumentException('Inserisci un URL HTTPS valido sotto /recensioni/ (cartella con / finale o file <slug>.html).');
         }
         $url = 'https://' . strtolower((string)$urlParts['host']) . $urlParts['path'];
     }

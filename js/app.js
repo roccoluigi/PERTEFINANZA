@@ -645,7 +645,7 @@ function issuerRatingSentenceMarkup(issuer) {
     return `${entries[0][0]} assegna all'emittente un rating <strong>${entries[0][1]}</strong>.`;
   }
   const last = parts.pop();
-  return `Rating disponibili: ${parts.join(', ')} e ${last}.`;
+  return `I rating assegnati dalle maggiori agenzie sono: ${parts.join(', ')} e ${last}.`;
 }
 
 function reviewPreviewMarkup(cert) {

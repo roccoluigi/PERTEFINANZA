@@ -156,6 +156,29 @@ try {
             $publishedCertificates = loadPublishedCertificates();
             $overrides = loadReviewOverrides();
             $publishedOverrides = loadPublishedReviewOverrides();
+        } elseif ($action === 'update_visibility') {
+            $isin = strtoupper(trim((string)($_POST['isin'] ?? '')));
+            $visibilityFields = ['showHome', 'showTopPick', 'belowPar'];
+            $updated = false;
+            foreach ($certificates as $index => $certificate) {
+                if (($certificate['isin'] ?? '') !== $isin) {
+                    continue;
+                }
+                foreach ($visibilityFields as $field) {
+                    $value = $_POST[$field] ?? null;
+                    if ($value !== null && $value !== '1') {
+                        throw new InvalidArgumentException('Valore di visibilità non valido.');
+                    }
+                    $certificates[$index][$field] = $value === '1';
+                }
+                $updated = true;
+                break;
+            }
+            if (!$updated) {
+                throw new InvalidArgumentException('Il certificato da aggiornare non è stato trovato.');
+            }
+            writeJsonAtomic('certificates.json', array_values($certificates));
+            $message = 'Visibilità salvata come bozza. Pubblica o annulla le modifiche dalla scheda.';
         } elseif ($action === 'save') {
             $oldIsin = strtoupper(trim((string)($_POST['old_isin'] ?? '')));
             $normalized = normalizeCertificateInput($_POST, null);
@@ -334,6 +357,11 @@ function inputValue(array $certificate, string $key): string
 
 $homeCertificateCount = count(array_filter($certificates, static fn($certificate) => !empty($certificate['showHome'])));
 $topPickCertificateCount = count(array_filter($certificates, static fn($certificate) => !empty($certificate['showTopPick'])));
+$certificateVisibilityOptions = [
+    'showHome' => 'Home',
+    'showTopPick' => 'Top Picks',
+    'belowPar' => 'Sotto la pari',
+];
 ?>
 <!doctype html>
 <html lang="it">
@@ -341,8 +369,8 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pannello admin | PERTEFINANZA</title>
-  <script src="admin.js?v=20261023-integer-month"></script>
-  <link rel="stylesheet" href="admin.css?v=20261023-number-steps">
+  <script src="admin.js?v=20261028-inline-visibility"></script>
+  <link rel="stylesheet" href="admin.css?v=20261028-centered-visibility">
 </head>
 <body>
   <main class="admin-shell">
@@ -414,11 +442,25 @@ $topPickCertificateCount = count(array_filter($certificates, static fn($certific
                 ?>
                 <div class="certificate-row-status">
                   <span class="status-pill status-<?= h($row['status']) ?>"><?= h($statusLabels[$row['status']] ?? 'Stato non disponibile') ?></span>
-                  <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
-                    <span class="status-pill status-visibility<?= !empty($certificate['showHome']) ? ' is-selected' : '' ?>">Home: <?= !empty($certificate['showHome']) ? 'sì' : 'no' ?></span>
-                    <span class="status-pill status-visibility<?= !empty($certificate['showTopPick']) ? ' is-selected' : '' ?>">Top Picks: <?= !empty($certificate['showTopPick']) ? 'sì' : 'no' ?></span>
-                    <span class="status-pill status-visibility<?= !empty($certificate['belowPar']) ? ' is-selected' : '' ?>">Sotto la pari: <?= !empty($certificate['belowPar']) ? 'sì' : 'no' ?></span>
-                  </div>
+                  <?php if ($row['status'] !== 'removal'): ?>
+                    <form method="post" class="certificate-visibility-tags" aria-label="Modifica visibilità di <?= h($isin) ?>" data-certificate-visibility>
+                      <input type="hidden" name="csrf" value="<?= h(csrfToken()) ?>">
+                      <input type="hidden" name="action" value="update_visibility">
+                      <input type="hidden" name="isin" value="<?= h($isin) ?>">
+                      <?php foreach ($certificateVisibilityOptions as $field => $label): ?>
+                        <label class="status-pill status-visibility certificate-visibility-toggle<?= !empty($certificate[$field]) ? ' is-selected' : '' ?>">
+                          <input type="checkbox" name="<?= h($field) ?>" value="1" aria-label="<?= h($label) ?>" <?= !empty($certificate[$field]) ? 'checked' : '' ?>>
+                          <span><?= h($label) ?></span>
+                        </label>
+                      <?php endforeach; ?>
+                    </form>
+                  <?php else: ?>
+                    <div class="certificate-visibility-tags" aria-label="Visibilità nelle sezioni">
+                      <?php foreach ($certificateVisibilityOptions as $field => $label): ?>
+                        <span class="status-pill status-visibility<?= !empty($certificate[$field]) ? ' is-selected' : '' ?>"><?= h($label) ?>: <?= !empty($certificate[$field]) ? 'sì' : 'no' ?></span>
+                      <?php endforeach; ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
               </div>
               <div class="certificate-row-bottom">

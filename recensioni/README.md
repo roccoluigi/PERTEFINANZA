@@ -1,6 +1,6 @@
 # Recensioni statiche
 
-Questa cartella contiene le pagine HTML statiche delle recensioni. Le nuove recensioni usano una cartella con URL leggibile, nel formato `<emittente>-cash-collect-<ISIN>/index.html`; le recensioni pubblicate in precedenza possono mantenere il file `recensione-<ISIN>.html`. Il CMS conserva gli URL storici anche quando si modificano le recensioni.
+Questa cartella contiene le pagine HTML statiche delle recensioni. Le nuove recensioni create dal CMS usano un file con URL leggibile, nel formato `<emittente>-cash-collect-<ISIN>.html`. Le recensioni già pubblicate possono mantenere il percorso precedente nella propria cartella `index.html` oppure il file storico `recensione-<ISIN>.html`, finché l’URL non viene modificato nel CMS.
 
 ## Gestione delle recensioni
 
