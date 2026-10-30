@@ -4135,14 +4135,20 @@ html[data-theme="dark"] .widget-cert-isin.copy-failed {
 }
 
 html[data-theme="dark"] .review-isin-copy {
-  color: var(--bg-body);
+  border-color: var(--primary-deep);
+  background: var(--primary-deep);
+  color: #ffffff;
 }
 
 html[data-theme="dark"] .review-isin-copy:hover,
 html[data-theme="dark"] .review-isin-copy.is-copied {
-  border-color: var(--primary-dark);
-  background: var(--primary-dark);
-  color: var(--bg-body);
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .review-isin-copy.copy-failed {
+  color: #7c2d12;
 }
 
 html[data-theme="dark"] .home-certificate-metric,
