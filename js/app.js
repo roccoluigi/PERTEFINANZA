@@ -290,7 +290,7 @@ function initSidebarFeatured() {
       <div class="widget-cert-item">
         <div class="widget-cert-top">
           <button type="button" class="widget-cert-isin" data-copy-isin="${c.isin}" title="Copia ISIN">
-            <span class="widget-cert-isin-label">ISIN:</span>${c.isin}
+            <svg class="widget-cert-isin-copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>${c.isin}
           </button>
           ${contentShareMenuMarkup('', c.name, certificateShareText(c), reviewStartUrl(reviewUrl))}
           ${c.belowPar ? '<span class="badge badge-below-par">Sotto la pari</span>' : ''}

@@ -2204,20 +2204,19 @@ html[data-theme="dark"] .featured-scroll-pill {
   transition: none;
 }
 
+.widget-cert-isin-copy-icon {
+  display: block;
+  flex: 0 0 auto;
+  width: 1.1em;
+  height: 1.1em;
+}
+
 .widget-cert-isin:hover,
 .widget-cert-isin.is-copied,
 .widget-cert-isin.copy-failed {
   border-color: var(--primary-border);
   background: #ffffff;
   color: var(--text-body);
-}
-
-.widget-cert-isin-label {
-  color: var(--text-body);
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 800;
-  letter-spacing: 0;
 }
 
 .widget-cert-isin:focus-visible {
@@ -2432,8 +2431,12 @@ html[data-theme="dark"] .featured-scroll-pill {
   transition: none;
 }
 
+.home-certificate-isin > .cert-isin-copy,
+.home-certificate-tech-button {
+  width: 9.625rem;
+}
+
 .home-certificate-isin > .cert-isin-copy {
-  width: 9.8rem;
   justify-content: center;
 }
 
