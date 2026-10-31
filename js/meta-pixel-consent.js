@@ -143,7 +143,7 @@
     }
 
     const inReviewFolder = window.location.pathname.includes('/recensioni/');
-    const policyPath = `${inReviewFolder ? '../' : ''}disclaimer.html#cookie`;
+    const policyPath = 'https://www.pertefinanza.it/disclaimer.html#cookie';
     const logoPath = `${inReviewFolder ? '../' : ''}assets/pertefinanza-logo-giorno.svg`;
     previousFocus = document.activeElement;
     banner = document.createElement('section');
