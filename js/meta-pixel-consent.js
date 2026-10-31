@@ -7,6 +7,7 @@
   let pixelInitialized = false;
   let pixelAllowed = false;
   let banner;
+  let previousFocus;
 
   window.trackMetaCustomEvent = (eventName, parameters = {}) => {
     if (!pixelAllowed || typeof window.fbq !== 'function') return false;
@@ -120,6 +121,11 @@
   function closeBanner() {
     banner?.remove();
     banner = null;
+    document.documentElement.classList.remove('pf-cookie-open');
+    if (previousFocus instanceof HTMLElement && previousFocus !== document.body && previousFocus.isConnected) {
+      previousFocus.focus();
+    }
+    previousFocus = null;
   }
 
   function chooseConsent(marketing) {
@@ -129,38 +135,54 @@
     closeBanner();
   }
 
-  function showBanner(moveFocus = false) {
+  function showBanner() {
     if (banner) {
-      if (moveFocus) banner.querySelector('[data-cookie-choice="reject"]')?.focus();
+      banner.querySelector('[data-cookie-choice="reject"]')?.focus();
       return;
     }
 
     const inReviewFolder = window.location.pathname.includes('/recensioni/');
     const policyPath = `${inReviewFolder ? '../' : ''}disclaimer.html#cookie`;
+    const logoPath = `${inReviewFolder ? '../' : ''}assets/pertefinanza-logo-giorno.svg`;
+    previousFocus = document.activeElement;
     banner = document.createElement('section');
-    banner.className = 'pf-cookie-banner';
-    banner.setAttribute('role', 'region');
+    banner.className = 'pf-cookie-overlay';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-modal', 'true');
     banner.setAttribute('aria-labelledby', 'pf-cookie-title');
     banner.innerHTML = `
-      <div class="pf-cookie-copy">
-        <h2 id="pf-cookie-title">Le tue preferenze cookie</h2>
-        <p>
-          Usiamo cookie tecnici necessari. Con il tuo consenso, Meta Pixel invia a Meta dati sulla visita
-          per misurare il traffico e le campagne. Puoi modificare la scelta in qualsiasi momento da
-          “Gestisci cookie” nel footer; la conserviamo per 6 mesi.
-          <a href="${policyPath}">Leggi la Cookie Policy</a>.
+      <div class="pf-cookie-dialog">
+        <img class="pf-cookie-logo" src="${logoPath}" alt="Pertefinanza">
+        <h2 id="pf-cookie-title">La tua privacy è la nostra priorità</h2>
+        <button type="button" class="pf-cookie-decline" data-cookie-choice="reject">Continua senza accettare</button>
+        <p class="pf-cookie-copy" id="pf-cookie-description">
+          Per mostrarti contenuti e annunci più in linea con i tuoi interessi e aiutarci a capire quali
+          iniziative funzionano meglio, con il tuo consenso condividiamo con Meta alcuni dati sulla tua
+          visita. Puoi cambiare idea in qualsiasi momento da “Gestisci cookie” nel footer. Per saperne
+          di più, <a href="${policyPath}">consulta la Cookie Policy</a>.
         </p>
-      </div>
-      <div class="pf-cookie-actions">
-        <button type="button" class="pf-cookie-button pf-cookie-button-secondary" data-cookie-choice="reject">Rifiuta</button>
         <button type="button" class="pf-cookie-button pf-cookie-button-primary" data-cookie-choice="accept">Accetta</button>
       </div>
     `;
+    banner.setAttribute('aria-describedby', 'pf-cookie-description');
     banner.querySelector('[data-cookie-choice="reject"]').addEventListener('click', () => chooseConsent(false));
     banner.querySelector('[data-cookie-choice="accept"]').addEventListener('click', () => chooseConsent(true));
+    banner.addEventListener('keydown', event => {
+      if (event.key !== 'Tab') return;
+      const focusable = [...banner.querySelectorAll('button:not([disabled]), a[href]')];
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
     document.body.appendChild(banner);
-
-    if (moveFocus) banner.querySelector('[data-cookie-choice="reject"]')?.focus();
+    document.documentElement.classList.add('pf-cookie-open');
+    banner.querySelector('[data-cookie-choice="reject"]')?.focus();
   }
 
   function addPreferencesLink() {
@@ -173,7 +195,7 @@
     link.textContent = 'Gestisci cookie';
     link.addEventListener('click', event => {
       event.preventDefault();
-      showBanner(true);
+      showBanner();
     });
     footerLinks.appendChild(link);
   }
