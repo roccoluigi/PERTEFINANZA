@@ -137,7 +137,8 @@
 
   function showBanner() {
     if (banner) {
-      banner.querySelector('[data-cookie-choice="reject"]')?.focus();
+      banner.classList.add('pf-cookie-initial-focus');
+      banner.querySelector('[data-cookie-choice="accept"]')?.focus();
       return;
     }
 
@@ -168,6 +169,7 @@
     banner.querySelector('[data-cookie-choice="reject"]').addEventListener('click', () => chooseConsent(false));
     banner.querySelector('[data-cookie-choice="accept"]').addEventListener('click', () => chooseConsent(true));
     banner.addEventListener('keydown', event => {
+      if (event.key === 'Tab') banner.classList.remove('pf-cookie-initial-focus');
       if (event.key !== 'Tab') return;
       const focusable = [...banner.querySelectorAll('button:not([disabled]), a[href]')];
       const first = focusable[0];
@@ -182,7 +184,8 @@
     });
     document.body.appendChild(banner);
     document.documentElement.classList.add('pf-cookie-open');
-    banner.querySelector('[data-cookie-choice="reject"]')?.focus();
+    banner.classList.add('pf-cookie-initial-focus');
+    banner.querySelector('[data-cookie-choice="accept"]')?.focus();
   }
 
   function addPreferencesLink() {

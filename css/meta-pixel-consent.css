@@ -118,6 +118,11 @@ html.pf-cookie-open body {
   outline-offset: 3px;
 }
 
+.pf-cookie-overlay.pf-cookie-initial-focus .pf-cookie-button:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 @keyframes pf-cookie-enter {
   from {
     opacity: 0;
